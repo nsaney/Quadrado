@@ -1,0 +1,144 @@
+<!-- 
+  Nicholas Saney 
+  
+  Created: December 14, 2014 
+  Modified: December 14, 2014
+  
+  build.xml 
+  Apache Ant buildfile 
+  
+-->
+
+<project name="Quadrado" default="all" basedir=".">
+  
+  <!-- properties -->
+  <property name="main_package" value="chairosoft.quadrado"/>
+  <property name="build"        value="bin"/>
+  <property name="deploy"       value="Deploy_${ant.project.name}"/>
+  <property name="documents"    value="doc"/>
+  <property name="licenses"     value="licenses"/>
+  <property name="source"       value="src"/>
+  <property name="version"      value="1.7"/>
+  <property name="jar_xom"      value="xom-1.2.9.jar"/>
+  <property name="jar_layer"    value="jl1.0.1.jar"/>
+  <property name="jars"         value="${jar_xom}:${jar_layer}"/> <!-- : -->
+  <property name="jars_"        value="${jar_xom} ${jar_layer}"/> <!-- [space] -->
+  <property name="build.sysclasspath" value="last"/> 
+  <property name="jar_name"     value="${ant.project.name}"/>
+  <property name="jar_filename" value="${jar_name}.jar"/>
+  <property environment="env"/>
+  
+  
+  <!-- clean targets -->
+  <target name="clean_build">
+    
+    <delete dir="${build}"/>
+    
+  </target>
+  
+  <target name="clean_deploy">
+    
+    <delete dir="${deploy}"/>
+    
+  </target>
+  
+  <target name="clean" depends="clean_build,clean_deploy"/>
+  
+  <target name="clean_doc">
+    
+    <delete dir="${documents}"/>
+    
+  </target>
+  
+  <target name="clean_all" depends="clean,clean_doc"/>
+
+  
+  <!-- document target -->
+  <target name="document" depends="clean_doc">
+    
+    <mkdir dir="${documents}"/>
+    
+    <javadoc 
+      sourcepath="${source}" 
+      destdir="${documents}" 
+      classpath="${jars}" 
+      access="private" 
+      windowtitle="${ant.project.name} API" 
+    >
+      <link 
+        offline="true" 
+        href="http://download.oracle.com/javase/7/docs/api/" 
+        packagelistLoc="./_package-lists/_java"
+      />
+      <link
+        offline="true" 
+        href="http://www.xom.nu/apidocs/" 
+        packagelistLoc="./_package-lists/nu.xom" 
+      />
+    </javadoc>
+    
+  </target>
+  
+  
+  <!-- pre-compile target -->
+  <target name="pre-compile">
+    
+    <echo message="ANT_HOME = ${env.ANT_HOME}"/>
+    <echo message="JAVA_HOME = ${env.JAVA_HOME}"/>
+    <echo message="java.version = ${java.version}"/>
+    <echo message="target version = ${version}"/>
+    
+  </target>
+  
+  
+  <!-- compile target -->
+  <target name="compile" depends="clean_build,pre-compile">
+    
+    <mkdir dir="${build}"/>
+    
+    <javac 
+      srcdir="${source}" 
+      destdir="${build}" 
+      classpath="${jars}" 
+      source="${version}" 
+      target="${version}" 
+      compiler="javac${version}"
+      includeAntRuntime="true" 
+      debug="on" 
+      debuglevel="lines,vars,source">
+      
+      <compilerarg value="-Xlint:unchecked"/>
+      <!--compilerarg value="-version"/-->
+      
+    </javac>
+    
+  </target>
+  
+  
+  <!-- document and compile target -->
+  <target name="document_compile" depends="document,compile"/>
+  
+  
+  <!-- deploy target -->
+  <target name="deploy" depends="clean_deploy,compile">
+    
+    <mkdir dir="${deploy}"/>
+    
+    <jar destfile="${deploy}/${jar_filename}">
+      <fileset dir="${build}" />
+      <manifest>
+        <attribute name="Class-Path" value="${jars_}"/>
+      </manifest>
+    </jar>
+    
+    <copy todir="${deploy}">
+      <fileset dir="." includes="${jars_} ${licenses}/**" />
+    </copy>
+    
+  </target>
+
+  
+  <!-- all target -->
+  <target name="all" depends="document,deploy"/>
+  
+</project>
