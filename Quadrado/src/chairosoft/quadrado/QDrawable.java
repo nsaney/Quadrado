@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: February 17, 2013
- * Modified: January 22, 2015
  * 
  * QDrawable.java
  * QDrawable class definition

@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 19, 2015
- * Modified: January 24, 2015
  * 
  * Color.java
  * Color class definition

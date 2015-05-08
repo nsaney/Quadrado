@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: May 02, 2015 
- * Modified: May 04, 2015 
  * 
  * PcmSignedInputStream.java
  * PcmSignedInputStream abstract class definition

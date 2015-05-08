@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: February 16, 2015
- * Modified: April 17, 2015
  * 
  * DesktopMultitrackBackgroundAudio.java
  * DesktopMultitrackBackgroundAudio class definition

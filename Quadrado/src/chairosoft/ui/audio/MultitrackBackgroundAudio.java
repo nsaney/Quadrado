@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: February 16, 2015
- * Modified: May 04, 2015
  * 
  * MultitrackBackgroundAudio.java
  * MultitrackBackgroundAudio class definition

@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 27, 2015
- * Modified: April 28, 2015
  * 
  * DesktopFontLayout.java
  * DesktopFontLayout class definition

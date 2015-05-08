@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: December 29, 2014
- * Modified: January 22, 2015
  * 
  * QMapRoomLoader.java
  * QMapRoomLoader class definition

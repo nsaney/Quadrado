@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: April 25, 2015
- * Modified: April 25, 2015
  * 
  * QListMenu.java
  * QListMenu abstract class definition

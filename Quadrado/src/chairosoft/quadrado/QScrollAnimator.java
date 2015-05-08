@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: April 28, 2015
- * Modified: April 28, 2015
  * 
  * QScrollAnimator.java
  * QScrollAnimator class definition

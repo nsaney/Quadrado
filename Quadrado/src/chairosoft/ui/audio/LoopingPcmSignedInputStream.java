@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: May 03, 2015 
- * Modified: May 04, 2015 
  * 
  * LoopingPcmSignedInputStream.java
  * LoopingPcmSignedInputStream class definition

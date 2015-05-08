@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 19, 2015
- * Modified: January 23, 2015
  * 
  * FloatPoint2D.java
  * FloatPoint2D class definition

@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 26, 2015
- * Modified: January 26, 2015
  * 
  * FontLayout.java
  * FontLayout class definition

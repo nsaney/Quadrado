@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: April 18, 2015 
- * Modified: April 18, 2015 
  * 
  * RestartableInputStream.java
  * RestartableInputStream class definition

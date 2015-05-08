@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 20, 2015
- * Modified: January 23, 2015
  * 
  * ButtonListener.java
  * ButtonListener interface definition

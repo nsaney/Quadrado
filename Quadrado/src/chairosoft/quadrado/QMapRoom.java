@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: February 11, 2013
- * Modified: January 24, 2015
  * 
  * QMapRoom.java
  * QMapRoom class definition

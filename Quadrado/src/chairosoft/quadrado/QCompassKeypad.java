@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: November 16, 2013
- * Modified: November 17, 2013
  * 
  * QCompassKeypad.java
  * QCompassKeypad class definition

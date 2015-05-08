@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 21, 2015
- * Modified: January 23, 2015
  * 
  * IntPoint2D.java
  * IntPoint2D class definition

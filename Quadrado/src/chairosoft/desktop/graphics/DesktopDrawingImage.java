@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 19, 2015
- * Modified: February 05, 2015
  * 
  * DesktopDrawingImage.java
  * DesktopDrawingImage class definition

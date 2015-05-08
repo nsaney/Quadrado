@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: April 10, 2015
- * Modified: April 10, 2015
  * 
  * ManagedByteArray.java
  * ManagedByteArray class definition

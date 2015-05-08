@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: November 19, 2013
- * Modified: April 24, 2015
  * 
  * QTextElement.java
  * QTextElement abstract class definition

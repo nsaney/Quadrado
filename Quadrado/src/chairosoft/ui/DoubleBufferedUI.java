@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 19, 2015
- * Modified: January 30, 2015
  * 
  * DoubleBufferedUI.java
  * DoubleBufferedUI class definition

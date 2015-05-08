@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 27, 2015
- * Modified: January 27, 2015
  * 
  * WrappedText.java
  * WrappedText class definition

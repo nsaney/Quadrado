@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: February 11, 2013
- * Modified: January 22, 2015
  * 
  * QSprite.java
  * QSprite class definition

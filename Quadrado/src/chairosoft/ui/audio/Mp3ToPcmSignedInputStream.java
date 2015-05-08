@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: May 02, 2015 
- * Modified: May 02, 2015 
  * 
  * Mp3ToPcmSignedInputStream.java
  * Mp3ToPcmSignedInputStream class definition

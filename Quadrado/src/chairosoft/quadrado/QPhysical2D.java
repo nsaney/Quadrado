@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: February 22, 2013
- * Modified: April 24, 2015
  * 
  * QPhysical2D.java
  * QPhysical2D abstract class definition

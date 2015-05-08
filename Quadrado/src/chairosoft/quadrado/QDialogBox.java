@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: November 19, 2013
- * Modified: February 07, 2015
  * 
  * QDialogBox.java
  * QDialogBox class definition

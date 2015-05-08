@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 19, 2015
- * Modified: April 27, 2015
  * 
  * Polygon.java
  * Polygon class definition

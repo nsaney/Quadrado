@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 19, 2015
- * Modified: January 22, 2015
  * 
  * DrawingImage.java
  * DrawingImage class definition

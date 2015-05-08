@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 21, 2015
- * Modified: January 28, 2015
  * 
  * Point2D.java
  * Point2D class definition

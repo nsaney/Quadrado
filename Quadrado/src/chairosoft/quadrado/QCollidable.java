@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 18, 2013
- * Modified: January 23, 2015
  * 
  * QCollidable.java
  * QCollidable class definition

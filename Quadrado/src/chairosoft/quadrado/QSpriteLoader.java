@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: November 14, 2013
- * Modified: January 22, 2015
  * 
  * QSpriteLoader.java
  * QSpriteLoader class definition

@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 19, 2015
- * Modified: January 19, 2015
  * 
  * Dependencies.java
  * Dependencies class definition

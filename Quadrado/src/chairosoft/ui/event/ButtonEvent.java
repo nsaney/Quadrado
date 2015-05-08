@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 20, 2015
- * Modified: January 28, 2015
  * 
  * ButtonEvent.java
  * ButtonEvent class definition

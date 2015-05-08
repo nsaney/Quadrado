@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: April 24, 2015
- * Modified: April 24, 2015
  * 
  * QSelectableMenu.java
  * QSelectableMenu abstract class definition

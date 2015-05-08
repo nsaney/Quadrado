@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: January 25, 2015
- * Modified: January 25, 2015
  * 
  * Font.java
  * Font class definition

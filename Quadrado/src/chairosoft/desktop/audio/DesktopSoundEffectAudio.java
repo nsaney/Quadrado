@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: April 21, 2015
- * Modified: April 21, 2015
  * 
  * DesktopSoundEffectAudio.java
  * DesktopSoundEffectAudio class definition

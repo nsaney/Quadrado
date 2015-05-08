@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: April 21, 2015
- * Modified: April 21, 2015
  * 
  * SoundEffectAudio.java
  * SoundEffectAudio class definition
