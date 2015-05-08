@@ -20,7 +20,10 @@
   <property name="jar_xom"      value="xom-1.2.10.jar"/>
   <property name="jar_layer"    value="jl1.0.1.jar"/>
   <property name="jars"         value="${jar_xom}:${jar_layer}"/> <!-- : -->
-  <property name="jars_"        value="${jar_xom} ${jar_layer}"/> <!-- [space] -->
+  <script language="javascript">
+    var $jars = project.getProperty("jars");
+    project.setProperty("jars_", $jars.replaceAll(":", " "));
+  </script>
   <property name="build.sysclasspath" value="last"/> 
   <property name="jar_name"     value="${ant.project.name}"/>
   <property name="jar_filename" value="${jar_name}.jar"/>
