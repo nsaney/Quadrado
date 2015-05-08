@@ -11,7 +11,6 @@
 <project name="Quadrado" default="all" basedir=".">
   
   <!-- properties -->
-  <property name="main_package" value="chairosoft.quadrado"/>
   <property name="build"        value="bin"/>
   <property name="deploy"       value="Deploy_${ant.project.name}"/>
   <property name="documents"    value="doc"/>
