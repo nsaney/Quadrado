@@ -17,7 +17,7 @@
   <property name="licenses"     value="licenses"/>
   <property name="source"       value="src"/>
   <property name="version"      value="1.7"/>
-  <property name="jar_xom"      value="xom-1.2.9.jar"/>
+  <property name="jar_xom"      value="xom-1.2.10.jar"/>
   <property name="jar_layer"    value="jl1.0.1.jar"/>
   <property name="jars"         value="${jar_xom}:${jar_layer}"/> <!-- : -->
   <property name="jars_"        value="${jar_xom} ${jar_layer}"/> <!-- [space] -->
