@@ -1,0 +1,214 @@
+<!-- 
+  build.xml 
+  Apache Ant buildfile 
+-->
+
+<project name="YourProjectName" default="all" basedir=".">
+  
+  <!-- Ant properties -->
+  <property environment="env"/>
+  <property name="build.sysclasspath" value="last"/> 
+  
+  <!-- Build properties -->
+  <property name="main_package"  value="com.example"/>
+  <property name="main_class"    value="TemplateGame"/>
+  <property name="main_fq_name"  value="${main_package}.${main_class}"/>
+  <property name="version"       value="1.7"/>
+  <property name="source"        value="src"/>
+  <property name="build"         value="bin"/>
+  <property name="documents"     value="doc"/>
+  <property name="deploy"        value="Deploy_${ant.project.name}"/>
+  <property name="exec_jar_name" value="Run_${ant.project.name}.jar"/>
+  
+  <!-- Quadrado properties -->
+  <property name="image"         value="img"/>
+  <property name="maps"          value="map"/>
+  <property name="sound"         value="snd"/>
+  <property name="q_includes"    value="${image}/, ${maps}/, ${sound}/"/>
+  
+  <!-- Library properties -->
+  <property name="library"       value="lib"/>
+  <property name="jar_includes"  value="${library}/*.jar"/>
+  <property name="lib_includes"  value="[empty]"/>
+  <property name="jars"          value="[empty]"/>
+  <property name="jars_"         value="[empty]"/>
+  <script language="javascript">
+  <![CDATA[
+    var $jar_includes = project.getProperty("jar_includes");
+    var fs = project.createDataType("fileset");
+    fs.setDir(new java.io.File("."));
+    fs.setIncludes($jar_includes);
+    var jarFiles = fs.getDirectoryScanner(project).getIncludedFiles();
+    
+    project.setProperty("lib_includes", $jar_includes.replaceAll("\\*.jar", "")); 
+    project.setProperty("jars", java.lang.String.join(":", jarFiles)); 
+    project.setProperty("jars_", java.lang.String.join(" ", jarFiles));
+  ]]>
+  </script>
+  
+  
+  
+  <!-- clean targets -->
+  <target name="clean-build">
+    
+    <delete dir="${build}"/>
+    
+  </target>
+  
+  <target name="clean-deploy">
+    
+    <delete dir="${deploy}"/>
+    
+  </target>
+  
+  <target name="clean-documents">
+    
+    <delete dir="${documents}"/>
+    
+  </target>
+  
+  <target name="clean" depends="clean-build,clean-deploy,clean-documents"/>
+
+  
+  <!-- document target -->
+  <target name="document" depends="clean-documents">
+    
+    <mkdir dir="${documents}"/>
+    
+    <javadoc 
+      sourcepath="${source}" 
+      destdir="${documents}" 
+      classpath="${jars}" 
+      access="private" 
+      windowtitle="${ant.project.name} API" 
+    >
+      <link 
+        offline="true" 
+        href="http://download.oracle.com/javase/7/docs/api/" 
+        packagelistLoc="./_package-lists/_java/"
+      />
+    </javadoc>
+    
+  </target>
+  
+  
+  <!-- build targets -->
+  <target name="herald">
+    
+    <echo message="ANT_HOME = ${env.ANT_HOME}"/>
+    <echo message="JAVA_HOME = ${env.JAVA_HOME}"/>
+    <echo message="java.version = ${java.version}"/>
+    <echo message="target version = ${version}"/>
+    <echo message="main class = ${main_fq_name}"/>
+    <echo message="jars = ${jars}"/>
+    
+  </target>
+  
+  <target name="-pre-compile">
+  </target>
+  
+  <target name="-compile">
+    
+    <mkdir dir="${build}"/>
+    
+    <javac 
+      srcdir="${source}" 
+      destdir="${build}" 
+      classpath="${jars}" 
+      source="${version}" 
+      target="${version}" 
+      includeAntRuntime="true" 
+      debug="on" 
+      debuglevel="lines,vars,source"
+    >
+      
+      <compilerarg value="-Xlint:unchecked"/>
+      <!--compilerarg value="-version"/-->
+      
+    </javac>
+    
+  </target>
+  
+  <target name="-post-compile">
+  </target>
+  
+  <target name="build" depends="herald,clean-build,-pre-compile,-compile,-post-compile"/>
+  
+  
+  <!-- deploy targets -->
+  <target name="redeploy" depends="clean-deploy">
+    
+    <mkdir dir="${deploy}"/>
+    
+    <jar destfile="${deploy}/${exec_jar_name}">
+      <fileset dir="${build}" />
+      <fileset 
+        dir="." 
+        includes="${q_includes}"
+      />
+      <manifest>
+        <attribute name="Main-Class" value="${main_fq_name}"/>
+        <attribute name="Class-Path" value="${jars_}"/>
+      </manifest>
+    </jar>
+    
+    <copy todir="${deploy}">
+      <fileset
+        dir="."
+        includes="${lib_includes}"
+      />
+    </copy>
+    
+  </target>
+  
+  <target name="deploy" depends="build,redeploy"/>
+
+  
+  <!-- all target -->
+  <target name="all" depends="document,deploy"/>
+  
+  
+  
+  <!-- callable run targets -->
+  <target name="run">
+    
+    <antcall target="-run"> 
+      
+      <param name="run_class" value="${main_fq_name}"/> 
+      
+    </antcall>
+    
+  </target>
+  
+  
+  <target name="rerun" depends="deploy,run"/>
+  
+  
+  <!-- final run target -->
+  <target name="-run">
+    
+    <java 
+      dir="." 
+      classpath="${build}:${jars}" 
+      classname="${run_class}" 
+      fork="true" 
+      failonerror="true"
+    >
+      
+      <!--jvmarg value="-Xms0512M"/-->
+      <!--jvmarg value="-Xmx1024M"/-->
+      <jvmarg value="-Djava.library.path=${library}"/>
+      
+    </java>
+    
+  </target>
+
+  
+  <!-- jar run target -->
+  <target name="runjar">
+    
+    <java dir="." fork="true" jar="${deploy}/${exec_jar_name}"/>
+    
+  </target>
+  
+</project>

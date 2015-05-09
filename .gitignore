@@ -1,6 +1,11 @@
 Quadrado/bin
 Quadrado/Deploy_*
 Quadrado/doc
+QuadradoProjectTemplate/bin
+QuadradoProjectTemplate/Deploy_*
+QuadradoProjectTemplate/doc
+QuadradoProjectTemplate/lib/*.jar
+QuadradoProjectTemplate/lib/*/*
 
 # Windows image file caches
 Thumbs.db
