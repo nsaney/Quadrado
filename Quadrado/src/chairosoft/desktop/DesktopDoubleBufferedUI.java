@@ -35,8 +35,9 @@ import javax.swing.JPanel;
 
 public class DesktopDoubleBufferedUI extends DoubleBufferedUI
 {
-    protected JPanel panel = null;
     protected Image dbImage = null;
+    protected JPanel panel = null;
+    public JPanel getPanel() { return this.panel; }
     
 	protected boolean keyListenerAdded = false;
     
