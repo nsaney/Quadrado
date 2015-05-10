@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: September 28, 2013
- * Modified: December 29, 2014
  * 
  * Functions.java
  * Functions class definition

@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: December 17, 2012
- * Modified: May 04, 2015
  * 
  * QApplication.java
  * QApplication abstract class definition (was QPanel)

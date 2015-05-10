@@ -2,7 +2,6 @@
  * Nicholas Saney 
  * 
  * Created: September 27, 2013
- * Modified: January 23, 2015
  * 
  * Loading.java
  * Loading class definition
