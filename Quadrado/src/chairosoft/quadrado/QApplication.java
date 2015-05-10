@@ -93,6 +93,7 @@ public abstract class QApplication implements Runnable, ButtonListener
 	
 	// double-buffer variables
     protected DoubleBufferedUI dbui = null;
+    public DoubleBufferedUI getDbui() { return this.dbui; }
 	
 	
 	// more vars in subclass ...
