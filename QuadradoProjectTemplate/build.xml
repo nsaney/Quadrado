@@ -120,6 +120,7 @@
       includeAntRuntime="true" 
       debug="on" 
       debuglevel="lines,vars,source"
+      createMissingPackageInfoClass="false"
     >
       
       <compilerarg value="-Xlint:unchecked"/>
