@@ -10,24 +10,28 @@
 
 <project name="Quadrado" default="all" basedir=".">
   
-  <!-- properties -->
-  <property name="build"        value="bin"/>
-  <property name="deploy"       value="Deploy_${ant.project.name}"/>
-  <property name="documents"    value="doc"/>
-  <property name="licenses"     value="licenses"/>
-  <property name="source"       value="src"/>
+  <!-- Ant properties -->
+  <property environment="env"/>
+  <property name="build.sysclasspath" value="last"/> 
+  
+  <!-- Build properties -->
   <property name="version"      value="1.7"/>
+  <property name="source"       value="src"/>
+  <property name="build"        value="bin"/>
+  <property name="documents"    value="doc"/>
+  <property name="deploy"       value="Deploy_${ant.project.name}"/>
+  <property name="jar_filename" value="${ant.project.name}.jar"/>
+  
+  <!-- Library properties -->
+  <property name="licenses"     value="licenses"/>
   <property name="jar_xom"      value="xom-1.2.10.jar"/>
   <property name="jar_layer"    value="jl1.0.1.jar"/>
   <property name="jars"         value="${jar_xom}:${jar_layer}"/> <!-- : -->
+  <property name="jars_"        value="[empty]"/>
   <script language="javascript">
     var $jars = project.getProperty("jars");
     project.setProperty("jars_", $jars.replaceAll(":", " "));
   </script>
-  <property name="build.sysclasspath" value="last"/> 
-  <property name="jar_name"     value="${ant.project.name}"/>
-  <property name="jar_filename" value="${jar_name}.jar"/>
-  <property environment="env"/>
   
   
   <!-- clean targets -->
@@ -86,7 +90,6 @@
     <echo message="JAVA_HOME = ${env.JAVA_HOME}"/>
     <echo message="java.version = ${java.version}"/>
     <echo message="target version = ${version}"/>
-    <echo message="main class = ${main_fq_name}"/>
     <echo message="jars = ${jars}"/>
     
   </target>
