@@ -11,9 +11,9 @@
 package chairosoft.quadrado.platform;
 
 import chairosoft.quadrado.QApplication;
+import chairosoft.quadrado.platform.event.ButtonListener;
 
 import chairosoft.dependency.Dependencies;
-import chairosoft.ui.event.ButtonListener;
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
 
