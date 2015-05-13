@@ -100,7 +100,7 @@ public enum QCompassDirection
 		this.X_INVERT      = -this.X;
 		this.Y_INVERT      = -this.Y;
 		
-		FloatPoint2D unit = QPhysical2D.getUnitVector(new FloatPoint2D(this.X, this.Y));
+		FloatPoint2D unit = new FloatPoint2D(this.X, this.Y).getUnitVector();
 		
 		this.X_UNIT        = unit.x;
 		this.Y_UNIT        = unit.y;

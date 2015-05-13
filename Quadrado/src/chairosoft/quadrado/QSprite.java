@@ -26,6 +26,9 @@ import java.util.*;
 
 import nu.xom.*;
 
+/**
+ * A sprite specified in the /img/qsprites.xml configuration file.
+ */
 public class QSprite extends QPhysical2D
 {
 	
@@ -33,9 +36,6 @@ public class QSprite extends QPhysical2D
 	// Static Constants
 	//
 	
-	public static final float MAX_VEL_X         = 8.0f;
-	public static final float MAX_VEL_Y         = 8.0f;
-	public static final float BASE_X_VEL        = 1.00f;
 	public static final float MIN_MOVE_DISTANCE = 0.01f;
 	
 	
@@ -210,35 +210,17 @@ public class QSprite extends QPhysical2D
 	
 	
 	public void setPositionByQTile(int x, int y) { this.setPosition(x * QTileset.getTileWidth(), y * QTileset.getTileHeight()); }
-	@Override
-	public void setPosition(float x, float y)
-	{
-		IntPoint2D p_i = this.getIntPosition();
-		super.setPosition(x, y);
-		IntPoint2D p_f = this.getIntPosition();
-		
-		int dx = p_f.x - p_i.x;
-		int dy = p_f.y - p_i.y;
-	}
-    
     public void setPositionRounded()
     {
         IntPoint2D p = this.getIntPosition();
         this.setPosition(p.x, p.y);
     }
 	
-	@Override
-	public void setXVelocity(float vx) { super.setXVelocity(keepWithinRange(vx, MAX_VEL_X)); }
-	@Override
-	public void setYVelocity(float vy) { super.setYVelocity(keepWithinRange(vy, MAX_VEL_Y)); }
-	
-	//private static int asdf = 0;
 	public void resolveCollisionInQMapRoom(QMapRoom qmaproom, boolean checkHorizontal, boolean checkVertical)
 	{
 		if ((this.lastMove.distance(0, 0) > MIN_MOVE_DISTANCE) && qmaproom.hasTileCollidingWith(this))
 		{
             this.setPositionRounded();
-			//	System.err.println("Resolving Collision " + ++asdf);
 			while (qmaproom.hasTileCollidingWith(this)) { this.undoLastMoveUnit(); }
 		}
 	}

@@ -39,13 +39,14 @@ public abstract class Point2D implements Cloneable
     public abstract Object clone();
     
     // concrete instance methods
-    public double distance(double px, double py) { return Point2D.distance(this.getX(), this.getY(), px, py); }
-    public double distance(Point2D pt) { return Point2D.distance(this.getX(), this.getY(), pt.getX(), pt.getY()); }
-    public double distanceSq(double px, double py) { return Point2D.distanceSq(this.getX(), this.getY(), px, py); }
-    public double distanceSq(Point2D pt) { return Point2D.distanceSq(this.getX(), this.getY(), pt.getX(), pt.getY()); }
-    public void setLocation(Point2D pt) { this.setLocation(pt.getX(), pt.getY()); }
-    public FloatPoint2D asFloatPoint2D() { FloatPoint2D result = new FloatPoint2D(); result.setLocation(this); return result; }
-    public IntPoint2D asIntPoint2D() { IntPoint2D result = new IntPoint2D(); result.setLocation(this); return result; }
+    public final double getVectorLength() { return this.distance(0, 0); }
+    public final double distance(double px, double py) { return Point2D.distance(this.getX(), this.getY(), px, py); }
+    public final double distance(Point2D pt) { return Point2D.distance(this.getX(), this.getY(), pt.getX(), pt.getY()); }
+    public final double distanceSq(double px, double py) { return Point2D.distanceSq(this.getX(), this.getY(), px, py); }
+    public final double distanceSq(Point2D pt) { return Point2D.distanceSq(this.getX(), this.getY(), pt.getX(), pt.getY()); }
+    public final void setLocation(Point2D pt) { this.setLocation(pt.getX(), pt.getY()); }
+    public final FloatPoint2D asFloatPoint2D() { FloatPoint2D result = new FloatPoint2D(); result.setLocation(this); return result; }
+    public final IntPoint2D asIntPoint2D() { IntPoint2D result = new IntPoint2D(); result.setLocation(this); return result; }
     
     public boolean equals(Point2D that) { return this.getX() == that.getX() && this.getY() == that.getY(); }
     @Override public boolean equals(Object that) { return (that instanceof Point2D) && (this.equals((Point2D)that)); }
