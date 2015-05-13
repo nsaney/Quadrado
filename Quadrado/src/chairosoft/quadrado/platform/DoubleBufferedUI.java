@@ -62,6 +62,6 @@ public abstract class DoubleBufferedUI
     
     public abstract void paintScreen();
     
-    // Overwrite this where necessary
+    // Override this where necessary
     public void checkForPause() { }
 }
