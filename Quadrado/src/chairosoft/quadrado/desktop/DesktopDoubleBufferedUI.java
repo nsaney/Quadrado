@@ -8,12 +8,14 @@
  * 
  */
 
-package chairosoft.desktop;
+package chairosoft.quadrado.desktop;
 
-import chairosoft.ui.DoubleBufferedUI;
+
+import chairosoft.quadrado.platform.DoubleBufferedUI;
 import chairosoft.ui.event.ButtonListener;
 import chairosoft.ui.event.ButtonEvent;
 import chairosoft.ui.event.ButtonSource;
+
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
 import chairosoft.desktop.graphics.DesktopDrawingImage;

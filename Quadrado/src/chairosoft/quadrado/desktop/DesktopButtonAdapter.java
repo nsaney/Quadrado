@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.desktop;
+package chairosoft.quadrado.desktop;
 
 
 import chairosoft.ui.event.ButtonListener;

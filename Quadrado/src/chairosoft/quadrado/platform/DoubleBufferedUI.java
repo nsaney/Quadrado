@@ -8,15 +8,15 @@
  * 
  */
 
-package chairosoft.ui;
+package chairosoft.quadrado.platform;
+
+import chairosoft.quadrado.QApplication;
 
 import chairosoft.dependency.Dependencies;
-
 import chairosoft.ui.event.ButtonListener;
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
 
-import chairosoft.quadrado.QApplication;
 
 public abstract class DoubleBufferedUI
 {

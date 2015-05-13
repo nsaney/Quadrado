@@ -10,7 +10,8 @@
 
 package chairosoft.quadrado;
 
-import chairosoft.ui.DoubleBufferedUI;
+import chairosoft.quadrado.platform.DoubleBufferedUI;
+
 import chairosoft.ui.event.ButtonListener;
 import chairosoft.ui.event.ButtonEvent;
 import chairosoft.ui.event.ButtonSource;
