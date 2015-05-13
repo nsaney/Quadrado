@@ -11,7 +11,7 @@
 package chairosoft.desktop.audio;
 
 import chairosoft.ui.audio.MultitrackBackgroundAudio;
-import chairosoft.utils.*;
+import chairosoft.util.*;
 
 import java.io.*; 
 import java.util.*;

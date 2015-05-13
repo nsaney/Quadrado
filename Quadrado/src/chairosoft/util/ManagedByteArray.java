@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.utils;
+package chairosoft.util;
 
 import java.io.*; 
 import java.util.*;

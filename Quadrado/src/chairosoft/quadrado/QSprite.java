@@ -10,15 +10,16 @@
 
 package chairosoft.quadrado;
 
-import static chairosoft.quadrado.Functions.*;
-import static chairosoft.quadrado.Loading.*;
-
 import chairosoft.ui.geom.FloatPoint2D;
 import chairosoft.ui.geom.IntPoint2D;
 
 import chairosoft.ui.graphics.Color;
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
+
+import chairosoft.util.function.*;
+import chairosoft.util.Loading;
+import static chairosoft.util.Loading.*;
 
 import java.io.*; 
 import java.util.*;

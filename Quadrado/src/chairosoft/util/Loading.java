@@ -8,9 +8,9 @@
  * 
  */
 
-package chairosoft.quadrado;
+package chairosoft.util;
 
-import static chairosoft.quadrado.Functions.*;
+import chairosoft.util.function.*;
 
 import chairosoft.ui.geom.FloatPoint2D;
 import chairosoft.ui.geom.Rectangle;
@@ -50,7 +50,7 @@ public final /*static*/ class Loading
 	 * @param relativePath The relative path.
 	 * @return The combination of the two paths.
 	 */
-	protected static String getPathInFolder(String folderPath, String relativePath)
+	public static String getPathInFolder(String folderPath, String relativePath)
 	{ return String.format("%s/%s", folderPath, relativePath); }
 	
 	
@@ -63,7 +63,7 @@ public final /*static*/ class Loading
 	 * @return The {@code InputStream} corresponding to the given absolute path.
 	 * @throws IOException If there is a problem finding the resource.
 	 */
-	protected static InputStream getInputStreamFromPath(String absolutePath, boolean usingInternal)
+	public static InputStream getInputStreamFromPath(String absolutePath, boolean usingInternal)
 		throws IOException
 	{
 		return (usingInternal) 
@@ -77,7 +77,7 @@ public final /*static*/ class Loading
      * @param  path The path to use as a JAR-internal path.
      * @return A JAR-internal path (one starting with "/").
      */
-    protected static String getInternalPath(String path)
+    public static String getInternalPath(String path)
     {
         return (path.charAt(0) == '/')
             ? path
@@ -91,8 +91,8 @@ public final /*static*/ class Loading
 	//           //
 	///////////////
 	
-	protected static PrintStream out = System.err;
-	protected static volatile boolean verbose = false;
+	private static PrintStream out = System.err;
+	private static volatile boolean verbose = false;
     public static void startVerbose() { verbose = true; }
     public static void stopVerbose() { verbose = false; }
 	
@@ -162,7 +162,7 @@ public final /*static*/ class Loading
         return tileImage;
 	}
 	
-	protected static void applyTransparencyToPixel(DrawingImage bufImg, int x, int y, int transparentValue)
+	public static void applyTransparencyToPixel(DrawingImage bufImg, int x, int y, int transparentValue)
 	{
 	    if ((bufImg.getPixel(x, y) & 0x00FFFFFF) == transparentValue) 
 	    {

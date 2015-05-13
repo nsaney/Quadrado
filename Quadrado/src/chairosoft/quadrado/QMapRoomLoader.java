@@ -11,7 +11,7 @@
 package chairosoft.quadrado;
 
 
-import static chairosoft.quadrado.Functions.*;
+import chairosoft.util.function.*;
 
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;

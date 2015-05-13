@@ -12,7 +12,7 @@ package chairosoft.ui.audio;
 
 import chairosoft.dependency.Dependencies;
 import chairosoft.ui.SystemLifecycleHelpers;
-import chairosoft.utils.*;
+import chairosoft.util.*;
 
 import java.io.*; 
 import java.net.*;

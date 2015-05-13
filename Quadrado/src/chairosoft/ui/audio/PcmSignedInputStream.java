@@ -10,11 +10,11 @@
 
 package chairosoft.ui.audio;
 
-import chairosoft.utils.DirectByteArrayInputStream;
-import chairosoft.utils.DirectByteArrayOutputStream;
-import chairosoft.utils.Restartable;
-import chairosoft.utils.RestartableInputStream;
-import chairosoft.utils.ByteConverter;
+import chairosoft.util.DirectByteArrayInputStream;
+import chairosoft.util.DirectByteArrayOutputStream;
+import chairosoft.util.Restartable;
+import chairosoft.util.RestartableInputStream;
+import chairosoft.util.ByteConverter;
 
 import java.io.*;
 
