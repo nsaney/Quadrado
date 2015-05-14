@@ -23,7 +23,7 @@ public class Dependencies
     static
     {
         Dependencies.register(chairosoft.ui.SystemLifecycleHelpers.class,          chairosoft.desktop.DesktopSystemLifecycleHelpers.class);
-        Dependencies.register(chairosoft.quadrado.platform.DoubleBufferedUI.class, chairosoft.quadrado.desktop.DesktopDoubleBufferedUI.class);
+        Dependencies.register(chairosoft.quadrado.ui.DoubleBufferedUI.class, chairosoft.quadrado.desktop.DesktopDoubleBufferedUI.class);
         Dependencies.register(chairosoft.ui.graphics.DrawingImage.class,           chairosoft.desktop.graphics.DesktopDrawingImage.class);
         Dependencies.register(chairosoft.ui.audio.MultitrackBackgroundAudio.class, chairosoft.desktop.audio.DesktopMultitrackBackgroundAudio.class);
         Dependencies.register(chairosoft.ui.audio.SoundEffectAudio.class,          chairosoft.desktop.audio.DesktopSoundEffectAudio.class);

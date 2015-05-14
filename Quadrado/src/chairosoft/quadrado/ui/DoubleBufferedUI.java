@@ -8,10 +8,10 @@
  * 
  */
 
-package chairosoft.quadrado.platform;
+package chairosoft.quadrado.ui;
 
 import chairosoft.quadrado.QApplication;
-import chairosoft.quadrado.platform.event.ButtonListener;
+import chairosoft.quadrado.ui.event.ButtonListener;
 
 import chairosoft.dependency.Dependencies;
 import chairosoft.ui.graphics.DrawingImage;

@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.quadrado.platform.event;
+package chairosoft.quadrado.ui.event;
 
 
 public class ButtonSource
