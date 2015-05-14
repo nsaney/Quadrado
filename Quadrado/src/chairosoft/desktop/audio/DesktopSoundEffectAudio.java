@@ -12,22 +12,20 @@ package chairosoft.desktop.audio;
 
 import chairosoft.ui.audio.SoundEffectAudio;
 
-import java.io.*; 
-import java.net.*;
-import java.util.*;
-import javax.sound.sampled.*;
+import java.io.IOException; 
+import java.io.InputStream; 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
+/**
+ * A sound effect implementation using javax.sound.sampled objects.
+ */
 public class DesktopSoundEffectAudio extends SoundEffectAudio
 {
-    // Static Fields
-    
-    static
-    {
-    }
-    
-    
     // Instance Fields
     protected Clip clip = null;
+    public Clip getClip() { return this.clip; }
     
     // Creator/Initializer
     @Override
