@@ -13,7 +13,7 @@ package chairosoft.util;
 import java.io.*;
 
 /**
- * A file input stream that can be restarted.
+ * A wrapper around an input stream that can be restarted.
  */
 public class RestartableInputStream 
     extends FilterInputStream 
