@@ -92,7 +92,7 @@ public class QSprite extends QPhysical2D
 		this.shapeMap      = _shapeMap;
 		this.animationMap  = _animationMap;
 		this.stateMap      = _stateMap;
-		this.setCurrentState(_defaultStateCode);
+		this.setState(_defaultStateCode);
 	}
 	
 	public QSprite(QSprite qs)
@@ -165,7 +165,7 @@ public class QSprite extends QPhysical2D
 	
 	//// Mutators
 	
-	public void setCurrentState(String stateCode)
+	public void setState(String stateCode)
 	{
 		// set state, animation, and shape only if state is different
 		if (this.currentStateCode == stateCode) { return; }
