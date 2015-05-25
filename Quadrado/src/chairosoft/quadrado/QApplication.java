@@ -46,7 +46,7 @@ public abstract class QApplication implements Runnable, ButtonListener
 	public final int getPanelHalfWidth() { return this.getPanelWidth() / 2; }
 	public final int getPanelHalfHeight() { return this.getPanelHeight() / 2; }
 		
-	public static final int TIME_TARGET_PERIOD_IN_NS = 10 * 1000 * 1000; // about 100 Hz
+	public static final int DEFAULT_TIME_TARGET_PERIOD_IN_NS = 10 * 1000 * 1000; // about 100 Hz
 	public static final int SLEEPLESS_UPDATES_PER_YIELD = 16;
 	public static final int MAX_FRAME_SKIPS = 4;
 	
@@ -81,9 +81,12 @@ public abstract class QApplication implements Runnable, ButtonListener
 	
 	protected long timeThreadStart;
 	protected long framesElapsedTotal = 0;
+    
+    protected int timeTargetPeriodInNanoseconds = DEFAULT_TIME_TARGET_PERIOD_IN_NS;
+    public void setTimeTargetPeriodInNanoSeconds(int ns) { this.timeTargetPeriodInNanoseconds = ns; }
+    public void setFrameRateInHz(int frameRateHz) { this.setTimeTargetPeriodInNanoSeconds(int10e9 / frameRateHz); }
 	
 	protected volatile boolean isRunning = false;
-	//protected volatile boolean isGameOver = false;
 	protected volatile boolean showDebug = false;
 	protected volatile boolean showDebugInConsole = false;
 	
@@ -152,7 +155,6 @@ public abstract class QApplication implements Runnable, ButtonListener
 			System.err.print("[qpanel]"); 
 			ex.printStackTrace();
 		}
-		System.exit(0);
 	}
 	
 	private void doRun()
@@ -191,15 +193,12 @@ public abstract class QApplication implements Runnable, ButtonListener
 			timePrePaint = System.nanoTime();
 			this.paintScreen();
 			// timePostPaint = System.nanoTime();
-			// instead of the following:
-			//   paintImmediately(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-			//   repaint();
 			
 			timePostRender = System.nanoTime();
 			timeRenderLength = timePostRender - timePostUpdatePreRender;
 			timePaintLength = timePostRender - timePrePaint;
 			
-			timeSleepLengthTarget = TIME_TARGET_PERIOD_IN_NS - timeUpdateLength - timeRenderLength - timeOverSleptLength;
+			timeSleepLengthTarget = this.timeTargetPeriodInNanoseconds - timeUpdateLength - timeRenderLength - timeOverSleptLength;
 			
 			if (timeSleepLengthTarget > 0)
 			{
@@ -223,9 +222,9 @@ public abstract class QApplication implements Runnable, ButtonListener
 			dbui.checkForPause();
             timePreUpdate = System.nanoTime();
 			
-			for (int framesSkipped = 0; (timeUnderSleptLength > TIME_TARGET_PERIOD_IN_NS) && (framesSkipped < MAX_FRAME_SKIPS); ++framesSkipped)
+			for (int framesSkipped = 0; (timeUnderSleptLength > this.timeTargetPeriodInNanoseconds) && (framesSkipped < MAX_FRAME_SKIPS); ++framesSkipped)
 			{
-				timeUnderSleptLength -= TIME_TARGET_PERIOD_IN_NS;
+				timeUnderSleptLength -= this.timeTargetPeriodInNanoseconds;
 				this.gameUpdate();
 			}
 			//end-for framesSkipped
@@ -350,8 +349,8 @@ public abstract class QApplication implements Runnable, ButtonListener
                     QApplication.getNumericDebugMessage("Actual paint  (ms)", timePaintLength / (double10e6)),
                     QApplication.getNumericDebugMessage("Actual sleep  (ms)", timeActualSleptLength / (double10e6)),
                     QApplication.getNumericDebugMessage("Actual total  (ms)", timeTotalLoopLength / (double10e6)),
-                    QApplication.getNumericDebugMessage("Target total  (ms)", TIME_TARGET_PERIOD_IN_NS / (double10e6)),
-                    QApplication.getNumericDebugMessage("Target rate   (Hz)", (double10e9) / TIME_TARGET_PERIOD_IN_NS, 10),
+                    QApplication.getNumericDebugMessage("Target total  (ms)", this.timeTargetPeriodInNanoseconds / (double10e6)),
+                    QApplication.getNumericDebugMessage("Target rate   (Hz)", (double10e9) / this.timeTargetPeriodInNanoseconds, 10),
                     QApplication.getNumericDebugMessage("Actual rate   (Hz)", (double10e9) / timeTotalLoopLength, 10),
                     QApplication.getNumericDebugMessage("Time elapsed   (s)", (System.nanoTime() - timeThreadStart) / (double10e9), 0)
                 }, 20, 0);
