@@ -41,8 +41,8 @@ public final class FloatPoint2D extends Point2D
     public void multiplyBy(float s) { this.x *= s; this.y *= s; }
     
     // fluent instance methods
-    public FloatPoint2D translatedBy(float dx, float dy) { this.translate(dx, dy); return this; }
-    public FloatPoint2D multipliedBy(float s) { this.multiplyBy(s); return this; }
+    public FloatPoint2D translatedBy(float dx, float dy) { FloatPoint2D result = new FloatPoint2D(this.x, this.y); result.translate(dx, dy); return result; }
+    public FloatPoint2D multipliedBy(float s) { FloatPoint2D result = new FloatPoint2D(this.x, this.y); result.multiplyBy(s); return result; }
     
     // new instance methods
     public FloatPoint2D getNegative() { return new FloatPoint2D(-this.x, -this.y); }
