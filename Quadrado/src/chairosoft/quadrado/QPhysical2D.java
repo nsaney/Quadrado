@@ -4,7 +4,7 @@
  * Created: February 22, 2013
  * 
  * QPhysical2D.java
- * QPhysical2D abstract class definition
+ * QPhysical2D class definition
  * 
  */
 
@@ -21,7 +21,7 @@ import java.util.*;
  * A collidable object that has position, velocity, acceleration, 
  * and whose last change in position is tracked.
  */
-public abstract class QPhysical2D extends QCollidable implements QPositionedDrawable
+public class QPhysical2D extends QCollidable implements QPositionedDrawable
 {
 	//
 	// Static Constants
