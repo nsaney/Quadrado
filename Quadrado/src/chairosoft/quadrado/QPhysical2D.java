@@ -44,8 +44,8 @@ public abstract class QPhysical2D extends QCollidable implements QPositionedDraw
 	// Constructor
 	// 
 	
-	protected QPhysical2D() {}
-	protected QPhysical2D(int x, int y) { this.setPosition(x, y); }
+	public QPhysical2D() {}
+	public QPhysical2D(int x, int y) { this.setPosition(x, y); }
 	
 	
 	//
