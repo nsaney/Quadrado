@@ -67,9 +67,10 @@ public abstract class DrawingContext implements AutoCloseable
     public final void drawLinesOfText(Iterable<String> lines, FontLayout fontLayout, int x, int y)
     {
         y -= (fontLayout.descent() + fontLayout.leading());
+        int dy = fontLayout.height();
         for (String line : lines)
         {
-            y += fontLayout.height();
+            y += dy;
             this.drawString(line, x, y);
         }
     }
