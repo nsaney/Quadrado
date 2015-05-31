@@ -172,9 +172,10 @@ public class QSprite extends QPhysical2D
 		
 		String oldOffsetShapeCode = (this.currentState == null) ? "" : this.currentState.offsetShapeCode;
 		
-		this.currentStateCode = stateCode;
 		this.currentState = this.stateMap.get(stateCode);
-        Animation referenceAnimation = this.animationMap.get(this.currentState.animationCode); 
+        if (this.currentState == null) { throw new IllegalArgumentException("No state for stateCode \"" + stateCode + "\""); }
+        this.currentStateCode = stateCode;
+		Animation referenceAnimation = this.animationMap.get(this.currentState.animationCode); 
 		this.currentAnimation = new Animation(referenceAnimation.code, referenceAnimation.repeat, referenceAnimation.frames);
 		this.currentAnimation.resetAnimation();
 		this.setImageFromCurrentAnimation();
