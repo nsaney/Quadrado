@@ -152,9 +152,10 @@ public abstract class QApplication implements Runnable, ButtonListener
 		}
 		catch (Exception ex) 
 		{
-			System.err.print("[qpanel]"); 
+			System.err.print("[qapplication]"); 
 			ex.printStackTrace();
 		}
+        System.exit(0);
 	}
 	
 	private void doRun()
