@@ -10,17 +10,7 @@
 
 package chairosoft.desktop.graphics;
 
-// import chairosoft.ui.geom.IntPoint2D;
-// import chairosoft.ui.geom.Polygon;
-
-// import chairosoft.ui.graphics.DrawingImage;
-// import chairosoft.ui.graphics.DrawingContext;
 import chairosoft.ui.graphics.Font;
-// import chairosoft.ui.graphics.FontLayout;
-
-// import java.awt.Graphics;
-// import java.awt.Graphics2D;
-// import java.awt.Image;
 
 public class DesktopFont extends Font
 {
