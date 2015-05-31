@@ -10,7 +10,7 @@
 
 package chairosoft.desktop.graphics;
 
-import chairosoft.ui.geom.IntPoint2D;
+import chairosoft.ui.geom.FloatPoint2D;
 import chairosoft.ui.geom.Polygon;
 
 import chairosoft.ui.graphics.DrawingImage;
@@ -25,11 +25,13 @@ import java.awt.Image;
 public class DesktopDrawingContext extends DrawingContext
 {
     public final Graphics2D graphics;
-    public Font font;
+    protected Font font;
+    protected final java.awt.Polygon awtPolygon;
     public DesktopDrawingContext(Graphics _graphics)
     {
         this.graphics = (Graphics2D)_graphics;
         this.font = DesktopFont.create(this.graphics.getFont());
+        this.awtPolygon = new java.awt.Polygon();
     }
     
     @Override public void close() { this.graphics.dispose(); }
@@ -66,21 +68,18 @@ public class DesktopDrawingContext extends DrawingContext
     @Override public void fillOval(int x, int y, int width, int height) { this.graphics.fillOval(x, y, width, height); }
     
     // Polygon
-    public static java.awt.Polygon convertPolygon(Polygon polygon)
+    protected void setAwtPolygon(Polygon polygon)
     {
-        int npoints = polygon.points.size();
-        int[] xpoints = new int[npoints];
-        int[] ypoints = new int[npoints];
-        for (int i = 0; i < npoints; ++i)
+        this.awtPolygon.reset();
+        for (FloatPoint2D p : polygon.points)
         {
-            IntPoint2D p = polygon.points.get(i).asIntPoint2D();
-            xpoints[i] = p.x;
-            ypoints[i] = p.y;
+            int x = (int)p.x;
+            int y = (int)p.y;
+            this.awtPolygon.addPoint(x, y);
         }
-        return new java.awt.Polygon(xpoints, ypoints, npoints);
     }
-    @Override public void drawPolygon(Polygon polygon) { this.graphics.drawPolygon(DesktopDrawingContext.convertPolygon(polygon)); }
-    @Override public void fillPolygon(Polygon polygon) { this.graphics.fillPolygon(DesktopDrawingContext.convertPolygon(polygon)); }
+    @Override public void drawPolygon(Polygon polygon) { this.setAwtPolygon(polygon); this.graphics.drawPolygon(this.awtPolygon); }
+    @Override public void fillPolygon(Polygon polygon) { this.setAwtPolygon(polygon); this.graphics.fillPolygon(this.awtPolygon); }
     
     // Rectangle
     @Override public void drawRect(int x, int y, int width, int height) { this.graphics.drawRect(x, y, width, height); }
