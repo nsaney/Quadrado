@@ -26,7 +26,7 @@ public class DesktopDrawingImage extends DrawingImage
     protected BufferedImage image = null;
     public BufferedImage getImage() { return this.image; }
     
-    protected static int getBufferedImageType(Config config)
+    public static int getBufferedImageType(Config config)
     {
         switch (config)
         {
