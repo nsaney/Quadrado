@@ -25,9 +25,11 @@ import java.awt.Image;
 public class DesktopDrawingContext extends DrawingContext
 {
     public final Graphics2D graphics;
+    public Font font;
     public DesktopDrawingContext(Graphics _graphics)
     {
         this.graphics = (Graphics2D)_graphics;
+        this.font = DesktopFont.create(this.graphics.getFont());
     }
     
     @Override public void close() { this.graphics.dispose(); }
@@ -38,38 +40,13 @@ public class DesktopDrawingContext extends DrawingContext
     @Override public void setColor(int color) { this.graphics.setColor(new java.awt.Color(color, true)); }
     
     // Font
-    public static Font.Style convertFromAwtFontStyle(int style)
+    @Override public Font getFont() { return this.font; }
+    @Override public void setFont(Font _font) 
     {
-        switch (style)
-        {
-            case java.awt.Font.BOLD: return Font.Style.BOLD;
-            case java.awt.Font.ITALIC: return Font.Style.ITALIC;
-            case (java.awt.Font.BOLD | java.awt.Font.ITALIC): return Font.Style.BOLD_ITALIC;
-            default: return Font.Style.PLAIN;
-        }
+        this.font = _font;
+        java.awt.Font awtFont = ((DesktopFont)this.font).getAwtFont();
+        this.graphics.setFont(awtFont);
     }
-    public static int convertToAwtFontStyle(Font.Style style)
-    {
-        switch (style)
-        {
-            case BOLD: return java.awt.Font.BOLD;
-            case ITALIC: return java.awt.Font.ITALIC;
-            case BOLD_ITALIC: return java.awt.Font.BOLD | java.awt.Font.ITALIC;
-            default: return java.awt.Font.PLAIN;
-        }
-    }
-    public static Font convertFromAwtFont(java.awt.Font font)
-    {
-        Font.Style fontStyle = DesktopDrawingContext.convertFromAwtFontStyle(font.getStyle());
-        return new Font(font.getFamily(), fontStyle, font.getSize());
-    }
-    public static java.awt.Font convertToAwtFont(Font font)
-    {
-        int fontStyle = DesktopDrawingContext.convertToAwtFontStyle(font.style);
-        return new java.awt.Font(font.family, fontStyle, font.size);
-    }
-    @Override public Font getFont() { return DesktopDrawingContext.convertFromAwtFont(this.graphics.getFont()); }
-    @Override public void setFont(Font font) { this.graphics.setFont(DesktopDrawingContext.convertToAwtFont(font)); }
     
     // Font Layout
     @Override public FontLayout getFontLayout(Font font) { return new DesktopFontLayout(font, this.graphics); }
@@ -80,13 +57,7 @@ public class DesktopDrawingContext extends DrawingContext
     // Image
     @Override public void drawImage(DrawingImage drawingImage, int x, int y)
     {
-        if (drawingImage instanceof DesktopDrawingImage)
-        {
-            this.drawImage((DesktopDrawingImage)drawingImage, x, y);
-        }
-    }
-    public void drawImage(DesktopDrawingImage desktopDrawingImage, int x, int y)
-    {
+        DesktopDrawingImage desktopDrawingImage = (DesktopDrawingImage)drawingImage;
         this.graphics.drawImage(desktopDrawingImage.image, x, y, null);
     }
     

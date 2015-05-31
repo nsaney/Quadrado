@@ -323,6 +323,7 @@ public abstract class QApplication implements Runnable, ButtonListener
 	}
 	
 	/* render debug stats to the buffer */
+    private static final Font DEBUG_FONT = Font.create(Font.Family.MONOSPACED, Font.Style.PLAIN, 12);
 	private void gameRenderDebugStats(long timeUpdateLength, long timeRenderLength, long timePaintLength, long timeActualSleptLength)
 	{
         DrawingContext ctx = this.dbui.getRenderContext();
@@ -337,7 +338,7 @@ public abstract class QApplication implements Runnable, ButtonListener
 				ctx.fillRect(0, 0, this.getPanelWidth(), 200);
 				
 				ctx.setColor(Color.BLACK);
-				ctx.setFont(new Font(Font.Family.MONOSPACED, Font.Style.PLAIN, 12));
+				ctx.setFont(QApplication.DEBUG_FONT);
                 
 				long timeTotalLoopLength = timeUpdateLength + timeRenderLength + timeActualSleptLength;
 				

@@ -10,11 +10,12 @@
 
 package chairosoft.ui.graphics;
 
+import chairosoft.dependency.Dependencies;
 
 /**
  * An object representing a particular typeface / font.
  */
-public class Font
+public abstract class Font
 {
     public static class Family
     {
@@ -25,21 +26,32 @@ public class Font
         public static final String SANS_SERIF = "SansSerif";
         public static final String SERIF = "Serif";
     }
-    public static enum Style
+    
+    public static class Style
     {
-        PLAIN, 
-        BOLD, 
-        ITALIC, 
-        BOLD_ITALIC;
+        private Style() { }
+        public static final int PLAIN = 0;
+        public static final int BOLD = 1;
+        public static final int ITALIC = 2;
     }
     
-    public final String family;
-    public final Style style;
-    public final int size;
-    public Font(String _family, Style _style, int _size)
+    protected String family = null;
+    public String getFamily() { return this.family; }
+    
+    protected int style = 0;
+    public int getStyle() { return this.style; }
+    
+    protected int size = 0;
+    public int getSize() { return this.size; }
+    
+    protected abstract void init(String _family, int _style, int _size);
+    public static Font create(String _family, int _style, int _size)
     {
-        this.family = _family;
-        this.style = _style;
-        this.size = _size;
+        Font result = Dependencies.getNew(Font.class);
+        result.family = _family;
+        result.style = _style;
+        result.size = _size;
+        result.init(_family, _style, _size);
+        return result;
     }
 }

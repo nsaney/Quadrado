@@ -22,7 +22,8 @@ public class DesktopFontLayout extends FontLayout
     public DesktopFontLayout(Font _font, Graphics _gfx)
     {
         super(_font);
-        this.fontMetrics = _gfx.getFontMetrics(DesktopDrawingContext.convertToAwtFont(this.font));
+        java.awt.Font awtFont = ((DesktopFont)this.font).getAwtFont();
+        this.fontMetrics = _gfx.getFontMetrics(awtFont);
     }
     
     @Override public int height() { return this.fontMetrics.getHeight(); }
