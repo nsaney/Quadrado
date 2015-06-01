@@ -130,7 +130,7 @@ public abstract class PcmSignedInputStream extends FilterInputStream
         while (0 < this.bytesAvailable && this.bytesAvailable < len)
         {
             currentRead = this.readBuffer(b, off, this.bytesAvailable);
-            //System.err.printf("\n   %s = this.pcmChunkInputStream.read(b, %s, %s); // for a while. ", currentRead, off, this.bytesAvailable);
+            //System.err.printf("\n   %s = this.readBuffer(b, %s, %s); // for a while. ", currentRead, off, this.bytesAvailable);
             pcmBytesRead += currentRead;
             this.bytesAvailable -= currentRead;
             off += currentRead;
@@ -139,9 +139,9 @@ public abstract class PcmSignedInputStream extends FilterInputStream
             this.ensurePcmBuffer();
         }
         
-        //if (this.bytesAvailable < len) { len = this.bytesAvailable; }
+        if (this.bytesAvailable < len) { len = this.bytesAvailable; }
         currentRead = this.readBuffer(b, off, len);
-        //System.err.printf("\n   %s = this.pcmChunkInputStream.read(b, %s, %s); // once. \n", currentRead, off, len);
+        //System.err.printf("\n   %s = this.readBuffer(b, %s, %s); // once. \n", currentRead, off, len);
         pcmBytesRead += currentRead;
         this.bytesAvailable -= currentRead;
         return pcmBytesRead;
