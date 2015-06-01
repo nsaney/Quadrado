@@ -68,18 +68,27 @@ public class DesktopDrawingContext extends DrawingContext
     @Override public void fillOval(int x, int y, int width, int height) { this.graphics.fillOval(x, y, width, height); }
     
     // Polygon
-    protected void setAwtPolygon(Polygon polygon)
+    public static java.awt.Polygon setAwtPolygonFromPolygon(java.awt.Polygon awtPolygon, Polygon polygon)
     {
-        this.awtPolygon.reset();
+        awtPolygon.reset();
         for (FloatPoint2D p : polygon.points)
         {
             int x = (int)p.x;
             int y = (int)p.y;
-            this.awtPolygon.addPoint(x, y);
+            awtPolygon.addPoint(x, y);
         }
+        return awtPolygon;
     }
-    @Override public void drawPolygon(Polygon polygon) { this.setAwtPolygon(polygon); this.graphics.drawPolygon(this.awtPolygon); }
-    @Override public void fillPolygon(Polygon polygon) { this.setAwtPolygon(polygon); this.graphics.fillPolygon(this.awtPolygon); }
+    @Override public void drawPolygon(Polygon polygon) 
+    {
+        DesktopDrawingContext.setAwtPolygonFromPolygon(this.awtPolygon, polygon); 
+        this.graphics.drawPolygon(this.awtPolygon); 
+    }
+    @Override public void fillPolygon(Polygon polygon) 
+    {
+        DesktopDrawingContext.setAwtPolygonFromPolygon(this.awtPolygon, polygon); 
+        this.graphics.fillPolygon(this.awtPolygon); 
+    }
     
     // Rectangle
     @Override public void drawRect(int x, int y, int width, int height) { this.graphics.drawRect(x, y, width, height); }
