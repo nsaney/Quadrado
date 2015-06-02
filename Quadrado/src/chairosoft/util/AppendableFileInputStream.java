@@ -17,7 +17,7 @@ import java.io.*;
  */
 public class AppendableFileInputStream extends RestartableFileInputStream
 {
-    protected Object readWriteLock = new Object();
+    protected final Object readWriteLock = new Object();
     protected long readMark = -1;
     
     public AppendableFileInputStream(File file)
