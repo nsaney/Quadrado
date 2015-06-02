@@ -220,7 +220,7 @@ public abstract class MultitrackBackgroundAudio implements Closeable
     protected void loadLoopingTrack(long loopStartMillis, long loopEndMillis, String trackLocation, int index) 
         throws Exception
     {
-        File tempFile = File.createTempFile("bgAudio_", null);
+        File tempFile = File.createTempFile(TEMP_PREFIX, null);
         tempFile.deleteOnExit();
         //System.out.println("Temp file created: " + tempFile);
         
