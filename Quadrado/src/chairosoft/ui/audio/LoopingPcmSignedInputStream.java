@@ -171,14 +171,6 @@ public class LoopingPcmSignedInputStream
     // Instance Methods
     //
     
-    // protected void switchToLoopTargetStream()
-        // throws IOException
-    // {
-        // if (this.in == this.loopTargetStream) { return; }
-        // this.in.close();
-        // this.in = this.loopTargetStream;
-    // }
-    
     @Override 
     public void restart() 
         throws IOException 
