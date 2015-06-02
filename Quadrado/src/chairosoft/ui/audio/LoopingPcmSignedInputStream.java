@@ -10,6 +10,7 @@
 
 package chairosoft.ui.audio;
 
+import chairosoft.util.AppendableFileInputStream;
 import chairosoft.util.DirectByteArrayInputStream;
 import chairosoft.util.DirectByteArrayOutputStream;
 import chairosoft.util.Restartable;
@@ -36,6 +37,12 @@ public class LoopingPcmSignedInputStream
     //
     
     protected final Restartable ris;
+    
+    protected final InputStream pcmSourceStream;
+    protected final AppendableFileInputStream loopTargetStream;
+    public final boolean usingLoopTarget;
+    protected int bytesWrittenToLoopTarget = 0;
+    protected boolean loopIsWritten() { return this.bytesWrittenToLoopTarget >= this.loopEndByteNumber; }
     
     public final int channels;
     public final int bytesPerSample;
@@ -64,8 +71,8 @@ public class LoopingPcmSignedInputStream
     // Constructor
     //
     
-    protected <T extends InputStream & Restartable> 
-    LoopingPcmSignedInputStream(T sourceStream, 
+    public <T extends InputStream & Restartable>
+    LoopingPcmSignedInputStream(T _pcmSourceStream, 
                                 int _channels, 
                                 int _bytesPerSample,
                                 int _samplesPerSecond,
@@ -76,9 +83,56 @@ public class LoopingPcmSignedInputStream
     )
         throws IOException
     {
-        super(sourceStream);
+        this(
+            _pcmSourceStream, _pcmSourceStream, null, 
+            _channels, _bytesPerSample, _samplesPerSecond, _isBigEndian, _maxBufferSize, 
+            _loopStartMillis, _loopEndMillis
+        );
+    }
+    
+    
+    public LoopingPcmSignedInputStream(InputStream _pcmSourceStream, 
+                                       AppendableFileInputStream _loopTargetStream, 
+                                       int _channels, 
+                                       int _bytesPerSample,
+                                       int _samplesPerSecond,
+                                       boolean _isBigEndian, 
+                                       int _maxBufferSize,
+                                       long _loopStartMillis,
+                                       long _loopEndMillis
+    )
+        throws IOException
+    {
+        this(
+            _pcmSourceStream, _loopTargetStream, _loopTargetStream, 
+            _channels, _bytesPerSample, _samplesPerSecond, _isBigEndian, _maxBufferSize, 
+            _loopStartMillis, _loopEndMillis
+        );
+    }
+    
+    
+    protected <T extends InputStream & Restartable>
+    LoopingPcmSignedInputStream(InputStream _pcmSourceStream, 
+                                T _ris,
+                                AppendableFileInputStream _loopTargetStream, 
+                                int _channels, 
+                                int _bytesPerSample,
+                                int _samplesPerSecond,
+                                boolean _isBigEndian, 
+                                int _maxBufferSize,
+                                long _loopStartMillis,
+                                long _loopEndMillis
+    )
+        throws IOException
+    {
+        super(_ris);
+
+        this.ris = _ris;
         
-        this.ris = sourceStream;
+        this.pcmSourceStream = _pcmSourceStream;
+        this.loopTargetStream = _loopTargetStream;
+        this.usingLoopTarget = (this.loopTargetStream == _ris);
+        
         this.channels = _channels;
         this.bytesPerSample = _bytesPerSample;
         this.samplesPerSecond = _samplesPerSecond;
@@ -117,6 +171,14 @@ public class LoopingPcmSignedInputStream
     // Instance Methods
     //
     
+    // protected void switchToLoopTargetStream()
+        // throws IOException
+    // {
+        // if (this.in == this.loopTargetStream) { return; }
+        // this.in.close();
+        // this.in = this.loopTargetStream;
+    // }
+    
     @Override 
     public void restart() 
         throws IOException 
@@ -125,6 +187,17 @@ public class LoopingPcmSignedInputStream
         this.lastReadChunkNumber = -1; 
         this.bytesAvailable = 0; 
         this.lastReadChunkWasLoopEndChunk = false;
+    }
+    
+    @Override
+    public void close()
+        throws IOException
+    {
+        this.in.close();
+        if (this.in != this.pcmSourceStream)
+        {
+            this.pcmSourceStream.close();
+        }
     }
     
     @Override public int getChannels() { return this.channels; }
@@ -136,15 +209,32 @@ public class LoopingPcmSignedInputStream
     @Override protected int readBuffer(byte[] b, int off, int len) throws IOException { return this.pcmBufferInputStream.read(b, off, len); }
     @Override protected void resetBuffer() throws IOException { this.pcmBufferInputStream.reset(); }
     
-    @Override protected int decodeAndFillBuffer() throws IOException { return this.in.read(this.pcmBuffer); }
+    @Override protected int decodeAndFillBuffer() throws IOException 
+    {
+        if (this.usingLoopTarget && !this.loopIsWritten())
+        {
+            // write temp file twice as much as reading it
+            for (int i = 0; i < 2; ++i)
+            {
+                int pcmBytesToAppend = this.pcmSourceStream.read(this.pcmBuffer);
+                this.loopTargetStream.append(this.pcmBuffer, 0, pcmBytesToAppend);
+                this.bytesWrittenToLoopTarget += pcmBytesToAppend;
+                
+                if (this.loopIsWritten())
+                {
+                    this.pcmSourceStream.close();
+                    break;
+                }
+            }
+        }
+        
+        return this.in.read(this.pcmBuffer);
+    }
     
     @Override protected boolean ensurePcmBuffer()
         throws IOException
     {
         boolean needToEnsureBuffer = this.bytesAvailable == 0;
-        // if (needToEnsureBuffer)
-        // {
-        // }
         
         boolean bufferEnsured = super.ensurePcmBuffer();
         if (needToEnsureBuffer && bufferEnsured)

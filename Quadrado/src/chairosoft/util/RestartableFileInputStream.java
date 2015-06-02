@@ -23,6 +23,12 @@ public class RestartableFileInputStream
     protected final long headerLength;
     protected long mark;
     
+    public RestartableFileInputStream(File file)
+        throws IOException, FileNotFoundException
+    {
+        this(new RandomAccessFile(file, "r"));
+    }
+    
     public RestartableFileInputStream(RandomAccessFile _raFile)
         throws IOException
     {

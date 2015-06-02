@@ -223,46 +223,35 @@ public abstract class MultitrackBackgroundAudio implements Closeable
         File tempFile = File.createTempFile("bgAudio_", null);
         tempFile.deleteOnExit();
         //System.out.println("Temp file created: " + tempFile);
-        try (InputStream trackResource = this.getClass().getResourceAsStream(trackLocation))
+        
+        InputStream trackResource = this.getClass().getResourceAsStream(trackLocation);
+        PcmSignedInputStream trackResourcePcm = new Mp3ToPcmSignedInputStream(trackResource);
+        
+        if (index == 0)
         {
-            try (PcmSignedInputStream trackResourcePcm = new Mp3ToPcmSignedInputStream(trackResource))
-            {
-                if (index == 0)
-                {
-                    // set audio format properties
-                    this.channels = trackResourcePcm.getChannels();
-                    this.bytesPerSample = trackResourcePcm.getBytesPerSample();
-                    this.bytesPerFrame = this.channels * this.bytesPerSample;
-                    this.samplesPerSecond = trackResourcePcm.getSamplesPerSecond();
-                    this.isBigEndian = trackResourcePcm.isBigEndian();
-                    
-                    // System.err.println("this.channels = " + this.channels);
-                    // System.err.println("this.bytesPerSample = " + this.bytesPerSample);
-                    // System.err.println("this.bytesPerFrame = " + this.bytesPerFrame);
-                    // System.err.println("this.samplesPerSecond = " + this.samplesPerSecond);
-                    // System.err.println("this.isBigEndian = " + this.isBigEndian);
-                    
-                    // set mix buffer size
-                    int bytesPerSecond = this.channels * this.bytesPerSample * this.samplesPerSecond;
-                    int bytesPerMilliSecond = (int)(bytesPerSecond / 1000);
-                    this.mixBufferSize = bytesPerMilliSecond * MultitrackBackgroundAudio.BUFFER_LENGTH_MS;
-                }
-                
-                try (FileOutputStream fileOut = new FileOutputStream(tempFile))
-                {
-                    byte[] buffer = new byte[trackResourcePcm.getMaxBufferSize()];
-                    int currentRead = 0;
-                    while ((currentRead = trackResourcePcm.read(buffer)) > 0)
-                    {
-                        fileOut.write(buffer, 0, currentRead);
-                    }
-                }
-            }
+            // set audio format properties
+            this.channels = trackResourcePcm.getChannels();
+            this.bytesPerSample = trackResourcePcm.getBytesPerSample();
+            this.bytesPerFrame = this.channels * this.bytesPerSample;
+            this.samplesPerSecond = trackResourcePcm.getSamplesPerSecond();
+            this.isBigEndian = trackResourcePcm.isBigEndian();
+            
+            // System.err.println("this.channels = " + this.channels);
+            // System.err.println("this.bytesPerSample = " + this.bytesPerSample);
+            // System.err.println("this.bytesPerFrame = " + this.bytesPerFrame);
+            // System.err.println("this.samplesPerSecond = " + this.samplesPerSecond);
+            // System.err.println("this.isBigEndian = " + this.isBigEndian);
+            
+            // set mix buffer size
+            int bytesPerSecond = this.channels * this.bytesPerSample * this.samplesPerSecond;
+            int bytesPerMilliSecond = (int)(bytesPerSecond / 1000);
+            this.mixBufferSize = bytesPerMilliSecond * MultitrackBackgroundAudio.BUFFER_LENGTH_MS;
         }
-        RandomAccessFile raFile = new RandomAccessFile(tempFile, "r");
-        RestartableFileInputStream sourceStream = new RestartableFileInputStream(raFile);
+        
+        AppendableFileInputStream loopTargetStream = new AppendableFileInputStream(tempFile);
         LoopingPcmSignedInputStream pcmStream = new LoopingPcmSignedInputStream(
-            sourceStream, 
+            trackResourcePcm, 
+            loopTargetStream,
             this.channels,
             this.bytesPerSample,
             this.samplesPerSecond,
