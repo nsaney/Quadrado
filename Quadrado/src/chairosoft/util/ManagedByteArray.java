@@ -14,10 +14,12 @@ import java.io.*;
 import java.util.*;
 
 /**    
- * Java doesn't like to free resources until is really, really has to,
+ * Java doesn't like to free resources until it really, really has to,
  * but that means GC might run on a large array during gameplay instead 
  * of during loading - so, at the risk of directly causing enormous
  * memory leakage, I will manage some large arrays myself.
+ * 
+ * If you are using this class, I suggest you rethink your approach.
  */
 public final class ManagedByteArray extends DirectByteArrayInputStream
 {
