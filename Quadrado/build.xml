@@ -79,6 +79,11 @@
         href="http://www.xom.nu/apidocs/" 
         packagelistLoc="./_package-lists/nu.xom" 
       />
+      <link
+        offline="true" 
+        href="http://www.javazoom.net/javalayer/docs/docs1.0/" 
+        packagelistLoc="./_package-lists/jlayer" 
+      />
     </javadoc>
     
   </target>
