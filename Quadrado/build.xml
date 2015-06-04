@@ -25,8 +25,9 @@
   <!-- Library properties -->
   <property name="licenses"     value="licenses"/>
   <property name="jar_xom"      value="xom-1.2.10.jar"/>
+  <property name="jar_xerces"   value="dtd-xercesImpl.jar"/>
   <property name="jar_layer"    value="jl1.0.1.jar"/>
-  <property name="jars"         value="${jar_xom}:${jar_layer}"/> <!-- : -->
+  <property name="jars"         value="${jar_xom}:${jar_xerces}:${jar_layer}"/> <!-- : -->
   <property name="jars_"        value="[empty]"/>
   <script language="javascript">
     var $jars = project.getProperty("jars");
