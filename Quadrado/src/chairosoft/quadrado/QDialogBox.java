@@ -24,10 +24,10 @@ import java.util.ArrayDeque;
  */
 public class QDialogBox extends QTextElement
 {
-	//
-	// Instance Variables
-	//
-	
+    //
+    // Instance Variables
+    //
+    
     protected WrappedText wrappedText = null;
     protected DrawingImage outerImage = null;
     private int width = -1;
@@ -41,10 +41,10 @@ public class QDialogBox extends QTextElement
     // TODO: inner padding
     // TODO: offset by font descent (maybe in context?)
     
-	
-	//
-	// Constructor
-	//
+    
+    //
+    // Constructor
+    //
     
     public QDialogBox()
     {
@@ -55,11 +55,11 @@ public class QDialogBox extends QTextElement
     {
         this.setup(_fontLayout, _text, _width, _height);
     }
-	
-	
-	//
-	// Instance Methods 
-	//
+    
+    
+    //
+    // Instance Methods 
+    //
     
     public final void setup(FontLayout _fontLayout, String _text, int _width, int _height)
     {
@@ -142,7 +142,7 @@ public class QDialogBox extends QTextElement
     
     
     
-	public final int getWidth() { return this.width; }
+    public final int getWidth() { return this.width; }
     public final void setWidth(int w) { this.width = w; this.configure(); }
     
     public final int getHeight() { return this.height; }

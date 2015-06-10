@@ -17,25 +17,25 @@ import java.util.ArrayDeque;
  */
 public class QScrollAnimator
 {
-	//
-	// Instance Variables
-	//
-	
+    //
+    // Instance Variables
+    //
+    
     protected int maxScrollHeight = 0;
     protected int scrollHeight = 0;
     protected final ArrayDeque<Integer> scrollQueue = new ArrayDeque<>();
     
     
-	//
-	// Constructor
-	//
+    //
+    // Constructor
+    //
     
     public QScrollAnimator() { }
-	
-	
-	//
-	// Instance Methods 
-	//
+    
+    
+    //
+    // Instance Methods 
+    //
     
     public int getMaxScrollHeight() { return this.maxScrollHeight; }
     public void setMaxScrollHeight(int msh) { this.maxScrollHeight = msh; }

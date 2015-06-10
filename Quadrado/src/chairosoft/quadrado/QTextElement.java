@@ -18,20 +18,20 @@ import chairosoft.ui.graphics.FontLayout;
  */
 public abstract class QTextElement extends QDrawable implements QPositionedDrawable
 {
-	//
-	// Instance Variables
-	//
-	
+    //
+    // Instance Variables
+    //
+    
     public int x = 0;
     public int y = 0;
     private FontLayout fontLayout = null;
     private String text = "";
-	
-	
-	//
-	// Constructor 
-	//
-	
+    
+    
+    //
+    // Constructor 
+    //
+    
     public QTextElement()
     {
         // use setters to init
@@ -52,5 +52,5 @@ public abstract class QTextElement extends QDrawable implements QPositionedDrawa
     public final String getText() { return this.text; }
     public final void setText(String str) { this.text = str; this.configure(); }
     
-	public final void drawToContextAtOwnPosition(DrawingContext ctx) { this.drawToContext(ctx, this.x, this.y); }
+    public final void drawToContextAtOwnPosition(DrawingContext ctx) { this.drawToContext(ctx, this.x, this.y); }
 }

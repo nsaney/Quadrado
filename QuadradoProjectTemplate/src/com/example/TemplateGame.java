@@ -18,16 +18,16 @@ import java.util.*;
 
 public class TemplateGame extends QApplication
 {
-	//
-	// Main Method
-	// 
-	
-	public static void main(String[] args)
-	{
-	    System.err.println("Starting game... ");
-		QApplication app = new TemplateGame();
-	    app.gameStart();
-	}
+    //
+    // Main Method
+    // 
+    
+    public static void main(String[] args)
+    {
+        System.err.println("Starting game... ");
+        QApplication app = new TemplateGame();
+        app.gameStart();
+    }
     
     
     //
@@ -433,26 +433,26 @@ public class TemplateGame extends QApplication
     
     private void drawContent(DrawingContext ctx, int playerX, int playerY)
     {
-		// save current graphics settings
+        // save current graphics settings
         int ctxColor = ctx.getColor();
         Font ctxFont = ctx.getFont();
         
         try
         {
-        	// background and qmaproom
-        	ctx.setColor(qmaproom.getBackgroundColor());
-        	ctx.fillRect(0, 0, qmaproom.getWidthPixels(), qmaproom.getHeightPixels());
-			qmaproom.drawToContext(ctx, 0, 0);
-			
-			// player sprite
-			protagonist.advanceAnimationOneClick();
-			protagonist.drawToContextAtOwnPosition(ctx);
-			
-			// collision box
-			if (show_bounding_box) { ctx.setColor(Color.BLUE); ctx.fillPolygon(protagonist); }
-			
+            // background and qmaproom
+            ctx.setColor(qmaproom.getBackgroundColor());
+            ctx.fillRect(0, 0, qmaproom.getWidthPixels(), qmaproom.getHeightPixels());
+            qmaproom.drawToContext(ctx, 0, 0);
             
-			// pause message
+            // player sprite
+            protagonist.advanceAnimationOneClick();
+            protagonist.drawToContextAtOwnPosition(ctx);
+            
+            // collision box
+            if (show_bounding_box) { ctx.setColor(Color.BLUE); ctx.fillPolygon(protagonist); }
+            
+            
+            // pause message
             if (this.isPaused) 
             {
                 ctx.setColor(Color.CC.RED);
@@ -465,12 +465,12 @@ public class TemplateGame extends QApplication
                 }
                 ctx.drawString(this.pauseText, playerX - this.pauseWidthHalf, playerY + this.pauseHeightHalf);
             }
-		}
+        }
         finally
         {
-			// put back graphics settings
-			ctx.setFont(ctxFont);
-			ctx.setColor(ctxColor);
+            // put back graphics settings
+            ctx.setFont(ctxFont);
+            ctx.setColor(ctxColor);
         }
     }
     

@@ -41,7 +41,7 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
     protected JPanel panel = null;
     public JPanel getPanel() { return this.panel; }
     
-	protected boolean keyListenerAdded = false;
+    protected boolean keyListenerAdded = false;
     
     @Override protected void doStart()
     {
@@ -68,14 +68,14 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
     @Override protected void ensureRenderContext()
     {
         if (this.dbImage == null)
-		{
-			this.dbImage = this.panel.createImage(this.width, this.height);
+        {
+            this.dbImage = this.panel.createImage(this.width, this.height);
             if (this.dbImage == null) 
             {
                 System.err.println("Error in ensureRenderContext(): Unable to create Image from JPanel."); 
                 return; 
             }
-		}
+        }
         
         if (this.renderContext == null)
         {
@@ -86,36 +86,36 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
     
     @Override public void paintScreen()
     {
-		try (DesktopDrawingContext context = new DesktopDrawingContext(this.panel.getGraphics()))
-		{
-			Graphics2D gfx = context.graphics;
-			if ((gfx != null) && (this.dbImage != null)) 
-			{
+        try (DesktopDrawingContext context = new DesktopDrawingContext(this.panel.getGraphics()))
+        {
+            Graphics2D gfx = context.graphics;
+            if ((gfx != null) && (this.dbImage != null)) 
+            {
                 gfx.scale(this.xScaling, this.yScaling);
-				gfx.drawImage(this.dbImage, 0, 0, null); 
-			}
-			else 
-			{
-				String message = String.format("Error in paintScreen(): gfx = %1$s, this.dbImage = %2$s", gfx, this.dbImage);
-				System.err.println(message);
-			}
-			
-			Toolkit.getDefaultToolkit().sync(); // sync the display on some systems
-		}
-		catch (Exception ex) 
-		{
-			System.err.println("DrawingContext error: " + ex);
-		}
+                gfx.drawImage(this.dbImage, 0, 0, null); 
+            }
+            else 
+            {
+                String message = String.format("Error in paintScreen(): gfx = %1$s, this.dbImage = %2$s", gfx, this.dbImage);
+                System.err.println(message);
+            }
+            
+            Toolkit.getDefaultToolkit().sync(); // sync the display on some systems
+        }
+        catch (Exception ex) 
+        {
+            System.err.println("DrawingContext error: " + ex);
+        }
     }
     
     
-	/* watch for key presses */
-	private void addKeyListener()
-	{
-		if (!this.keyListenerAdded)
-		{
-			this.panel.addKeyListener(new DesktopButtonAdapter(this.buttonListener));
-			this.keyListenerAdded = true;
-		}
-	}
+    /* watch for key presses */
+    private void addKeyListener()
+    {
+        if (!this.keyListenerAdded)
+        {
+            this.panel.addKeyListener(new DesktopButtonAdapter(this.buttonListener));
+            this.keyListenerAdded = true;
+        }
+    }
 }

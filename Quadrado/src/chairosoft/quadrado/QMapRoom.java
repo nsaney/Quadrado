@@ -27,97 +27,97 @@ import nu.xom.*;
 
 public class QMapRoom extends QAbstractMapRoom
 {
-	//
-	// Constants
-	//
-	
-	public static final String MAP_DIR = "map";
-	public static final int    Q_SPACE = 3;
-	
-	
-	//
-	// Instance Variables 
-	// 
-	
-	protected final String  code;
-	protected int           backgroundColor;
-    protected QTileset      qtileset;
-	protected QTile[][]     qtileLayout;
-	protected Set<String>   qtileCodes = new HashSet<>();
-	protected int           width;
-	protected int           height;
-	protected List<MapLink> mapLinks;
+    //
+    // Constants
+    //
     
-	
-	//
-	// Constructor
-	// 
-	
-	public QMapRoom(String _code) 
-	{
-		this(
-			_code, 
-			Loading.getPathInFolder(MAP_DIR, _code + ".xml"), 
-			true
-		);
-	}
-	
-	protected QMapRoom(String _code, String _absolutePath, boolean _usingInternal)
-	{
+    public static final String MAP_DIR = "map";
+    public static final int    Q_SPACE = 3;
+    
+    
+    //
+    // Instance Variables 
+    // 
+    
+    protected final String  code;
+    protected int           backgroundColor;
+    protected QTileset      qtileset;
+    protected QTile[][]     qtileLayout;
+    protected Set<String>   qtileCodes = new HashSet<>();
+    protected int           width;
+    protected int           height;
+    protected List<MapLink> mapLinks;
+    
+    
+    //
+    // Constructor
+    // 
+    
+    public QMapRoom(String _code) 
+    {
+        this(
+            _code, 
+            Loading.getPathInFolder(MAP_DIR, _code + ".xml"), 
+            true
+        );
+    }
+    
+    protected QMapRoom(String _code, String _absolutePath, boolean _usingInternal)
+    {
         this.code = _code;
-		try
-		{
-			Document doc = Loading.getXmlDocument(_absolutePath, _usingInternal);
-			this.setPropertiesFromXmlDocument(doc);
-			this.setImageFromLayout();
+        try
+        {
+            Document doc = Loading.getXmlDocument(_absolutePath, _usingInternal);
+            this.setPropertiesFromXmlDocument(doc);
+            this.setImageFromLayout();
             //System.err.println(this);
             //System.err.printf("Map %s loaded. [width = %s, height = %s]\n", this.code, this.width, this.height);
-		}
-		catch (RuntimeException rx)
-		{
-			throw rx;
-		}
-		catch (Exception ex)
-		{
-			System.err.println("[qmaproom constructor]");
-			ex.printStackTrace();
-			System.exit(1);
-		}
-	}
-	
-	
-	//
-	// Instance Methods 
-	//
-	
+        }
+        catch (RuntimeException rx)
+        {
+            throw rx;
+        }
+        catch (Exception ex)
+        {
+            System.err.println("[qmaproom constructor]");
+            ex.printStackTrace();
+            System.exit(1);
+        }
+    }
+    
+    
+    //
+    // Instance Methods 
+    //
+    
     //// Get Methods ////
     
-	public int getBackgroundColor() { return this.backgroundColor; }
-	
-	public int getWidthTiles() { return this.width; }
-	public int getWidthPixels() { return this.width * QTileset.getTileWidth(); }
-	
-	public int getHeightTiles() { return this.height; }
-	public int getHeightPixels() { return this.height * QTileset.getTileHeight(); }
-	
-	public Iterable<String> getXmlLinesFromQTileLayout()
-	{
-		ArrayList<String> result = new ArrayList<>();
-		
-		result.add("<?xml version='1.0'?>");
+    public int getBackgroundColor() { return this.backgroundColor; }
+    
+    public int getWidthTiles() { return this.width; }
+    public int getWidthPixels() { return this.width * QTileset.getTileWidth(); }
+    
+    public int getHeightTiles() { return this.height; }
+    public int getHeightPixels() { return this.height * QTileset.getTileHeight(); }
+    
+    public Iterable<String> getXmlLinesFromQTileLayout()
+    {
+        ArrayList<String> result = new ArrayList<>();
+        
+        result.add("<?xml version='1.0'?>");
         result.add(String.format("<qmaproom background='#%06x'>", this.backgroundColor & 0x00ffffff));
-		
+        
         result.add("<layout>");
-		for (int row = 0; row < this.qtileLayout.length; ++row)
-		{
-			String line = "";
-			for (int col = 0; col < this.qtileLayout[row].length; ++col)
-			{
-				line += this.qtileLayout[row][col].code;
-			}
-			result.add(line);
-		}
-		result.add("</layout>");
+        for (int row = 0; row < this.qtileLayout.length; ++row)
+        {
+            String line = "";
+            for (int col = 0; col < this.qtileLayout[row].length; ++col)
+            {
+                line += this.qtileLayout[row][col].code;
+            }
+            result.add(line);
+        }
+        result.add("</layout>");
         
         result.add("<links>");
         for (MapLink link : this.mapLinks)
@@ -125,10 +125,10 @@ public class QMapRoom extends QAbstractMapRoom
             result.add("\t" + link.toString());
         }
         result.add("</links>");
-		result.add("</qmaproom>");
+        result.add("</qmaproom>");
         
-		return result;
-	}
+        return result;
+    }
     
     @Override
     public String toString()
@@ -172,61 +172,61 @@ public class QMapRoom extends QAbstractMapRoom
         Consumer<Element> linksAction = new Consumer<Element>() { public void accept(Element child) { QMapRoom.this.setMapLinksFromXmlElement(child); } };
         Loading.applyActionToFirstMatchingXmlElementChild(root, linksMatcher, linksAction);
     }
-	
-	protected void setQTileLayoutFromXmlElement(Element layoutElement)
-	{
-		int lineNum = -1;
-		int y = -1;
-		int x = -1;
-		try
-		{
-			Loading.ensureName(layoutElement, "layout");
-			
-			// QTile layout
-			String layoutValue = layoutElement.getValue();
-			String[] layoutLines = layoutValue.split("(\n)+");
-			
-			int CODE_LEN = QTile.CODE_LENGTH;
-			int maxLength = 0;
-			List<QTile[]> qtileListOfArrays = new ArrayList<>();
-			
-			for (y = 0, lineNum = 0; lineNum < layoutLines.length; ++y, ++lineNum) 
-			{
-				String line = layoutLines[lineNum];
-				
-				//System.err.println("[" + line.length() + ":" + line + "]");
-				int lineLength = (line.length() / CODE_LEN) * CODE_LEN;
-				if (lineLength < CODE_LEN) { --y; continue; }
-				
-				maxLength = (lineLength > maxLength) ? lineLength : maxLength;
-				
-				QTile[] qtileArray = new QTile[lineLength / CODE_LEN];
-				for (x = 0; x < qtileArray.length; ++x)
-				{
-				    int linePos = x * CODE_LEN;
-				    String qtileCode = line.substring(linePos, linePos + CODE_LEN);
-				    qtileCodes.add(qtileCode);
-					qtileArray[x] = this.qtileset.getNewQTile(qtileCode);
-					qtileArray[x].translate(x * QTileset.getTileWidth(), y * QTileset.getTileHeight());
-				}
-				qtileListOfArrays.add(qtileArray);
-			}
-			
-			this.width = maxLength / CODE_LEN;
-			this.height = qtileListOfArrays.size();
-			this.qtileLayout = qtileListOfArrays.toArray(new QTile[0][]);
-		}
-		catch (RuntimeException rx)
-		{
-			throw rx;
-		}
-		catch (Exception ex)
-		{
-			System.err.printf("[qtilelayout: x = %3d, y = %3d]", x, y);
-			System.err.println();
-			ex.printStackTrace();
-		}
-	}
+    
+    protected void setQTileLayoutFromXmlElement(Element layoutElement)
+    {
+        int lineNum = -1;
+        int y = -1;
+        int x = -1;
+        try
+        {
+            Loading.ensureName(layoutElement, "layout");
+            
+            // QTile layout
+            String layoutValue = layoutElement.getValue();
+            String[] layoutLines = layoutValue.split("(\n)+");
+            
+            int CODE_LEN = QTile.CODE_LENGTH;
+            int maxLength = 0;
+            List<QTile[]> qtileListOfArrays = new ArrayList<>();
+            
+            for (y = 0, lineNum = 0; lineNum < layoutLines.length; ++y, ++lineNum) 
+            {
+                String line = layoutLines[lineNum];
+                
+                //System.err.println("[" + line.length() + ":" + line + "]");
+                int lineLength = (line.length() / CODE_LEN) * CODE_LEN;
+                if (lineLength < CODE_LEN) { --y; continue; }
+                
+                maxLength = (lineLength > maxLength) ? lineLength : maxLength;
+                
+                QTile[] qtileArray = new QTile[lineLength / CODE_LEN];
+                for (x = 0; x < qtileArray.length; ++x)
+                {
+                    int linePos = x * CODE_LEN;
+                    String qtileCode = line.substring(linePos, linePos + CODE_LEN);
+                    qtileCodes.add(qtileCode);
+                    qtileArray[x] = this.qtileset.getNewQTile(qtileCode);
+                    qtileArray[x].translate(x * QTileset.getTileWidth(), y * QTileset.getTileHeight());
+                }
+                qtileListOfArrays.add(qtileArray);
+            }
+            
+            this.width = maxLength / CODE_LEN;
+            this.height = qtileListOfArrays.size();
+            this.qtileLayout = qtileListOfArrays.toArray(new QTile[0][]);
+        }
+        catch (RuntimeException rx)
+        {
+            throw rx;
+        }
+        catch (Exception ex)
+        {
+            System.err.printf("[qtilelayout: x = %3d, y = %3d]", x, y);
+            System.err.println();
+            ex.printStackTrace();
+        }
+    }
     
     protected void setMapLinksFromXmlElement(Element linksElement)
     {
@@ -243,23 +243,23 @@ public class QMapRoom extends QAbstractMapRoom
         Loading.ensureName(linkElement, "link");
         
         Function<String,Integer> parseInteger = new Function<String,Integer>() { public Integer apply(String input) { return Integer.parseInt(input); } };
-		/* input -> Integer.parseInt(input) */
-		
+        /* input -> Integer.parseInt(input) */
+        
         AttributeValue<Integer> attrRow = new AttributeValue<>(linkElement, "row", parseInteger);
         AttributeValue<Integer> attrCol = new AttributeValue<>(linkElement, "col", parseInteger);
         AttributeValue<String> attrMap = new AttributeValue<>(linkElement, "map", new Identity<String>());
         AttributeValue<Integer> attrRow2 = new AttributeValue<>(linkElement, "row2", parseInteger);
         AttributeValue<Integer> attrCol2 = new AttributeValue<>(linkElement, "col2", parseInteger);
-		
+        
         Loading.ensureAllValidAttributes(attrRow, attrCol, attrMap, attrRow2, attrCol2);
         
         this.mapLinks.add(new MapLink(attrRow.getValue(), attrCol.getValue(), attrMap.getValue(), attrRow2.getValue(), attrCol2.getValue()));
     }
-	
-	protected void setImageFromLayout() 
-	{
+    
+    protected void setImageFromLayout() 
+    {
         DrawingImage _image = DrawingImage.create(getWidthPixels(), getHeightPixels(), DrawingImage.Config.ARGB_8888);
-		try (DrawingContext ctx = _image.getContext())
+        try (DrawingContext ctx = _image.getContext())
         {
             for (int row = 0; row < this.qtileLayout.length; ++row)
             {
@@ -270,49 +270,49 @@ public class QMapRoom extends QAbstractMapRoom
             }
             
             this.image = _image;
-		}
-		catch (Exception ex) 
-		{
-			System.err.println("DrawingContext error: " + ex);
-		}
-	}
-	
+        }
+        catch (Exception ex) 
+        {
+            System.err.println("DrawingContext error: " + ex);
+        }
+    }
+    
     // used by QMapRoom editor program
-	public void changeQTileAtPosition(String code, int row, int col)
-	{
-		if (row < 0 || this.qtileLayout.length <= row) { return; }
-		if (col < 0 || this.qtileLayout[row].length <= col) { return; }
-		
-		this.qtileLayout[row][col] = this.qtileset.getNewQTile(code);
-		this.setImageFromLayout();
-	}
-	
-	@Override
-	public void setLastCollidingTileWith(QCollidable c) 
-	{
-	    QTile result = null;
-		IntPoint2D posC = c.getIntPosition();
-		int colC = posC.x / QTileset.getTileWidth();
-		int rowC = posC.y / QTileset.getTileHeight();
-		
-		int rowFirst       = rowC - Q_SPACE; if (rowFirst < 0) { rowFirst = 0; }
-		int rowLastPlusOne = rowC + Q_SPACE; if (rowLastPlusOne > this.height) { rowLastPlusOne = this.height; }
-		
-		int colFirst       = colC - Q_SPACE; if (colFirst < 0) { colFirst = 0; }
-		int colLastPlusOne = colC + Q_SPACE; if (colLastPlusOne > this.width) { colLastPlusOne = this.width; }
-		
-		outer:
-		for (int row = rowFirst; row < rowLastPlusOne; ++row)
-		{
-			QTile[] qtiles = this.qtileLayout[row];
-			
-			for (int col = colFirst; col < colLastPlusOne; ++col)
-			{
-				if (qtiles[col].collidesWith(c)) { result = qtiles[col]; break outer; }
-			}
-		}
-		this.lastCollidingTile = result; 
-	}
+    public void changeQTileAtPosition(String code, int row, int col)
+    {
+        if (row < 0 || this.qtileLayout.length <= row) { return; }
+        if (col < 0 || this.qtileLayout[row].length <= col) { return; }
+        
+        this.qtileLayout[row][col] = this.qtileset.getNewQTile(code);
+        this.setImageFromLayout();
+    }
+    
+    @Override
+    public void setLastCollidingTileWith(QCollidable c) 
+    {
+        QTile result = null;
+        IntPoint2D posC = c.getIntPosition();
+        int colC = posC.x / QTileset.getTileWidth();
+        int rowC = posC.y / QTileset.getTileHeight();
+        
+        int rowFirst       = rowC - Q_SPACE; if (rowFirst < 0) { rowFirst = 0; }
+        int rowLastPlusOne = rowC + Q_SPACE; if (rowLastPlusOne > this.height) { rowLastPlusOne = this.height; }
+        
+        int colFirst       = colC - Q_SPACE; if (colFirst < 0) { colFirst = 0; }
+        int colLastPlusOne = colC + Q_SPACE; if (colLastPlusOne > this.width) { colLastPlusOne = this.width; }
+        
+        outer:
+        for (int row = rowFirst; row < rowLastPlusOne; ++row)
+        {
+            QTile[] qtiles = this.qtileLayout[row];
+            
+            for (int col = colFirst; col < colLastPlusOne; ++col)
+            {
+                if (qtiles[col].collidesWith(c)) { result = qtiles[col]; break outer; }
+            }
+        }
+        this.lastCollidingTile = result; 
+    }
     
     public static int getWrappedValue(int val, int bound)
     {

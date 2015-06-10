@@ -46,16 +46,16 @@ public final class FloatPoint2D extends Point2D
     
     // new instance methods
     public FloatPoint2D getNegative() { return new FloatPoint2D(-this.x, -this.y); }
-	public FloatPoint2D getUnitVector() 
-	{
-		float vlen = (float)this.getVectorLength();
-		if (vlen == 0.0f) { return this; }
-		return new FloatPoint2D(this.x / vlen, this.y / vlen);
-	}
-	public FloatPoint2D getNegativeUnitVector() 
-	{
-		float vlen = (float)this.getVectorLength();
-		if (vlen == 0.0f) { return this; }
-		return new FloatPoint2D(-this.x / vlen, -this.y / vlen); 
-	}
+    public FloatPoint2D getUnitVector() 
+    {
+        float vlen = (float)this.getVectorLength();
+        if (vlen == 0.0f) { return this; }
+        return new FloatPoint2D(this.x / vlen, this.y / vlen);
+    }
+    public FloatPoint2D getNegativeUnitVector() 
+    {
+        float vlen = (float)this.getVectorLength();
+        if (vlen == 0.0f) { return this; }
+        return new FloatPoint2D(-this.x / vlen, -this.y / vlen); 
+    }
 }

@@ -40,13 +40,13 @@ public class Polygon
     
     public void translate(int dx, int dy) 
     {
-		if ((dx == 0) && (dy == 0)) { return; }
+        if ((dx == 0) && (dy == 0)) { return; }
         for (FloatPoint2D p : this.points) { p.translate(dx, dy); }
     }
     
-	public void translateFloat(float dx, float dy)
-	{
-		if ((dx == 0.0f) && (dy == 0.0f)) { return; }
-		for (FloatPoint2D p : this.points) { p.translate(dx, dy); }
-	}
+    public void translateFloat(float dx, float dy)
+    {
+        if ((dx == 0.0f) && (dy == 0.0f)) { return; }
+        for (FloatPoint2D p : this.points) { p.translate(dx, dy); }
+    }
 }

@@ -57,15 +57,15 @@ public class QTileset
     
     static
     {
-		try
-		{
-			Document doc = Loading.getXmlDocument(QTILESETS_FULL_PATH);
+        try
+        {
+            Document doc = Loading.getXmlDocument(QTILESETS_FULL_PATH);
             QTileset.initializeFromXmlDocument(doc);
-		}
-		catch (Exception ex)
-		{
-			System.err.println("[qtilesets file]");
-			ex.printStackTrace();
+        }
+        catch (Exception ex)
+        {
+            System.err.println("[qtilesets file]");
+            ex.printStackTrace();
         }
     }
     
@@ -218,24 +218,24 @@ public class QTileset
     protected static QTileset load(final String code)
     {
         QTileset result = null;
-		try
-		{
-			Document doc = Loading.getXmlDocument(QTILESETS_FULL_PATH);
+        try
+        {
+            Document doc = Loading.getXmlDocument(QTILESETS_FULL_PATH);
             Element root = doc.getRootElement();
             Loading.ensureName(root, "qtilesets");
             
-			result = Loading.applyFunctionToFirstMatchingXmlElementChild
-			(
-			    root,
+            result = Loading.applyFunctionToFirstMatchingXmlElementChild
+            (
+                root,
                 new Loading.PredicateMatchingElementByAttribute("code", code),
-			    new Function<Element, QTileset>() { public QTileset apply(Element child) { return getQTilesetFromXmlElement(child); } }
-			    // child -> getQTilesetFromXmlElement(child)
-			);
-		}
-		catch (Exception ex)
-		{
-			System.err.println("[qtilesets file]");
-			ex.printStackTrace();
+                new Function<Element, QTileset>() { public QTileset apply(Element child) { return getQTilesetFromXmlElement(child); } }
+                // child -> getQTilesetFromXmlElement(child)
+            );
+        }
+        catch (Exception ex)
+        {
+            System.err.println("[qtilesets file]");
+            ex.printStackTrace();
         }
         return result;
     }
@@ -250,14 +250,14 @@ public class QTileset
         QTileset result = null;
         
         try
-		{
+        {
             Loading.ensureName(xmlQTileset, "qtileset");
             
             AttributeValue<String> attrCode = new AttributeValue<String>(xmlQTileset, "code", new Identity<String>());
             AttributeValue<Integer> attrTransparent = new AttributeValue<>(xmlQTileset, "transparent", Loading.TRANSPARENCY_DECODER_FUNCTION); 
             AttributeValue<String> attrImage = new AttributeValue<String>(xmlQTileset, "image", new Identity<String>());
             Loading.ensureAllValidAttributes(attrCode, attrTransparent, attrImage);
-			
+            
             String code = attrCode.getValue();
             int transparent = attrTransparent.getValue();
             String location = attrImage.getValue();
@@ -265,19 +265,19 @@ public class QTileset
             final List<DrawingImage> tileImages = QTileset.getTilesetImages(tilesetPath, transparent);
             final Map<String, QTile> tiles = new HashMap<>();
             
-			Loading.applyActionToXmlElementChildren
-			(
-			    xmlQTileset,
-			    new Consumer<Element>() { public void accept(Element child) { QTile qt = QTile.getQTileFromXmlElement(child, tileImages); tiles.put(qt.code, qt); } }
-			    // child -> { QTile qt = QTile.getQTileFromXmlElement(child, tileImages); tiles.put(qt.code, qt); }
-			);
+            Loading.applyActionToXmlElementChildren
+            (
+                xmlQTileset,
+                new Consumer<Element>() { public void accept(Element child) { QTile qt = QTile.getQTileFromXmlElement(child, tileImages); tiles.put(qt.code, qt); } }
+                // child -> { QTile qt = QTile.getQTileFromXmlElement(child, tileImages); tiles.put(qt.code, qt); }
+            );
             
             result = new QTileset(code, transparent, location, tiles);
-		}
-		catch (Exception ex)
-		{
-			System.err.println("[qtileset]");
-			ex.printStackTrace();
+        }
+        catch (Exception ex)
+        {
+            System.err.println("[qtileset]");
+            ex.printStackTrace();
         }
         
         return result;

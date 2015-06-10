@@ -29,25 +29,25 @@ import java.util.Collections;
 public abstract class QListMenu extends QSelectableMenu
 {
     //
-	// Instance Variables
-	//
+    // Instance Variables
+    //
     
     private int selectionIndex = 0;
     
-	
-	//
-	// Constructor
-	//
+    
+    //
+    // Constructor
+    //
     
     public QListMenu(String _title, MenuItem... _menuItems)
     {
         super(_title, _menuItems);
     }
-	
-	
-	//
-	// Instance Methods 
-	//
+    
+    
+    //
+    // Instance Methods 
+    //
     
     @Override
     public void selectDefaultItem()

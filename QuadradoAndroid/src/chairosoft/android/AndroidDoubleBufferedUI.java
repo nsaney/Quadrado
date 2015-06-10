@@ -40,7 +40,7 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI
     protected AndroidButtonAdapter androidButtonAdapter = null;
     protected final Rect destinationFrame = new Rect();
     
-	protected boolean touchListenerAdded = false;
+    protected boolean touchListenerAdded = false;
     
     @Override protected void doStart()
     {
@@ -54,15 +54,15 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI
     @Override protected void ensureRenderContext()
     {
         if (this.dbImage == null)
-		{
-			this.dbImage = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888);
+        {
+            this.dbImage = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888);
             this.destinationFrame.set(0, 0, this.width, this.height);
             if (this.dbImage == null) 
             {
                 System.err.println("Error in ensureRenderContext(): Unable to create Bitmap."); 
                 return; 
             }
-		}
+        }
         
         if (this.renderContext == null)
         {
@@ -74,11 +74,11 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI
     @Override public void paintScreen()
     {
         if (this.holder == null) { return; }
-		try (AndroidDrawingContext context = new AndroidDrawingContext(this.holder.lockCanvas()))
-		{
-			Canvas canvas = context.canvas;
-			if ((canvas != null) && (this.dbImage != null)) 
-			{
+        try (AndroidDrawingContext context = new AndroidDrawingContext(this.holder.lockCanvas()))
+        {
+            Canvas canvas = context.canvas;
+            if ((canvas != null) && (this.dbImage != null)) 
+            {
                 try
                 {
                     synchronized (this.holder)
@@ -96,17 +96,17 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI
                 {
                     holder.unlockCanvasAndPost(canvas);
                 }
-			}
-			// else 
-			// {
-				// String message = String.format("Error in paintScreen(): canvas = %s, this.dbImage = %s", canvas, this.dbImage);
-				// Log.e("AndroidDoubleBufferedUI", message);
-			// }
-		}
-		catch (Exception ex) 
-		{
-			System.err.println("DrawingContext error: " + ex);
-		}
+            }
+            // else 
+            // {
+                // String message = String.format("Error in paintScreen(): canvas = %s, this.dbImage = %s", canvas, this.dbImage);
+                // Log.e("AndroidDoubleBufferedUI", message);
+            // }
+        }
+        catch (Exception ex) 
+        {
+            System.err.println("DrawingContext error: " + ex);
+        }
     }
     
     @Override public void checkForPause()
@@ -122,11 +122,11 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI
         }
     }
     
-	/* watch for screen touches */
-	private void addTouchListener()
-	{
-		if (!this.touchListenerAdded)
-		{
+    /* watch for screen touches */
+    private void addTouchListener()
+    {
+        if (!this.touchListenerAdded)
+        {
             this.androidButtonAdapter = new AndroidButtonAdapter(this.buttonListener);
             this.holder.addCallback(new SurfaceHolder.Callback() 
             {
@@ -213,7 +213,7 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI
                 @Override public void surfaceCreated(final SurfaceHolder holder) { }
             });
             this.view.setOnTouchListener(this.androidButtonAdapter);
-			this.touchListenerAdded = true;
-		}
-	}
+            this.touchListenerAdded = true;
+        }
+    }
 }

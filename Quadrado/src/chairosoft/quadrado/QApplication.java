@@ -34,99 +34,99 @@ import java.util.concurrent.*;
  */
 public abstract class QApplication implements Runnable, ButtonListener
 {
-	
-	// 
-	// Constants 
-	// 
-	
-	public abstract int getPanelWidth();
-	public abstract int getPanelHeight();
+    
+    // 
+    // Constants 
+    // 
+    
+    public abstract int getPanelWidth();
+    public abstract int getPanelHeight();
     public abstract int getXScaling();
     public abstract int getYScaling();
-	public final int getPanelHalfWidth() { return this.getPanelWidth() / 2; }
-	public final int getPanelHalfHeight() { return this.getPanelHeight() / 2; }
-		
-	public static final int DEFAULT_TIME_TARGET_PERIOD_IN_NS = 10 * 1000 * 1000; // about 100 Hz
-	public static final int SLEEPLESS_UPDATES_PER_YIELD = 16;
-	public static final int MAX_FRAME_SKIPS = 4;
-	
-	public static final int       int10e3 = 1000;
-	public static final int       int10e6 = 1000000;
-	public static final int       int10e9 = 1000000000;
-	public static final double double10e6 = 1000000.0;
-	public static final double double10e9 = 1000000000.0;
-	
-	
-	// 
-	// Static Inner Enum 
-	// 
-	
-	public static enum ButtonState
-	{
-		BUTTON_PRESSED, 
-		BUTTON_HELD, 
-		BUTTON_RELEASED, 
-		BUTTON_NOTHELD
-	}
-	
-	
-	// 
-	// Instance Variables 
-	// 
-	
-	private boolean isStarted = false;
+    public final int getPanelHalfWidth() { return this.getPanelWidth() / 2; }
+    public final int getPanelHalfHeight() { return this.getPanelHeight() / 2; }
+        
+    public static final int DEFAULT_TIME_TARGET_PERIOD_IN_NS = 10 * 1000 * 1000; // about 100 Hz
+    public static final int SLEEPLESS_UPDATES_PER_YIELD = 16;
+    public static final int MAX_FRAME_SKIPS = 4;
+    
+    public static final int       int10e3 = 1000;
+    public static final int       int10e6 = 1000000;
+    public static final int       int10e9 = 1000000000;
+    public static final double double10e6 = 1000000.0;
+    public static final double double10e9 = 1000000000.0;
+    
+    
+    // 
+    // Static Inner Enum 
+    // 
+    
+    public static enum ButtonState
+    {
+        BUTTON_PRESSED, 
+        BUTTON_HELD, 
+        BUTTON_RELEASED, 
+        BUTTON_NOTHELD
+    }
+    
+    
+    // 
+    // Instance Variables 
+    // 
+    
+    private boolean isStarted = false;
     public final String title;
-	
-	protected Thread animator;
-	
-	protected long timeThreadStart;
-	protected long framesElapsedTotal = 0;
+    
+    protected Thread animator;
+    
+    protected long timeThreadStart;
+    protected long framesElapsedTotal = 0;
     
     protected int timeTargetPeriodInNanoseconds = DEFAULT_TIME_TARGET_PERIOD_IN_NS;
     public void setTimeTargetPeriodInNanoSeconds(int ns) { this.timeTargetPeriodInNanoseconds = ns; }
     public void setFrameRateInHz(int frameRateHz) { this.setTimeTargetPeriodInNanoSeconds(int10e9 / frameRateHz); }
-	
-	protected volatile boolean isRunning = false;
-	protected volatile boolean showDebug = false;
-	protected volatile boolean showDebugInConsole = false;
-	
-	// initial capacity = 16, load factor = 0.75, and concurrencyLevel = 1
-	protected volatile Map<ButtonEvent.Code, ButtonState> buttonStates = new ConcurrentHashMap<>(16, 0.75f, 1);
-	
-	protected int sleeplessUpdates = 0;
-	
-	// double-buffer variables
+    
+    protected volatile boolean isRunning = false;
+    protected volatile boolean showDebug = false;
+    protected volatile boolean showDebugInConsole = false;
+    
+    // initial capacity = 16, load factor = 0.75, and concurrencyLevel = 1
+    protected volatile Map<ButtonEvent.Code, ButtonState> buttonStates = new ConcurrentHashMap<>(16, 0.75f, 1);
+    
+    protected int sleeplessUpdates = 0;
+    
+    // double-buffer variables
     protected DoubleBufferedUI dbui = null;
     public DoubleBufferedUI getDbui() { return this.dbui; }
-	
-	
-	// more vars in subclass ...
-	
-	
-	
-	// 
-	// Constructor 
-	// 
-	
-	
-	public QApplication(String _title)
-	{
-		this.title = _title;
+    
+    
+    // more vars in subclass ...
+    
+    
+    
+    // 
+    // Constructor 
+    // 
+    
+    
+    public QApplication(String _title)
+    {
+        this.title = _title;
         this.dbui = DoubleBufferedUI.create(this);
-		// game components, initialized in subclass constructor ...
-	}
-	
-	
-	
-	// 
-	// Instance Methods 
-	//
-	
-	
-	/* initialize and start the thread */
-	public boolean gameStart()
-	{
-	    boolean isFirstCall = this.dbui.start();
+        // game components, initialized in subclass constructor ...
+    }
+    
+    
+    
+    // 
+    // Instance Methods 
+    //
+    
+    
+    /* initialize and start the thread */
+    public boolean gameStart()
+    {
+        boolean isFirstCall = this.dbui.start();
         if (isFirstCall)
         {
             this.animator = new Thread(this);
@@ -134,130 +134,130 @@ public abstract class QApplication implements Runnable, ButtonListener
             this.timeThreadStart = System.nanoTime();
         }
         return isFirstCall;
-	}
-	
-	/* stops execution */
-	public void gameStop() { isRunning = false; }
-	
-	
-	/* do game initializations */
-	protected abstract void qGameInitialize();
-	
-	/* repeat: update, render, sleep */
-	public final void run()
-	{
-		try 
-		{
-			this.doRun();
-		}
-		catch (Exception ex) 
-		{
-			System.err.print("[qapplication]"); 
-			ex.printStackTrace();
-		}
+    }
+    
+    /* stops execution */
+    public void gameStop() { isRunning = false; }
+    
+    
+    /* do game initializations */
+    protected abstract void qGameInitialize();
+    
+    /* repeat: update, render, sleep */
+    public final void run()
+    {
+        try 
+        {
+            this.doRun();
+        }
+        catch (Exception ex) 
+        {
+            System.err.print("[qapplication]"); 
+            ex.printStackTrace();
+        }
         System.exit(0);
-	}
-	
-	private void doRun()
-	{
-		// allow initializations
-		this.qGameInitialize();
-		
-		long timePreUpdate = 0L;
-		long timePostUpdatePreRender = 0L;
-		long timePostRender = 0L;
-		long timeUpdateLength = 0L;
-		long timeRenderLength = 0L;
-		long timeActualSleptLength = 0L;
-		long timeSleepLengthTarget = 0L;
-		long timeOverSleptLength = 0L;
-		long timeUnderSleptLength = 0L;
-		
-		// painting (doesn't affect anything except gameRenderDebugStats
-		long timePrePaint = 0L;
-		long timePaintLength = 0L;
-		
-		dbui.checkForPause();
+    }
+    
+    private void doRun()
+    {
+        // allow initializations
+        this.qGameInitialize();
+        
+        long timePreUpdate = 0L;
+        long timePostUpdatePreRender = 0L;
+        long timePostRender = 0L;
+        long timeUpdateLength = 0L;
+        long timeRenderLength = 0L;
+        long timeActualSleptLength = 0L;
+        long timeSleepLengthTarget = 0L;
+        long timeOverSleptLength = 0L;
+        long timeUnderSleptLength = 0L;
+        
+        // painting (doesn't affect anything except gameRenderDebugStats
+        long timePrePaint = 0L;
+        long timePaintLength = 0L;
+        
+        dbui.checkForPause();
         timePreUpdate = System.nanoTime();
-		
-		this.isRunning = true;
-		while (isRunning)
-		{
-			this.gameUpdate();
-			
-			timePostUpdatePreRender = System.nanoTime();
-			timeUpdateLength = timePostUpdatePreRender - timePreUpdate;
-			
-			this.gameRender();
-			this.gameRenderDebugStats(timeUpdateLength, timeRenderLength, timePaintLength, timeActualSleptLength);
-			
-			timePrePaint = System.nanoTime();
-			this.paintScreen();
-			// timePostPaint = System.nanoTime();
-			
-			timePostRender = System.nanoTime();
-			timeRenderLength = timePostRender - timePostUpdatePreRender;
-			timePaintLength = timePostRender - timePrePaint;
-			
-			timeSleepLengthTarget = this.timeTargetPeriodInNanoseconds - timeUpdateLength - timeRenderLength - timeOverSleptLength;
-			
-			if (timeSleepLengthTarget > 0)
-			{
-				this.gameSleepNanos(timeSleepLengthTarget);
-				timeActualSleptLength = (System.nanoTime() - timePostRender);
-				timeOverSleptLength = timeActualSleptLength - timeSleepLengthTarget;
-			}
-			else
-			{	
-				if ((++this.sleeplessUpdates) > SLEEPLESS_UPDATES_PER_YIELD)
-				{
-					Thread.yield();
-					this.sleeplessUpdates = 0;
-				}
-				timeUnderSleptLength -= timeSleepLengthTarget; // timeSleepLengthTarget <= 0
-				timeActualSleptLength = 0L;
-				timeOverSleptLength = 0L;
-			}
-			
+        
+        this.isRunning = true;
+        while (isRunning)
+        {
+            this.gameUpdate();
+            
+            timePostUpdatePreRender = System.nanoTime();
+            timeUpdateLength = timePostUpdatePreRender - timePreUpdate;
+            
+            this.gameRender();
+            this.gameRenderDebugStats(timeUpdateLength, timeRenderLength, timePaintLength, timeActualSleptLength);
+            
+            timePrePaint = System.nanoTime();
+            this.paintScreen();
+            // timePostPaint = System.nanoTime();
+            
+            timePostRender = System.nanoTime();
+            timeRenderLength = timePostRender - timePostUpdatePreRender;
+            timePaintLength = timePostRender - timePrePaint;
+            
+            timeSleepLengthTarget = this.timeTargetPeriodInNanoseconds - timeUpdateLength - timeRenderLength - timeOverSleptLength;
+            
+            if (timeSleepLengthTarget > 0)
+            {
+                this.gameSleepNanos(timeSleepLengthTarget);
+                timeActualSleptLength = (System.nanoTime() - timePostRender);
+                timeOverSleptLength = timeActualSleptLength - timeSleepLengthTarget;
+            }
+            else
+            {    
+                if ((++this.sleeplessUpdates) > SLEEPLESS_UPDATES_PER_YIELD)
+                {
+                    Thread.yield();
+                    this.sleeplessUpdates = 0;
+                }
+                timeUnderSleptLength -= timeSleepLengthTarget; // timeSleepLengthTarget <= 0
+                timeActualSleptLength = 0L;
+                timeOverSleptLength = 0L;
+            }
+            
             ++this.framesElapsedTotal;
-			dbui.checkForPause();
+            dbui.checkForPause();
             timePreUpdate = System.nanoTime();
-			
-			for (int framesSkipped = 0; (timeUnderSleptLength > this.timeTargetPeriodInNanoseconds) && (framesSkipped < MAX_FRAME_SKIPS); ++framesSkipped)
-			{
-				timeUnderSleptLength -= this.timeTargetPeriodInNanoseconds;
-				this.gameUpdate();
-			}
-			//end-for framesSkipped
-		}
-		//end-while isRunning
+            
+            for (int framesSkipped = 0; (timeUnderSleptLength > this.timeTargetPeriodInNanoseconds) && (framesSkipped < MAX_FRAME_SKIPS); ++framesSkipped)
+            {
+                timeUnderSleptLength -= this.timeTargetPeriodInNanoseconds;
+                this.gameUpdate();
+            }
+            //end-for framesSkipped
+        }
+        //end-while isRunning
         
         // game finish
         this.qGameFinish();
-	}
+    }
     
     /* do game finish */
-	protected abstract void qGameFinish();
+    protected abstract void qGameFinish();
     
-	
-	/* sleep a bit */
-	private void gameSleepNanos(long nanoseconds) { this.gameSleepMillis(nanoseconds / int10e6); }
-	private void gameSleepMillis(long milliseconds)
-	{
-		try 
-		{
-			Thread.sleep(milliseconds);
-			this.sleeplessUpdates = 0;
-		} 
-		catch (InterruptedException ex) { } 
-	}
-	
-	
-	/* do key handling */
-	protected abstract void qButtonPressed(ButtonEvent.Code buttonCode);
-	protected abstract void qButtonHeld(ButtonEvent.Code buttonCode);
-	protected abstract void qButtonReleased(ButtonEvent.Code buttonCode);
-	protected abstract void qButtonNotHeld(ButtonEvent.Code buttonCode);
+    
+    /* sleep a bit */
+    private void gameSleepNanos(long nanoseconds) { this.gameSleepMillis(nanoseconds / int10e6); }
+    private void gameSleepMillis(long milliseconds)
+    {
+        try 
+        {
+            Thread.sleep(milliseconds);
+            this.sleeplessUpdates = 0;
+        } 
+        catch (InterruptedException ex) { } 
+    }
+    
+    
+    /* do key handling */
+    protected abstract void qButtonPressed(ButtonEvent.Code buttonCode);
+    protected abstract void qButtonHeld(ButtonEvent.Code buttonCode);
+    protected abstract void qButtonReleased(ButtonEvent.Code buttonCode);
+    protected abstract void qButtonNotHeld(ButtonEvent.Code buttonCode);
     
     @Override public void buttonPressed(ButtonEvent e)
     {
@@ -278,17 +278,17 @@ public abstract class QApplication implements Runnable, ButtonListener
             this.buttonStates.put(e.code, ButtonState.BUTTON_RELEASED);
         }
     }
-	
-	
-	/* do game update */
-	protected abstract void qGameUpdateInit();
-	protected abstract void qGameUpdate();
-	
-	/* update game status */
-	private void gameUpdate()
-	{
-		this.qGameUpdateInit();
-		
+    
+    
+    /* do game update */
+    protected abstract void qGameUpdateInit();
+    protected abstract void qGameUpdate();
+    
+    /* update game status */
+    private void gameUpdate()
+    {
+        this.qGameUpdateInit();
+        
         //if (this.framesElapsedTotal % 25 == 0) { System.err.println(buttonState); }
         Set<ButtonEvent.Code> buttonCodes = this.buttonStates.keySet();
         for (ButtonEvent.Code buttonCode : buttonCodes)
@@ -302,48 +302,48 @@ public abstract class QApplication implements Runnable, ButtonListener
             }
         }
         
-		this.qGameUpdate();
-	}
-	
-	
-	/* do game render */
-	protected abstract void qGameRender(DrawingContext ctx);
-	
-	/* render game to the buffer */
-	private void gameRender() 
-	{
+        this.qGameUpdate();
+    }
+    
+    
+    /* do game render */
+    protected abstract void qGameRender(DrawingContext ctx);
+    
+    /* render game to the buffer */
+    private void gameRender() 
+    {
         DrawingContext renderContext = this.dbui.getRenderContext();
-		if (renderContext.isReady())
-		{
-			renderContext.setColor(Color.WHITE);
-			renderContext.fillRect(0, 0, this.getPanelWidth(), this.getPanelHeight());
-			
-			// draw game elements ...
-			this.qGameRender(renderContext);
-		}
-	}
-	
-	/* render debug stats to the buffer */
+        if (renderContext.isReady())
+        {
+            renderContext.setColor(Color.WHITE);
+            renderContext.fillRect(0, 0, this.getPanelWidth(), this.getPanelHeight());
+            
+            // draw game elements ...
+            this.qGameRender(renderContext);
+        }
+    }
+    
+    /* render debug stats to the buffer */
     private static final Font DEBUG_FONT = Font.create(Font.Family.MONOSPACED, Font.Style.PLAIN, 12);
-	private void gameRenderDebugStats(long timeUpdateLength, long timeRenderLength, long timePaintLength, long timeActualSleptLength)
-	{
+    private void gameRenderDebugStats(long timeUpdateLength, long timeRenderLength, long timePaintLength, long timeActualSleptLength)
+    {
         DrawingContext ctx = this.dbui.getRenderContext();
-		if (this.showDebug && (ctx != null) && ctx.isReady())
-		{
-			int ctxColor = ctx.getColor();
-			Font ctxFont = ctx.getFont();
-			
-			try
-			{
-				ctx.setColor(0xbfffffff);
-				ctx.fillRect(0, 0, this.getPanelWidth(), 200);
-				
-				ctx.setColor(Color.BLACK);
-				ctx.setFont(QApplication.DEBUG_FONT);
+        if (this.showDebug && (ctx != null) && ctx.isReady())
+        {
+            int ctxColor = ctx.getColor();
+            Font ctxFont = ctx.getFont();
+            
+            try
+            {
+                ctx.setColor(0xbfffffff);
+                ctx.fillRect(0, 0, this.getPanelWidth(), 200);
                 
-				long timeTotalLoopLength = timeUpdateLength + timeRenderLength + timeActualSleptLength;
-				
-				timeRenderLength -= timePaintLength;
+                ctx.setColor(Color.BLACK);
+                ctx.setFont(QApplication.DEBUG_FONT);
+                
+                long timeTotalLoopLength = timeUpdateLength + timeRenderLength + timeActualSleptLength;
+                
+                timeRenderLength -= timePaintLength;
                 
                 ctx.drawLinesOfText(new String[] {
                     QApplication.getNumericDebugMessage("Actual update (ms)", timeUpdateLength / (double10e6)),
@@ -356,49 +356,49 @@ public abstract class QApplication implements Runnable, ButtonListener
                     QApplication.getNumericDebugMessage("Actual rate   (Hz)", (double10e9) / timeTotalLoopLength, 10),
                     QApplication.getNumericDebugMessage("Time elapsed   (s)", (System.nanoTime() - timeThreadStart) / (double10e9), 0)
                 }, 20, 0);
-			}
-			finally
-			{
-				ctx.setColor(ctxColor);
-				ctx.setFont(ctxFont);
-			}
-		}
-	}
-	
-	/* get debug message for display */
-	private static String getNumericDebugMessage(String title, double number)
+            }
+            finally
+            {
+                ctx.setColor(ctxColor);
+                ctx.setFont(ctxFont);
+            }
+        }
+    }
+    
+    /* get debug message for display */
+    private static String getNumericDebugMessage(String title, double number)
     {
         return QApplication.getNumericDebugMessage(title, number, 1);
     }
-	private static String getNumericDebugMessage(String title, double number, int dotDivisor)
-	{
-		String result = String.format("%15s %8.4f", title + ":", number);
-		
-		if (dotDivisor > 0)
-		{
-			String dots = "";
-			int truncatedValue = (int)(number / dotDivisor);
-			for (int i = 0; i < truncatedValue; ++i) { dots += "."; }
-			result += String.format("[%-25s]", dots);
-		}
-		return result;
-	}
-	
-	// /* display debug info on screen or console */
-	// private void gameShowDebug(DrawingContext ctx, int x, int y, String title, double number)
-	// {
-		// this.gameShowDebug(ctx, x, y, title, number, 1);
-	// }
-	// private void gameShowDebug(DrawingContext ctx, int x, int y, String title, double number, int dotDivisor)
-	// {
+    private static String getNumericDebugMessage(String title, double number, int dotDivisor)
+    {
+        String result = String.format("%15s %8.4f", title + ":", number);
+        
+        if (dotDivisor > 0)
+        {
+            String dots = "";
+            int truncatedValue = (int)(number / dotDivisor);
+            for (int i = 0; i < truncatedValue; ++i) { dots += "."; }
+            result += String.format("[%-25s]", dots);
+        }
+        return result;
+    }
+    
+    // /* display debug info on screen or console */
+    // private void gameShowDebug(DrawingContext ctx, int x, int y, String title, double number)
+    // {
+        // this.gameShowDebug(ctx, x, y, title, number, 1);
+    // }
+    // private void gameShowDebug(DrawingContext ctx, int x, int y, String title, double number, int dotDivisor)
+    // {
         // String message = QApplication.getNumericDebugMessage(title, number, dotDivisor);
         // ctx.drawString(message, x, y); 
-	// }
-	
-	
-	/* paint screen */
-	private void paintScreen()
-	{
+    // }
+    
+    
+    /* paint screen */
+    private void paintScreen()
+    {
         this.dbui.paintScreen();
-	}
+    }
 }

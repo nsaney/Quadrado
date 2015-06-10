@@ -43,10 +43,10 @@ public class Rectangle
     public IntPoint2D[] getPoints()
     {
         IntPoint2D[] result = new IntPoint2D[4];
-		result[0] = new IntPoint2D(this.x,              this.y);
-		result[1] = new IntPoint2D(this.x + this.width, this.y);
-		result[2] = new IntPoint2D(this.x + this.width, this.y + this.height);
-		result[3] = new IntPoint2D(this.x,              this.y + this.height);
+        result[0] = new IntPoint2D(this.x,              this.y);
+        result[1] = new IntPoint2D(this.x + this.width, this.y);
+        result[2] = new IntPoint2D(this.x + this.width, this.y + this.height);
+        result[3] = new IntPoint2D(this.x,              this.y + this.height);
         return result;
     }
     

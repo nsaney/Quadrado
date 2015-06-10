@@ -96,9 +96,9 @@ public abstract class QSelectableMenu
     }
     
     
-	//
-	// Instance Variables
-	//
+    //
+    // Instance Variables
+    //
     
     public int x = 0;
     public int y = 0;
@@ -114,10 +114,10 @@ public abstract class QSelectableMenu
     protected MenuItem selectedItem = null;
     public MenuItem getSelectedItem() { return this.selectedItem; }
     
-	
-	//
-	// Constructor
-	//
+    
+    //
+    // Constructor
+    //
     
     public QSelectableMenu(String _title, MenuItem... _menuItems)
     {
@@ -125,11 +125,11 @@ public abstract class QSelectableMenu
         this.addMenuItems(_menuItems);
         this.selectDefaultItem();
     }
-	
-	
-	//
-	// Instance Methods 
-	//
+    
+    
+    //
+    // Instance Methods 
+    //
     
     public boolean getTitleVisibility() { return this.titleVisibility; }
     public void setTitleVisibility(boolean visibility) { this.titleVisibility = visibility; }
@@ -202,5 +202,5 @@ public abstract class QSelectableMenu
     
     public void executeSelectedItem() { if (this.selectedItem != null) { this.selectedItem.execute(); } }
     
-	public final void drawToContextAtOwnPosition(DrawingContext ctx) { this.drawToContext(ctx, this.x, this.y); }
+    public final void drawToContextAtOwnPosition(DrawingContext ctx) { this.drawToContext(ctx, this.x, this.y); }
 }

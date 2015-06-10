@@ -59,22 +59,22 @@ public class AndroidButtonAdapter implements View.OnTouchListener
     public AndroidButtonAdapter(ButtonListener _buttonListener)
     {
         this.buttonListener = _buttonListener;
-		this.putNewButtonFor(ButtonEvent.Code.LEFT);
-		this.putNewButtonFor(ButtonEvent.Code.RIGHT);
-		this.putNewButtonFor(ButtonEvent.Code.UP);
-		this.putNewButtonFor(ButtonEvent.Code.DOWN);
-		this.putNewButtonFor(ButtonEvent.Code.SELECT);
-		this.putNewButtonFor(ButtonEvent.Code.START);
-		this.putNewButtonFor(ButtonEvent.Code.A);
-		this.putNewButtonFor(ButtonEvent.Code.B);
-		this.putNewButtonFor(ButtonEvent.Code.X);
-		this.putNewButtonFor(ButtonEvent.Code.Y);
+        this.putNewButtonFor(ButtonEvent.Code.LEFT);
+        this.putNewButtonFor(ButtonEvent.Code.RIGHT);
+        this.putNewButtonFor(ButtonEvent.Code.UP);
+        this.putNewButtonFor(ButtonEvent.Code.DOWN);
+        this.putNewButtonFor(ButtonEvent.Code.SELECT);
+        this.putNewButtonFor(ButtonEvent.Code.START);
+        this.putNewButtonFor(ButtonEvent.Code.A);
+        this.putNewButtonFor(ButtonEvent.Code.B);
+        this.putNewButtonFor(ButtonEvent.Code.X);
+        this.putNewButtonFor(ButtonEvent.Code.Y);
         this.putNewButtonFor(ButtonEvent.Code.DEBUG_9);
     }
     
     protected void putNewButtonFor(ButtonEvent.Code code)
     {
-		this.codeButtonMap.put(code, new AndroidOverlayButton(code));
+        this.codeButtonMap.put(code, new AndroidOverlayButton(code));
     }
     
     public static class AndroidOverlayButton extends QCollidable

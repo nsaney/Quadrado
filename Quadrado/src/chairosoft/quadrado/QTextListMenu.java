@@ -38,9 +38,9 @@ public class QTextListMenu extends QListMenu
     
     
     //
-	// Instance Variables
-	//
-	
+    // Instance Variables
+    //
+    
     protected ArrayList<String> textLines;
     protected DrawingImage outerImage = null;
     private FontLayout fontLayout = null;
@@ -57,10 +57,10 @@ public class QTextListMenu extends QListMenu
     private int borderColor = Color.BLACK;
     
     
-	
-	//
-	// Constructor
-	//
+    
+    //
+    // Constructor
+    //
     
     public QTextListMenu(String _name, MenuItem... _menuItems)
     {
@@ -74,11 +74,11 @@ public class QTextListMenu extends QListMenu
         this.y = y;
         this.setup(_fontLayout, w, h);
     }
-	
-	
-	//
-	// Instance Methods 
-	//
+    
+    
+    //
+    // Instance Methods 
+    //
     
     public final void setup(FontLayout _fontLayout, int _height)
     {
@@ -239,7 +239,7 @@ public class QTextListMenu extends QListMenu
     {
         return this.getWidthOfLongestMenuItem(fl) + (2 * fl.widthOf("M")) + (2 * this.getBorderWidth());
     }
-	public int getWidth() { return this.width; }
+    public int getWidth() { return this.width; }
     public void setWidth(int w) { this.width = w; this.configureImage(); }
     
     public int getHeight() { return this.height; }

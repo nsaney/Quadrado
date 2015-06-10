@@ -43,9 +43,9 @@ public abstract class DoubleBufferedUI
     protected abstract void doStart();
     public final boolean start()
     {
-	    boolean isFirstCall = !this.isStarted;
+        boolean isFirstCall = !this.isStarted;
         this.isStarted = true;
-		if (isFirstCall)
+        if (isFirstCall)
         {
             this.doStart();
         }
