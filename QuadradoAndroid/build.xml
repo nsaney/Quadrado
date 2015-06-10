@@ -80,8 +80,8 @@
     >
       <link 
         offline="true" 
-        href="http://download.oracle.com/javase/7/docs/api/" 
-        packagelistLoc="./_package-lists/_java"
+        href="http://developer.android.com/reference/" 
+        packagelistLoc="${env.ANDROID_HOME}/docs/reference"
       />
       <link
         offline="true" 
