@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <qsprites folder="sprites">
-	<qsprite code="exampleSprite01" width="32" height="32">
-		<spritesheet image="exampleSpriteSheet01.png" transparent="#e0e0e0" />
-		<shapes>
-			<rectangle code="shape_0" x0="8" y0="16" width="16" height="16"/>
-		</shapes>
-		<animations>
-			<animation code="anim_left">
-				<frame image="00" duration="50"/>
-				<frame image="02" duration="50"/>
-			</animation>
-			<animation code="anim_right">
-				<frame image="01" duration="50"/>
-				<frame image="03" duration="50"/>
-			</animation>
-		</animations>
-		<states default="left">
-			<state code="left"    shape="shape_0" animation="anim_left"/>
-			<state code="right"   shape="shape_0" animation="anim_right"/>
-		</states>
-	</qsprite>
+  <qsprite code="exampleSprite01" width="32" height="32">
+    <spritesheet image="exampleSpriteSheet01.png" transparent="#e0e0e0" />
+    <shapes>
+      <rectangle code="shape_0" x0="8" y0="16" width="16" height="16"/>
+    </shapes>
+    <animations>
+      <animation code="anim_left">
+        <frame image="00" duration="50"/>
+        <frame image="02" duration="50"/>
+      </animation>
+      <animation code="anim_right">
+        <frame image="01" duration="50"/>
+        <frame image="03" duration="50"/>
+      </animation>
+    </animations>
+    <states default="left">
+      <state code="left"    shape="shape_0" animation="anim_left"/>
+      <state code="right"   shape="shape_0" animation="anim_right"/>
+    </states>
+  </qsprite>
 </qsprites>
