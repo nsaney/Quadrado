@@ -14,6 +14,8 @@ import chairosoft.ui.DoubleBufferedUI;
 import chairosoft.ui.event.ButtonListener;
 import chairosoft.ui.event.ButtonEvent;
 import chairosoft.ui.event.ButtonSource;
+import chairosoft.ui.event.PointerListener;
+import chairosoft.ui.event.PointerEvent;
 import chairosoft.ui.graphics.Color;
 import chairosoft.ui.graphics.DrawingContext;
 import chairosoft.ui.graphics.Font;
@@ -31,7 +33,7 @@ import java.util.concurrent.*;
  * 
  * See also <a target="_top" href="http://fivedots.coe.psu.ac.th/~ad/jg/">Davison's web page about Java game programming</a>.
  */
-public abstract class QApplication implements Runnable, ButtonListener
+public abstract class QApplication implements Runnable, ButtonListener, PointerListener
 {
     
     // 
@@ -92,6 +94,8 @@ public abstract class QApplication implements Runnable, ButtonListener
     // initial capacity = 16, load factor = 0.75, and concurrencyLevel = 1
     protected volatile Map<ButtonEvent.Code, ButtonState> buttonStates = new ConcurrentHashMap<>(16, 0.75f, 1);
     
+    protected volatile ConcurrentLinkedQueue<PointerEvent> pointerEventQueue = new ConcurrentLinkedQueue<>();
+    
     protected int sleeplessUpdates = 0;
     
     // double-buffer variables
@@ -118,7 +122,6 @@ public abstract class QApplication implements Runnable, ButtonListener
             this.getXScaling(), 
             this.getYScaling()
         );
-        this.dbui.setButtonListener(this);
         // game components, initialized in subclass constructor ...
     }
     
@@ -135,6 +138,11 @@ public abstract class QApplication implements Runnable, ButtonListener
         boolean isFirstCall = this.dbui.start();
         if (isFirstCall)
         {
+            // attach listeners to UI
+            this.dbui.setButtonListener(this);
+            this.dbui.setPointerListener(this);
+            
+            // start game thread
             this.animator = new Thread(this);
             this.animator.start();
             this.timeThreadStart = System.nanoTime();
@@ -259,13 +267,14 @@ public abstract class QApplication implements Runnable, ButtonListener
     }
     
     
-    /* do key handling */
+    /* do button handling */
     protected abstract void qButtonPressed(ButtonEvent.Code buttonCode);
     protected abstract void qButtonHeld(ButtonEvent.Code buttonCode);
     protected abstract void qButtonReleased(ButtonEvent.Code buttonCode);
     protected abstract void qButtonNotHeld(ButtonEvent.Code buttonCode);
     
-    @Override public void buttonPressed(ButtonEvent e)
+    @Override 
+    public final void buttonPressed(ButtonEvent e)
     {
         // eliminate repeated button presses
         ButtonState state = this.buttonStates.get(e.code);
@@ -275,7 +284,8 @@ public abstract class QApplication implements Runnable, ButtonListener
         }
     }
     
-    @Override public void buttonReleased(ButtonEvent e)
+    @Override 
+    public final void buttonReleased(ButtonEvent e)
     {
         // eliminate repeated button releases
         ButtonState state = this.buttonStates.get(e.code);
@@ -284,6 +294,15 @@ public abstract class QApplication implements Runnable, ButtonListener
             this.buttonStates.put(e.code, ButtonState.BUTTON_RELEASED);
         }
     }
+    
+    /* do pointer handling */
+    protected abstract void qPointerPressed(float x, float y);
+    protected abstract void qPointerMoved(float x, float y);
+    protected abstract void qPointerReleased(float x, float y);
+    
+    @Override public final void pointerPressed(PointerEvent e) { this.pointerEventQueue.offer(e); }
+    @Override public final void pointerMoved(PointerEvent e) { this.pointerEventQueue.offer(e); }
+    @Override public final void pointerReleased(PointerEvent e) { this.pointerEventQueue.offer(e); }
     
     
     /* do game update */
@@ -307,6 +326,22 @@ public abstract class QApplication implements Runnable, ButtonListener
                 case BUTTON_NOTHELD  : this.qButtonNotHeld(buttonCode); break;
             }
         }
+        
+        int pointerEventCount = pointerEventQueue.size(); // only process mouse events in the queue as of this call
+        for (int i = 0; i < pointerEventCount; ++i)
+        {
+            PointerEvent e = pointerEventQueue.poll();
+            if (e != null) 
+            {
+                switch (e.state)
+                {
+                    case PointerEvent.PRESSED: this.qPointerPressed(e.x, e.y); break;
+                    case PointerEvent.MOVED: this.qPointerMoved(e.x, e.y); break;
+                    case PointerEvent.RELEASED: this.qPointerReleased(e.x, e.y); break;
+                }
+            }
+        }
+        
         
         this.qGameUpdate();
     }

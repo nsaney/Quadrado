@@ -14,6 +14,7 @@ import chairosoft.dependency.Dependencies;
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
 import chairosoft.ui.event.ButtonListener;
+import chairosoft.ui.event.PointerListener;
 
 public abstract class DoubleBufferedUI
 {
@@ -24,6 +25,7 @@ public abstract class DoubleBufferedUI
     protected int yScaling = -1;
     
     protected ButtonListener buttonListener = null;
+    protected PointerListener pointerListener = null;
     
     
     public static DoubleBufferedUI create(String _title, int _width, int _height, int _xScaling, int _yScaling)
@@ -40,6 +42,11 @@ public abstract class DoubleBufferedUI
     public void setButtonListener(ButtonListener _buttonListener)
     {
         this.buttonListener = _buttonListener;
+    }
+    
+    public void setPointerListener(PointerListener _pointerListener)
+    {
+        this.pointerListener = _pointerListener;
     }
     
     private boolean isStarted = false;

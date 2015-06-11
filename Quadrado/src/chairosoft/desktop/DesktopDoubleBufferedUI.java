@@ -15,6 +15,7 @@ import chairosoft.ui.DoubleBufferedUI;
 import chairosoft.ui.event.ButtonListener;
 import chairosoft.ui.event.ButtonEvent;
 import chairosoft.ui.event.ButtonSource;
+import chairosoft.ui.event.PointerListener;
 
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
@@ -30,7 +31,10 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,7 +45,8 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
     protected JPanel panel = null;
     public JPanel getPanel() { return this.panel; }
     
-    protected boolean keyListenerAdded = false;
+    protected DesktopButtonAdapter desktopButtonAdapter = null;
+    protected DesktopPointerAdapter desktopPointerAdapter = null;
     
     @Override 
     protected void doStart()
@@ -56,7 +61,6 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
         this.panel.setDoubleBuffered(false); // because this takes care of it
         this.panel.setFocusable(true);
         this.panel.requestFocus(); // receiving key events
-        this.addKeyListener();
         
         frame.getContentPane().add(this.panel, BorderLayout.CENTER);
         
@@ -112,14 +116,34 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
     }
     
     
-    /* watch for key presses */
-    private void addKeyListener()
+    /* watch for button events */
+    @Override
+    public void setButtonListener(ButtonListener _buttonListener)
     {
-        if (!this.keyListenerAdded)
-        {
-            this.panel.addKeyListener(new DesktopButtonAdapter(this.buttonListener));
-            this.keyListenerAdded = true;
-        }
+        super.setButtonListener(_buttonListener);
+        
+        // remove current adapter
+        this.panel.removeKeyListener(this.desktopButtonAdapter);
+        
+        // add new adapter
+        this.desktopButtonAdapter = new DesktopButtonAdapter(this.buttonListener);
+        this.panel.addKeyListener(this.desktopButtonAdapter);
+    }
+    
+    /* watch for pointer events */
+    @Override
+    public void setPointerListener(PointerListener _pointerListener)
+    {
+        super.setPointerListener(_pointerListener);
+        
+        // remove current adapter
+        this.panel.removeMouseListener(this.desktopPointerAdapter);
+        this.panel.removeMouseMotionListener(this.desktopPointerAdapter);
+        
+        // add new adapter
+        this.desktopPointerAdapter = new DesktopPointerAdapter(this.pointerListener);
+        this.panel.addMouseListener(this.desktopPointerAdapter);
+        this.panel.addMouseMotionListener(this.desktopPointerAdapter);
     }
     
     @Override
