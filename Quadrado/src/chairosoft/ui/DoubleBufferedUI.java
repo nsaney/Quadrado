@@ -8,35 +8,38 @@
  * 
  */
 
-package chairosoft.quadrado.ui;
-
-import chairosoft.quadrado.QApplication;
-import chairosoft.quadrado.ui.event.ButtonListener;
+package chairosoft.ui;
 
 import chairosoft.dependency.Dependencies;
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
-
+import chairosoft.ui.event.ButtonListener;
 
 public abstract class DoubleBufferedUI
 {
-    protected ButtonListener buttonListener = null;
     protected String title = "";
     protected int width = -1;
     protected int height = -1;
     protected int xScaling = -1;
     protected int yScaling = -1;
     
-    public static DoubleBufferedUI create(QApplication app)
+    protected ButtonListener buttonListener = null;
+    
+    
+    public static DoubleBufferedUI create(String _title, int _width, int _height, int _xScaling, int _yScaling)
     {
         DoubleBufferedUI result = Dependencies.getNew(DoubleBufferedUI.class);
-        result.buttonListener = app;
-        result.title = app.title;
-        result.width = app.getPanelWidth();
-        result.height = app.getPanelHeight();
-        result.xScaling = app.getXScaling();
-        result.yScaling = app.getYScaling();
+        result.title = _title;
+        result.width = _width;
+        result.height = _height;
+        result.xScaling = _xScaling;
+        result.yScaling = _yScaling;
         return result;
+    }
+    
+    public void setButtonListener(ButtonListener _buttonListener)
+    {
+        this.buttonListener = _buttonListener;
     }
     
     private boolean isStarted = false;
@@ -62,6 +65,9 @@ public abstract class DoubleBufferedUI
     
     public abstract void paintScreen();
     
-    // Override this where necessary
-    public void checkForPause() { }
+    /**
+     * This method should be overriden in a subclass 
+     * to check lock objects (etc) for a pause state.
+     */
+    public abstract void checkForPause();
 }

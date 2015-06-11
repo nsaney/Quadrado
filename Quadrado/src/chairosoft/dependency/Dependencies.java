@@ -23,7 +23,7 @@ public class Dependencies
     static
     {
         Dependencies.register(chairosoft.ui.SystemLifecycleHelpers.class,          chairosoft.desktop.DesktopSystemLifecycleHelpers.class);
-        Dependencies.register(chairosoft.quadrado.ui.DoubleBufferedUI.class,       chairosoft.quadrado.desktop.DesktopDoubleBufferedUI.class);
+        Dependencies.register(chairosoft.ui.DoubleBufferedUI.class,                chairosoft.desktop.DesktopDoubleBufferedUI.class);
         Dependencies.register(chairosoft.ui.graphics.DrawingImage.class,           chairosoft.desktop.graphics.DesktopDrawingImage.class);
         Dependencies.register(chairosoft.ui.graphics.Font.class,                   chairosoft.desktop.graphics.DesktopFont.class);
         Dependencies.register(chairosoft.ui.audio.MultitrackBackgroundAudio.class, chairosoft.desktop.audio.DesktopMultitrackBackgroundAudio.class);
@@ -32,9 +32,9 @@ public class Dependencies
     
     
     public static <T, U extends T> 
-    void register(Class<T> clazzT, Class<U> clazzU)
+    void register(Class<T> clazz, Class<U> subclass)
     {
-        Dependencies.map.put(clazzT, clazzU);
+        Dependencies.map.put(clazz, subclass);
     }
     
     public static <T>

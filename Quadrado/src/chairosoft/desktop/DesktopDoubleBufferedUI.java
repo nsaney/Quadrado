@@ -8,13 +8,13 @@
  * 
  */
 
-package chairosoft.quadrado.desktop;
+package chairosoft.desktop;
 
 
-import chairosoft.quadrado.ui.DoubleBufferedUI;
-import chairosoft.quadrado.ui.event.ButtonListener;
-import chairosoft.quadrado.ui.event.ButtonEvent;
-import chairosoft.quadrado.ui.event.ButtonSource;
+import chairosoft.ui.DoubleBufferedUI;
+import chairosoft.ui.event.ButtonListener;
+import chairosoft.ui.event.ButtonEvent;
+import chairosoft.ui.event.ButtonSource;
 
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
@@ -43,7 +43,8 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
     
     protected boolean keyListenerAdded = false;
     
-    @Override protected void doStart()
+    @Override 
+    protected void doStart()
     {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +66,8 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
         frame.setVisible(true);
     }
     
-    @Override protected void ensureRenderContext()
+    @Override 
+    protected void ensureRenderContext()
     {
         if (this.dbImage == null)
         {
@@ -84,7 +86,8 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
         }
     }
     
-    @Override public void paintScreen()
+    @Override 
+    public void paintScreen()
     {
         try (DesktopDrawingContext context = new DesktopDrawingContext(this.panel.getGraphics()))
         {
@@ -117,5 +120,11 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
             this.panel.addKeyListener(new DesktopButtonAdapter(this.buttonListener));
             this.keyListenerAdded = true;
         }
+    }
+    
+    @Override
+    public void checkForPause()
+    {
+        // currently does nothing
     }
 }

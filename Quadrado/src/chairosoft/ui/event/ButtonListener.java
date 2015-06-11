@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.quadrado.ui.event;
+package chairosoft.ui.event;
 
 
 public interface ButtonListener

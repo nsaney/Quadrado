@@ -8,12 +8,12 @@
  * 
  */
 
-package chairosoft.quadrado.desktop;
+package chairosoft.desktop;
 
 
-import chairosoft.quadrado.ui.event.ButtonListener;
-import chairosoft.quadrado.ui.event.ButtonSource;
-import chairosoft.quadrado.ui.event.ButtonEvent;
+import chairosoft.ui.event.ButtonListener;
+import chairosoft.ui.event.ButtonSource;
+import chairosoft.ui.event.ButtonEvent;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

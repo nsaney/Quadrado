@@ -10,11 +10,10 @@
 
 package chairosoft.quadrado;
 
-import chairosoft.quadrado.ui.DoubleBufferedUI;
-import chairosoft.quadrado.ui.event.ButtonListener;
-import chairosoft.quadrado.ui.event.ButtonEvent;
-import chairosoft.quadrado.ui.event.ButtonSource;
-
+import chairosoft.ui.DoubleBufferedUI;
+import chairosoft.ui.event.ButtonListener;
+import chairosoft.ui.event.ButtonEvent;
+import chairosoft.ui.event.ButtonSource;
 import chairosoft.ui.graphics.Color;
 import chairosoft.ui.graphics.DrawingContext;
 import chairosoft.ui.graphics.Font;
@@ -112,7 +111,14 @@ public abstract class QApplication implements Runnable, ButtonListener
     public QApplication(String _title)
     {
         this.title = _title;
-        this.dbui = DoubleBufferedUI.create(this);
+        this.dbui = DoubleBufferedUI.create(
+            this.title, 
+            this.getPanelWidth(), 
+            this.getPanelHeight(), 
+            this.getXScaling(), 
+            this.getYScaling()
+        );
+        this.dbui.setButtonListener(this);
         // game components, initialized in subclass constructor ...
     }
     
