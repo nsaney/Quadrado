@@ -58,7 +58,7 @@ public class QuadradoLauncherActivity extends Activity
         
         // Override (default) desktop settings
         Dependencies.register(chairosoft.ui.SystemLifecycleHelpers.class,          chairosoft.android.AndroidSystemLifecycleHelpers.class);
-        Dependencies.register(chairosoft.quadrado.ui.DoubleBufferedUI.class,       chairosoft.android.AndroidDoubleBufferedUI.class);
+        Dependencies.register(chairosoft.ui.DoubleBufferedUI.class,                chairosoft.android.AndroidDoubleBufferedUI.class);
         Dependencies.register(chairosoft.ui.graphics.DrawingImage.class,           chairosoft.android.graphics.AndroidDrawingImage.class);
         Dependencies.register(chairosoft.ui.graphics.Font.class,                   chairosoft.android.graphics.AndroidFont.class);
         Dependencies.register(chairosoft.ui.audio.MultitrackBackgroundAudio.class, chairosoft.android.audio.AndroidMultitrackBackgroundAudio.class);
