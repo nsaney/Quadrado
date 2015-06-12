@@ -102,6 +102,12 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     protected DoubleBufferedUI dbui = null;
     public DoubleBufferedUI getDbui() { return this.dbui; }
     
+    // listeners
+    protected boolean useButtonListener = false;
+    public void setUseButtonListener(boolean _useButtonListener) { this.useButtonListener = _useButtonListener; }
+    
+    protected boolean usePointerListener = false;
+    public void setUsePointerListener(boolean _usePointerListener) { this.usePointerListener = _usePointerListener; }
     
     // more vars in subclass ...
     
@@ -139,8 +145,8 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
         if (isFirstCall)
         {
             // attach listeners to UI
-            this.dbui.setButtonListener(this);
-            this.dbui.setPointerListener(this);
+            if (this.useButtonListener) { this.dbui.setButtonListener(this); }
+            if (this.usePointerListener) { this.dbui.setPointerListener(this); }
             
             // start game thread
             this.animator = new Thread(this);
