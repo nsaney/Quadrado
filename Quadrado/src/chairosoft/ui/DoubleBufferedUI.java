@@ -19,10 +19,20 @@ import chairosoft.ui.event.PointerListener;
 public abstract class DoubleBufferedUI
 {
     protected String title = "";
+    public String getTitle() { return this.title; }
+    
     protected int width = -1;
+    public int getWidth() { return this.width; }
+    
     protected int height = -1;
+    public int getHeight() { return this.height; }
+    
     protected int xScaling = -1;
+    public int getXScaling() { return this.xScaling; }
+    
     protected int yScaling = -1;
+    public int getYScaling() { return this.yScaling; }
+    
     
     protected ButtonListener buttonListener = null;
     protected PointerListener pointerListener = null;
