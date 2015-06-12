@@ -126,8 +126,11 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
         this.panel.removeKeyListener(this.desktopButtonAdapter);
         
         // add new adapter
-        this.desktopButtonAdapter = new DesktopButtonAdapter(this.buttonListener);
-        this.panel.addKeyListener(this.desktopButtonAdapter);
+        if (this.buttonListener != null)
+        {
+            this.desktopButtonAdapter = new DesktopButtonAdapter(this.buttonListener);
+            this.panel.addKeyListener(this.desktopButtonAdapter
+        }
     }
     
     /* watch for pointer events */
@@ -141,9 +144,12 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
         this.panel.removeMouseMotionListener(this.desktopPointerAdapter);
         
         // add new adapter
-        this.desktopPointerAdapter = new DesktopPointerAdapter(this.pointerListener);
-        this.panel.addMouseListener(this.desktopPointerAdapter);
-        this.panel.addMouseMotionListener(this.desktopPointerAdapter);
+        if (this.pointerListener != null)
+        {
+            this.desktopPointerAdapter = new DesktopPointerAdapter(this.pointerListener);
+            this.panel.addMouseListener(this.desktopPointerAdapter);
+            this.panel.addMouseMotionListener(this.desktopPointerAdapter);
+        }
     }
     
     @Override
