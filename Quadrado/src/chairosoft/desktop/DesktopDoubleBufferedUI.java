@@ -129,7 +129,7 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
         if (this.buttonListener != null)
         {
             this.desktopButtonAdapter = new DesktopButtonAdapter(this.buttonListener);
-            this.panel.addKeyListener(this.desktopButtonAdapter
+            this.panel.addKeyListener(this.desktopButtonAdapter);
         }
     }
     
