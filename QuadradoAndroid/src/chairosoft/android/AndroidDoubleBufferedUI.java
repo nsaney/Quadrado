@@ -12,21 +12,12 @@ package chairosoft.android;
 
 import chairosoft.ui.DoubleBufferedUI;
 import chairosoft.ui.event.ButtonListener;
-import chairosoft.ui.event.ButtonEvent;
-import chairosoft.ui.event.ButtonSource;
 import chairosoft.ui.event.PointerListener;
-import chairosoft.ui.event.PointerEvent;
-import chairosoft.ui.graphics.DrawingImage;
-import chairosoft.ui.graphics.DrawingContext;
 
-import chairosoft.android.graphics.AndroidDrawingImage;
 import chairosoft.android.graphics.AndroidDrawingContext;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;

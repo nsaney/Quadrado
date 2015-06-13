@@ -14,23 +14,8 @@ import chairosoft.ui.event.PointerListener;
 import chairosoft.ui.event.PointerEvent;
 import chairosoft.ui.geom.FloatPoint2D;
 
-// import chairosoft.android.graphics.AndroidDrawingContext;
-// import chairosoft.android.graphics.AndroidFontLayout;
-
-// import chairosoft.quadrado.QCollidable;
-
-// import android.graphics.Canvas;
-// import android.graphics.LinearGradient;
-// import android.graphics.Paint;
-// import android.graphics.Path;
-// import android.graphics.Rect;
-// import android.graphics.Shader;
 import android.view.MotionEvent;
 import android.view.View;
-
-// import java.util.ArrayList;
-// import java.util.HashMap;
-// import java.util.HashSet;
 
 public class AndroidPointerAdapter implements View.OnTouchListener
 {
