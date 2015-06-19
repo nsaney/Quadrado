@@ -19,10 +19,10 @@ import android.view.View;
 
 public class AndroidPointerAdapter implements View.OnTouchListener
 {
-    private final PointerListener pointerListener;
-    public AndroidPointerAdapter(PointerListener _pointerListener)
+    private final AndroidDoubleBufferedUI androidDbui;
+    public AndroidPointerAdapter(AndroidDoubleBufferedUI _androidDbui)
     {
-        this.pointerListener = _pointerListener;
+        this.androidDbui = _androidDbui;
     }
     
     @Override
@@ -34,15 +34,15 @@ public class AndroidPointerAdapter implements View.OnTouchListener
         for (int i = 0; i < pointerCount; ++i)
         {
             int id = e.getPointerId(i);
-            float x = e.getX(i);
-            float y = e.getY(i);
+            float x = e.getX(i) * this.androidDbui.getWidth() / this.androidDbui.activity.getWidthPixels();
+            float y = e.getY(i) * this.androidDbui.getHeight() / this.androidDbui.activity.getHeightPixels();
             switch (action)
             {
                 case MotionEvent.ACTION_POINTER_DOWN: 
                     if (e.getActionIndex() != i) { break; }
                     // fallthrough
                 case MotionEvent.ACTION_DOWN: 
-                    this.pointerListener.pointerPressed(new PointerEvent(PointerEvent.PRESSED, x, y));
+                    this.androidDbui.getPointerListener().pointerPressed(new PointerEvent(PointerEvent.PRESSED, x, y));
                     consumed = true;
                     break;
                 
@@ -50,12 +50,12 @@ public class AndroidPointerAdapter implements View.OnTouchListener
                     if (e.getActionIndex() != i) { break; }
                     // fallthrough
                 case MotionEvent.ACTION_UP:
-                    this.pointerListener.pointerPressed(new PointerEvent(PointerEvent.RELEASED, x, y));
+                    this.androidDbui.getPointerListener().pointerPressed(new PointerEvent(PointerEvent.RELEASED, x, y));
                     consumed = true;
                     break;
                 
                 case MotionEvent.ACTION_MOVE:
-                    this.pointerListener.pointerPressed(new PointerEvent(PointerEvent.MOVED, x, y));
+                    this.androidDbui.getPointerListener().pointerPressed(new PointerEvent(PointerEvent.MOVED, x, y));
                     consumed = true;
                     break;
                     

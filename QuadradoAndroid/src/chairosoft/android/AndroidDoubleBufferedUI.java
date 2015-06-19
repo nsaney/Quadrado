@@ -33,12 +33,12 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.On
     protected SurfaceView view = null;
     protected SurfaceHolder holder = null;
     protected Bitmap dbImage = null;
+    protected final Rect destinationFrame = new Rect();
     
     private ArrayList<View.OnTouchListener> onTouchListeners = new ArrayList<>();
     
     protected AndroidButtonAdapter androidButtonAdapter = null;
     protected AndroidButtonAdapter.Callback androidButtonAdapterCallback = null;
-    protected final Rect destinationFrame = new Rect();
     
     protected AndroidPointerAdapter androidPointerAdapter = null;
     
@@ -50,6 +50,7 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.On
         this.activity.setContentView(this.view);
         this.holder = this.view.getHolder();
         this.view.setOnTouchListener(this);
+        this.view.setMinimumWidth(Math.min(this.height, this.width));
     }
     
     @Override 
@@ -58,7 +59,7 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.On
         if (this.dbImage == null)
         {
             this.dbImage = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888);
-            this.destinationFrame.set(0, 0, this.width, this.height);
+            this.destinationFrame.set(0, 0, this.activity.getWidthPixels(), this.activity.getHeightPixels());
             if (this.dbImage == null) 
             {
                 System.err.println("Error in ensureRenderContext(): Unable to create Bitmap."); 
@@ -173,7 +174,7 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.On
         // add new adapter
         if (this.pointerListener != null)
         {
-            this.androidPointerAdapter = new AndroidPointerAdapter(this.pointerListener);
+            this.androidPointerAdapter = new AndroidPointerAdapter(this);
             this.addOnTouchListener(this.androidPointerAdapter);
         }
     }

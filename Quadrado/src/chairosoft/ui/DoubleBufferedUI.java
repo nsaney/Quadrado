@@ -33,9 +33,11 @@ public abstract class DoubleBufferedUI
     protected int yScaling = -1;
     public int getYScaling() { return this.yScaling; }
     
-    
     protected ButtonListener buttonListener = null;
+    public ButtonListener getButtonListener() { return this.buttonListener; }
+    
     protected PointerListener pointerListener = null;
+    public PointerListener getPointerListener() { return this.pointerListener; }
     
     
     public static DoubleBufferedUI create(String _title, int _width, int _height, int _xScaling, int _yScaling)
