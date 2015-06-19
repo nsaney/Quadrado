@@ -21,11 +21,22 @@ import java.util.*;
 public class AndroidSystemLifecycleHelpers extends SystemLifecycleHelpers
 {
     // Initializer
-    protected void init() { }
+    @Override 
+    protected void init() 
+    {
+        // nothing here now
+    }
     
     // Instance Methods
+    @Override
     public void addApplicationCloseHook(Thread hook)
     {
         QuadradoLauncherActivity.getActivity().addApplicationCloseHook(hook);
+    }
+    
+    @Override
+    public void exitApplication(int exitCode)
+    {
+        QuadradoLauncherActivity.getActivity().finishAndRemoveTask();
     }
 }

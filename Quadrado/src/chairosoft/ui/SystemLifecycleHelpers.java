@@ -40,4 +40,5 @@ public abstract class SystemLifecycleHelpers
     
     // Instance Methods
     public abstract void addApplicationCloseHook(Thread hook);
+    public abstract void exitApplication(int exitCode);
 }

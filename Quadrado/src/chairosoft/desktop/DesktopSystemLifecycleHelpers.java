@@ -20,11 +20,23 @@ import java.util.*;
 public class DesktopSystemLifecycleHelpers extends SystemLifecycleHelpers
 {
     // Initializer
-    protected void init() { }
+    @Override 
+    protected void init() 
+    {
+        // nothing here now
+    }
     
     // Instance Methods
+    @Override
     public void addApplicationCloseHook(Thread hook)
     {
         Runtime.getRuntime().addShutdownHook(hook);
     }
+    
+    @Override
+    public void exitApplication(int exitCode)
+    {
+        System.exit(exitCode);
+    }
+    
 }
