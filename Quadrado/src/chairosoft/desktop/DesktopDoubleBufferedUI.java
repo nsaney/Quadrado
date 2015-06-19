@@ -35,15 +35,20 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class DesktopDoubleBufferedUI extends DoubleBufferedUI
+public class DesktopDoubleBufferedUI extends DoubleBufferedUI implements WindowFocusListener
 {
     protected Image dbImage = null;
     protected JPanel panel = null;
     public JPanel getPanel() { return this.panel; }
+    
+    public final Object pauseLock = new Object();
+    public volatile boolean isPaused = false;
     
     protected DesktopButtonAdapter desktopButtonAdapter = null;
     protected DesktopPointerAdapter desktopPointerAdapter = null;
@@ -68,6 +73,26 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.addWindowFocusListener(this);
+    }
+    
+    @Override
+    public void windowGainedFocus(WindowEvent e) 
+    {
+        synchronized (this.pauseLock)
+        {
+            this.isPaused = false;
+            this.pauseLock.notifyAll();
+        }
+    }
+    
+    @Override
+    public void windowLostFocus(WindowEvent e) 
+    {
+        synchronized (this.pauseLock)
+        {
+            this.isPaused = true;
+        }
     }
     
     @Override 
@@ -155,6 +180,13 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI
     @Override
     public void checkForPause()
     {
-        // currently does nothing
+        synchronized (this.pauseLock)
+        {
+            while (this.isPaused)
+            {
+                try { this.pauseLock.wait(); }
+                catch (InterruptedException ex) { }
+            }
+        }
     }
 }
