@@ -22,6 +22,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.lang.reflect.Method;
@@ -32,7 +33,18 @@ import java.util.ArrayList;
 
 public class QuadradoLauncherActivity extends Activity
 {
-    public final static String QUADRADO_MAIN_CLASS_NAME_KEY = "QuadradoMainClassName";
+    public final Class<?> mainClass;
+    
+    protected int heightPixels;
+    public int getHeightPixels() { return this.heightPixels; }
+    
+    protected int widthPixels;
+    public int getWidthPixels() { return this.widthPixels; }
+    
+    public QuadradoLauncherActivity(Class<?> _mainClass)
+    {
+        this.mainClass = _mainClass;
+    }
     
     public final Object pauseLock = new Object();
     public volatile boolean isPaused = false;
@@ -51,6 +63,11 @@ public class QuadradoLauncherActivity extends Activity
     {
         Log.e("QuadradoLauncherActivity", "Create");
         super.onCreate(savedInstanceState);
+        
+        // Initialize properties
+        DisplayMetrics dm = this.getResources().getDisplayMetrics();
+        this.heightPixels = Math.min(dm.heightPixels, dm.widthPixels);
+        this.widthPixels = Math.max(dm.heightPixels, dm.widthPixels);
         
         // Redirect streams
         System.setErr(new PrintStream(new RedirectedStream("System.err")));
@@ -73,10 +90,7 @@ public class QuadradoLauncherActivity extends Activity
         // Start game-specific code
         try
         {
-            ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
-            String fullyQualifiedClassName = appInfo.metaData.getString(QUADRADO_MAIN_CLASS_NAME_KEY);
-            Class<?> gameMainClass = Class.forName(fullyQualifiedClassName);
-            Method gameMainMethod = gameMainClass.getMethod("main", String[].class);
+            Method gameMainMethod = this.mainClass.getMethod("main", String[].class);
             Object[] arguments = { new String[] { } };
             gameMainMethod.invoke(null, arguments);
             //your.app.pkg.name.YourAppClassName.main(new String[0]);
