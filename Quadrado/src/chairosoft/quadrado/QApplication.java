@@ -11,6 +11,7 @@
 package chairosoft.quadrado;
 
 import chairosoft.ui.DoubleBufferedUI;
+import chairosoft.ui.SystemLifecycleHelpers;
 import chairosoft.ui.event.ButtonListener;
 import chairosoft.ui.event.ButtonEvent;
 import chairosoft.ui.event.ButtonSource;
@@ -175,7 +176,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
             System.err.print("[qapplication]"); 
             ex.printStackTrace();
         }
-        System.exit(0);
+        SystemLifecycleHelpers.get().exitApplication(0);
     }
     
     private void doRun()
