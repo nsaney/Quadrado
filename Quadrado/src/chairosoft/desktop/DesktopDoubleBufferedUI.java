@@ -41,7 +41,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class DesktopDoubleBufferedUI extends DoubleBufferedUI implements WindowFocusListener
+public class DesktopDoubleBufferedUI extends DoubleBufferedUI
 {
     protected Image dbImage = null;
     protected JPanel panel = null;
@@ -73,25 +73,34 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI implements WindowF
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.addWindowFocusListener(this);
+        frame.addWindowFocusListener(new PausingWindowFocusListener(this));
     }
     
-    @Override
-    public void windowGainedFocus(WindowEvent e) 
+    public static class PausingWindowFocusListener implements WindowFocusListener
     {
-        synchronized (this.pauseLock)
+        public final DesktopDoubleBufferedUI desktopDbui;
+        public PausingWindowFocusListener(DesktopDoubleBufferedUI _desktopDbui)
         {
-            this.isPaused = false;
-            this.pauseLock.notifyAll();
+            this.desktopDbui = _desktopDbui;
         }
-    }
-    
-    @Override
-    public void windowLostFocus(WindowEvent e) 
-    {
-        synchronized (this.pauseLock)
+        
+        @Override
+        public void windowGainedFocus(WindowEvent e) 
         {
-            this.isPaused = true;
+            synchronized (this.desktopDbui.pauseLock)
+            {
+                this.desktopDbui.isPaused = false;
+                this.desktopDbui.pauseLock.notifyAll();
+            }
+        }
+        
+        @Override
+        public void windowLostFocus(WindowEvent e) 
+        {
+            synchronized (this.desktopDbui.pauseLock)
+            {
+                this.desktopDbui.isPaused = true;
+            }
         }
     }
     
