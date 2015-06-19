@@ -82,12 +82,12 @@ public class AndroidButtonAdapter implements View.OnTouchListener
     public HashSet<ButtonEvent.Code> getButtonsForTouch(float px, float py)
     {
         HashSet<ButtonEvent.Code> result = new HashSet<>();
-        AndroidTouchPoint touch = new AndroidTouchPoint(px, py);
+        FloatPoint2D touchPoint = new FloatPoint2D(px, py);
         for (ButtonEvent.Code code : this.codeButtonMap.keySet())
         {
             AndroidOverlayButton button = this.codeButtonMap.get(code);
             if (button == null) { continue; }
-            if (button.collidesWith(touch))
+            if (button.containsPoint(touchPoint))
             {
                 result.add(code);
             }
@@ -189,11 +189,6 @@ public class AndroidButtonAdapter implements View.OnTouchListener
     //////////////////////////
     // Static Inner Classes //
     //////////////////////////
-    
-    public static class AndroidTouchPoint extends QCollidable
-    {
-        public AndroidTouchPoint(float px, float py) { this.addPoint((int)px, (int)py); }
-    }
     
     public static class AndroidOverlayButton extends QCollidable
     {
