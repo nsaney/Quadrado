@@ -267,21 +267,22 @@ public class QCollidable extends QDrawable
      * </a>.
      * @param p0 one point of a line
      * @param p1 another point of a line
-     * @param p2 the point to test if it "isLeft" of the line defined by p0 and p1
+     * @param p2_x the x-value of the point to test if it "isLeft" of the line defined by p0 and p1
+     * @param p2_y the y-value of the point to test if it "isLeft" of the line defined by p0 and p1
      * @return &gt;0 for P2 left of the line through P0 and P1;
      *         =0 for P2 on the line;
      *         &lt;0 for P2 right of the line
      */
-    private static float wn_isLeft(FloatPoint2D p0, FloatPoint2D p1, FloatPoint2D p2)
+    private static float wn_isLeft(FloatPoint2D p0, FloatPoint2D p1, float p2_x, float p2_y)
     {
         float dx1 = p1.x - p0.x;
         float dy1 = p1.y - p0.y;
-        float dx2 = p2.x - p0.x;
-        float dy2 = p2.y - p0.y;
+        float dx2 = p2_x - p0.x;
+        float dy2 = p2_y - p0.y;
         return (dx1 * dy2) - (dx2 * dy1);
     }
     
-    public boolean containsPoint(float px, float py) { return this.containsPoint(new FloatPoint2D(px, py)); }
+    public boolean containsPoint(FloatPoint2D p) { return this.containsPoint(p.x, p.y); }
     
     /**
      * Determines if the given point is inside this QCollidable using 
@@ -289,10 +290,11 @@ public class QCollidable extends QDrawable
      * <a href="http://geomalgorithms.com/a03-_inclusion.html">
      * http://geomalgorithms.com/a03-_inclusion.html
      * </a>.
-     * @param p the point to check
+     * @param px the x-value of the point to check
+     * @param py the y-value of the point to check
      * @return true if the given point is inside this QCollidable; false otherwise
      */
-    public boolean containsPoint(FloatPoint2D p) 
+    public boolean containsPoint(float px, float py) 
     {
         boolean isContained = false;
         
@@ -304,27 +306,27 @@ public class QCollidable extends QDrawable
 
             // loop through all edges of the polygon
             int n = this.points.size();
-            for (int i = 0, j = 1; i < n; ++i, ++j)   // edge from vi to vj
+            for (int i = 0, j = 1; i < n; ++i, ++j)        // edge from vi to vj
             {
                 FloatPoint2D vi = this.points.get(i);
                 FloatPoint2D vj = this.points.get(j == n ? 0 : j);
-                if (vi.y <= p.y)                      // start y <= p.y
+                if (vi.y <= py)                            // start y <= p.y
                 {
-                    if (vj.y > p.y)                   // an upward crossing
+                    if (vj.y > py)                         // an upward crossing
                     {
-                        if (wn_isLeft(vi, vj, p) > 0) // p left of edge
+                        if (wn_isLeft(vi, vj, px, py) > 0) // p left of edge
                         {
-                            ++wn;                     // have a valid up intersect
+                            ++wn;                          // have a valid up intersect
                         }
                     }
                 }
-                else                                  // start y > p.y (no test needed) 
+                else                                       // start y > p.y (no test needed) 
                 {
-                    if (vj.y <= p.y)                  // a downward crossing
+                    if (vj.y <= py)                        // a downward crossing
                     {
-                        if (wn_isLeft(vi, vj, p) < 0) // p right of edge
+                        if (wn_isLeft(vi, vj, px, py) < 0) // p right of edge
                         {
-                            --wn;                     // have a valid down intersect
+                            --wn;                          // have a valid down intersect
                         }
                     }
                 }
@@ -337,7 +339,7 @@ public class QCollidable extends QDrawable
             System.err.println("[containsPoint]"); 
             System.err.print("--> this: ");
             this.showDebugVertices();
-            System.err.println("--> point: (" + p.x + "," + p.y + ")");
+            System.err.println("--> point: (" + px + "," + py + ")");
             ex.printStackTrace();
         }
         
