@@ -55,4 +55,13 @@ public class Rectangle
         this.x += dx;
         this.y += dy;
     }
+    
+    public boolean containsPoint(float dx, float dy)
+    {
+        return dx > this.x
+            && dx <= (this.x + this.width)
+            && dy > this.y
+            && dy <= (this.y + this.height)
+        ;
+    }
 }
