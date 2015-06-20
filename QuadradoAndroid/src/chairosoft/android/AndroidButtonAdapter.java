@@ -82,12 +82,11 @@ public class AndroidButtonAdapter implements View.OnTouchListener
     public HashSet<ButtonEvent.Code> getButtonsForTouch(float px, float py)
     {
         HashSet<ButtonEvent.Code> result = new HashSet<>();
-        FloatPoint2D touchPoint = new FloatPoint2D(px, py);
         for (ButtonEvent.Code code : this.codeButtonMap.keySet())
         {
             AndroidOverlayButton button = this.codeButtonMap.get(code);
             if (button == null) { continue; }
-            if (button.containsPoint(touchPoint))
+            if (button.containsPoint(px, py))
             {
                 result.add(code);
             }
