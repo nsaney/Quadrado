@@ -35,8 +35,10 @@ public class QDialogBox extends QTextElement
     private QScrollAnimator scrollAnimator = new QScrollAnimator();
     private int textColor = Color.BLACK;
     private int backgroundColor = Color.WHITE;
-    private int borderWidth = 1; 
-    private int borderColor = Color.BLACK;
+    private QBoxStyle boxStyle = null;
+    private DrawingImage boxImage = null;
+    
+    
     // TODO: typewriter effect???
     // TODO: inner padding
     // TODO: offset by font descent (maybe in context?)
@@ -51,9 +53,9 @@ public class QDialogBox extends QTextElement
         // use setters to init
     }
     
-    public QDialogBox(FontLayout _fontLayout, String _text, int _width, int _height)
+    public QDialogBox(FontLayout _fontLayout, String _text, QBoxStyle _boxStyle, int _width, int _height)
     {
-        this.setup(_fontLayout, _text, _width, _height);
+        this.setup(_fontLayout, _text, _boxStyle, _width, _height);
     }
     
     
@@ -61,11 +63,12 @@ public class QDialogBox extends QTextElement
     // Instance Methods 
     //
     
-    public final void setup(FontLayout _fontLayout, String _text, int _width, int _height)
+    public final void setup(FontLayout _fontLayout, String _text, QBoxStyle _boxStyle, int _width, int _height)
     {
         this.setText(null);
         this.setWidth(_width);
         this.setHeight(_height);
+        this.setBoxStyle(_boxStyle);
         this.setFontLayout(_fontLayout);
         this.setText(_text);
     }
@@ -111,27 +114,35 @@ public class QDialogBox extends QTextElement
     protected boolean canConfigureImage() { return this.canConfigureOuterImage(); }
     protected void doConfigureImage()
     {
-        int bw = this.getBorderWidth();
-        int bwx2 = bw * 2;
-        int w = bwx2 + this.width;
-        int h = bwx2 + this.height;
+        int bwT = this.boxStyle.borderWidths.top;
+        int bwR = this.boxStyle.borderWidths.right;
+        int bwB = this.boxStyle.borderWidths.bottom;
+        int bwL = this.boxStyle.borderWidths.left;
+        
+        int w = bwL + this.width + bwR;
+        int h = bwT + this.height + bwB;
+        
         if (this.image == null || this.image.getWidth() != w || this.image.getHeight() != h)
         {
             this.image = DrawingImage.create(w, h, DrawingImage.Config.ARGB_8888);
         }
         
+        if (this.boxImage == null || this.boxImage.getWidth() != w || this.boxImage.getHeight() != h)
+        {
+            this.boxImage = this.boxStyle.getBox(w, h);
+        }
+        
         try (DrawingContext imageContext = this.image.getContext())
         {
             imageContext.setColor(this.backgroundColor);
-            imageContext.fillRect(0, 0, this.image.getWidth(), this.image.getHeight());
-            
-            imageContext.setColor(this.borderColor);
-            imageContext.drawRect(0, 0, w - 1, h - 1);
+            imageContext.fillRect(bwL, bwT, this.width, this.height);
             
             int scrollHeight = this.scrollAnimator.getLatestScrollHeight();
             int subImageWidth = Math.min(this.outerImage.getWidth(), this.width);
             DrawingImage subImage = this.outerImage.getImmutableSubimage(0, scrollHeight, subImageWidth, this.height);
-            imageContext.drawImage(subImage, bw, bw);
+            imageContext.drawImage(subImage, bwL, bwT);
+            
+            imageContext.drawImage(this.boxImage, 0, 0);
         }
         catch (Exception ex)
         {
@@ -143,9 +154,11 @@ public class QDialogBox extends QTextElement
     
     
     public final int getWidth() { return this.width; }
+    public final int getFullWidth() { return this.width + (this.boxStyle == null ? 0 : (this.boxStyle.borderWidths.left + this.boxStyle.borderWidths.right)); }
     public final void setWidth(int w) { this.width = w; this.configure(); }
     
     public final int getHeight() { return this.height; }
+    public final int getFullHeight() { return this.height + (this.boxStyle == null ? 0 : (this.boxStyle.borderWidths.top + this.boxStyle.borderWidths.bottom)); }
     public final void setHeight(int h) { this.height = h; this.configureImage(); }
     
     public void moveScrollLines(int dl, int clicks) { this.scrollAnimator.moveScrollHeight(dl * this.getFontLayout().height(), clicks); }
@@ -162,9 +175,7 @@ public class QDialogBox extends QTextElement
     public final int getBackgroundColor() { return this.backgroundColor; }
     public final void setBackgroundColor(int argb) { this.backgroundColor = argb; this.configureOuterImage(); }
     
-    public final int getBorderColor() { return this.borderColor; }
-    public final void setBorderColor(int argb) { this.borderColor = argb; this.configureImage(); }
-    
-    public final int getBorderWidth() { return this.borderWidth; }
-    public final void setBorderWidth(int bw) { this.borderWidth = bw; this.configureImage(); }
+    public final QBoxStyle getBoxStyle() { return this.boxStyle; }
+    public final void setBoxStyleCode(String code) { this.setBoxStyle(QBoxStyle.get(code)); }
+    public final void setBoxStyle(QBoxStyle style) { this.boxStyle = style; this.boxImage = null; this.configureImage(); }
 }

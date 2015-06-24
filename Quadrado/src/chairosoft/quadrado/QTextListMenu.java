@@ -53,9 +53,8 @@ public class QTextListMenu extends QListMenu
     private QScrollAnimator scrollAnimator = new QScrollAnimator();
     private int textColor = Color.BLACK;
     private int backgroundColor = Color.WHITE;
-    private int borderWidth = 1; 
-    private int borderColor = Color.BLACK;
-    
+    private QBoxStyle boxStyle = null;
+    private DrawingImage boxImage = null;
     
     
     //
@@ -67,12 +66,12 @@ public class QTextListMenu extends QListMenu
         super(_name, _menuItems);
     }
     
-    public QTextListMenu(String _name, FontLayout _fontLayout, int x, int y, int w, int h, MenuItem... _menuItems)
+    public QTextListMenu(String _name, FontLayout _fontLayout, QBoxStyle _boxStyle, int x, int y, int w, int h, MenuItem... _menuItems)
     {
         super(_name, _menuItems);
         this.x = x;
         this.y = y;
-        this.setup(_fontLayout, w, h);
+        this.setup(_fontLayout, _boxStyle, w, h);
     }
     
     
@@ -80,17 +79,18 @@ public class QTextListMenu extends QListMenu
     // Instance Methods 
     //
     
-    public final void setup(FontLayout _fontLayout, int _height)
+    public final void setup(FontLayout _fontLayout, QBoxStyle _boxStyle, int _height)
     {
-        int _width = this.getSuggestedWidth(_fontLayout);
-        this.setup(_fontLayout, _width, _height);
+        int _width = this.getSuggestedWidth(_fontLayout, _boxStyle);
+        this.setup(_fontLayout, _boxStyle, _width, _height);
     }
     
-    public final void setup(FontLayout _fontLayout, int _width, int _height)
+    public final void setup(FontLayout _fontLayout, QBoxStyle _boxStyle, int _width, int _height)
     {
         this.setFontLayout(null);
         this.setWidth(_width);
         this.setHeight(_height);
+        this.setBoxStyle(_boxStyle);
         this.setFontLayout(_fontLayout);
     }
     
@@ -158,27 +158,35 @@ public class QTextListMenu extends QListMenu
     }
     protected void doConfigureImage()
     {
-        int bw = this.getBorderWidth();
-        int bwx2 = bw * 2;
-        int w = bwx2 + this.width;
-        int h = bwx2 + this.height;
+        int bwT = this.boxStyle.borderWidths.top;
+        int bwR = this.boxStyle.borderWidths.right;
+        int bwB = this.boxStyle.borderWidths.bottom;
+        int bwL = this.boxStyle.borderWidths.left;
+        
+        int w = bwL + this.width + bwR;
+        int h = bwT + this.height + bwB;
+        
         if (this.image == null || this.image.getWidth() != w || this.image.getHeight() != h)
         {
             this.image = DrawingImage.create(w, h, DrawingImage.Config.ARGB_8888);
         }
         
+        if (this.boxImage == null || this.boxImage.getWidth() != w || this.boxImage.getHeight() != h)
+        {
+            this.boxImage = this.boxStyle.getBox(w, h);
+        }
+        
         try (DrawingContext imageContext = this.image.getContext())
         {
             imageContext.setColor(this.backgroundColor);
-            imageContext.fillRect(0, 0, this.image.getWidth(), this.image.getHeight());
-            
-            imageContext.setColor(this.borderColor);
-            imageContext.drawRect(0, 0, w - 1, h - 1);
+            imageContext.fillRect(bwL, bwT, this.width, this.height);
             
             int scrollHeight = this.scrollAnimator.getLatestScrollHeight();
             int subImageWidth = Math.min(this.outerImage.getWidth(), this.width);
             DrawingImage subImage = this.outerImage.getImmutableSubimage(0, scrollHeight, subImageWidth, this.height);
-            imageContext.drawImage(subImage, bw, bw);
+            imageContext.drawImage(subImage, bwL, bwT);
+            
+            imageContext.drawImage(this.boxImage, 0, 0);
         }
         catch (Exception ex)
         {
@@ -235,9 +243,9 @@ public class QTextListMenu extends QListMenu
         }
         return listTextWidth;
     }
-    public int getSuggestedWidth(FontLayout fl)
+    public int getSuggestedWidth(FontLayout fl, QBoxStyle style)
     {
-        return this.getWidthOfLongestMenuItem(fl) + (2 * fl.widthOf("M")) + (2 * this.getBorderWidth());
+        return this.getWidthOfLongestMenuItem(fl) + (2 * fl.widthOf("M")) + (style.borderWidths.left + style.borderWidths.right);
     }
     public int getWidth() { return this.width; }
     public void setWidth(int w) { this.width = w; this.configureImage(); }
@@ -257,11 +265,9 @@ public class QTextListMenu extends QListMenu
     public int getBackgroundColor() { return this.backgroundColor; }
     public void setBackgroundColor(int argb) { this.backgroundColor = argb; this.configureOuterImage(); }
     
-    public int getBorderColor() { return this.borderColor; }
-    public void setBorderColor(int argb) { this.borderColor = argb; this.configureImage(); }
-    
-    public int getBorderWidth() { return this.borderWidth; }
-    public void setBorderWidth(int bw) { this.borderWidth = bw; this.configureImage(); }
+    public final QBoxStyle getBoxStyle() { return this.boxStyle; }
+    public final void setBoxStyleCode(String code) { this.setBoxStyle(QBoxStyle.get(code)); }
+    public final void setBoxStyle(QBoxStyle style) { this.boxStyle = style; this.boxImage = null; this.configureImage(); }
     
     @Override
     public void setTitleVisibility(boolean visibility)
