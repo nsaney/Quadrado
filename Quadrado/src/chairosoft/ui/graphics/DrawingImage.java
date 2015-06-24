@@ -12,6 +12,8 @@ package chairosoft.ui.graphics;
 
 import chairosoft.dependency.Dependencies;
 
+import chairosoft.ui.geom.Rectangle;
+
 import java.io.InputStream;
 import java.io.IOException;
 
@@ -45,5 +47,8 @@ public abstract class DrawingImage
     public abstract int getPixel(int x, int y);
     public abstract void setPixel(int x, int y, int sRGB);
     public abstract DrawingContext getContext();
+    
     public abstract DrawingImage getImmutableSubimage(int x, int y, int w, int h);
+    public DrawingImage getImmutableSubimage(Rectangle r) { return this.getImmutableSubimage(r.x, r.y, r.width, r.height); }
+    
 }
