@@ -11,12 +11,20 @@
 package chairosoft.ui.graphics;
 
 import chairosoft.dependency.Dependencies;
+import chairosoft.ui.SystemLifecycleHelpers;
+import chairosoft.util.Loading;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
 
 /**
  * An object representing a particular typeface / font.
  */
 public abstract class Font
 {
+    public static final String EMBEDDED_FONT_FOLDER = "font";
+    
     public static class Family
     {
         private Family() { }
@@ -44,14 +52,71 @@ public abstract class Font
     protected int size = 0;
     public int getSize() { return this.size; }
     
+    protected void setAttributes(String _family, int _style, int _size)
+    {
+        this.family = _family;
+        this.style = _style;
+        this.size = _size;
+    }
+    
     protected abstract void init(String _family, int _style, int _size);
     public static Font create(String _family, int _style, int _size)
     {
         Font result = Dependencies.getNew(Font.class);
-        result.family = _family;
-        result.style = _style;
-        result.size = _size;
+        result.setAttributes(_family, _style, _size);
         result.init(_family, _style, _size);
+        return result;
+    }
+    
+    protected abstract void initAndSetAttributes(File fontFile);
+    public static Font createFromFile(File fontFile)
+    {
+        Font result = Dependencies.getNew(Font.class);
+        result.initAndSetAttributes(fontFile);
+        return result;
+    }
+    
+    public static Font createFromEmbeddedFont(String fontName)
+    {
+        try
+        {
+            final File tempFile = File.createTempFile(fontName, ".ttf");
+            SystemLifecycleHelpers.get().deleteFileOnExit(tempFile);
+            String fontLocation = Loading.getPathInFolder(EMBEDDED_FONT_FOLDER, fontName);
+            InputStream fontResourceStream = Loading.getInputStreamFromPath(fontLocation);
+            Loading.writeInputStreamToFile(fontResourceStream, tempFile);
+            return Font.createFromFile(tempFile);
+        }
+        catch (IOException ex)
+        {
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    protected abstract void deriveByStyle(Font baseFont, int derivedStyle);
+    public Font deriveByStyle(int derivedStyle)
+    {
+        Font result = Dependencies.getNew(Font.class);
+        result.setAttributes(this.family, derivedStyle, this.size);
+        result.deriveByStyle(this, derivedStyle);
+        return result;
+    }
+    
+    protected abstract void deriveBySize(Font baseFont, int derivedSize);
+    public Font deriveBySize(int derivedSize)
+    {
+        Font result = Dependencies.getNew(Font.class);
+        result.setAttributes(this.family, this.style, derivedSize);
+        result.deriveBySize(this, derivedSize);
+        return result;
+    }
+    
+    protected abstract void derive(Font baseFont, int derivedStyle, int derivedSize);
+    public Font derive(int derivedStyle, int derivedSize)
+    {
+        Font result = Dependencies.getNew(Font.class);
+        result.setAttributes(this.family, derivedStyle, derivedSize);
+        result.derive(this, derivedStyle, derivedSize);
         return result;
     }
 }
