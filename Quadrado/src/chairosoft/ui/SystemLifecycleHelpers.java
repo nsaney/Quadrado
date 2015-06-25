@@ -41,4 +41,27 @@ public abstract class SystemLifecycleHelpers
     // Instance Methods
     public abstract void addApplicationCloseHook(Thread hook);
     public abstract void exitApplication(int exitCode);
+    
+    public void deleteFileOnExit(final File file)
+    {
+        file.deleteOnExit();
+        this.addApplicationCloseHook(new Thread()
+        {
+            @Override public void run()
+            {
+                if (file != null && file.exists())
+                {
+                    if (file.delete())
+                    {
+                        //System.err.println("Deleted file: " + file);
+                    }
+                    else
+                    {
+                        System.err.println("Could not delete file: " + file);
+                    }
+                }
+            }
+        });
+    }
+    
 }
