@@ -18,7 +18,9 @@ import chairosoft.ui.geom.Rectangle;
 import chairosoft.ui.graphics.DrawingImage;
 import chairosoft.ui.graphics.DrawingContext;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -36,6 +38,18 @@ public final /*static*/ class Loading
      * Default constructor with {@code private} visibility.
      */
     private Loading() {}
+    
+    
+    ///////////////
+    //           //
+    // Verbosity //
+    //           //
+    ///////////////
+    
+    private static PrintStream out = System.err;
+    private static volatile boolean verbose = false;
+    public static void startVerbose() { verbose = true; }
+    public static void stopVerbose() { verbose = false; }
     
     
     ///////////////////
@@ -56,6 +70,19 @@ public final /*static*/ class Loading
     
     /**
      * Gets an {@code InputStream} from an absolute path, looking for the 
+     * resource within the current JAR.
+     * @param absolutePath  The absolute path to the resource.
+     * @return The {@code InputStream} corresponding to the given absolute path.
+     * @throws IOException If there is a problem finding the resource.
+     */
+    public static InputStream getInputStreamFromPath(String absolutePath)
+        throws IOException
+    {
+        return Loading.getInputStreamFromPath(absolutePath, true);
+    }
+    
+    /**
+     * Gets an {@code InputStream} from an absolute path, looking for the 
      * resource either within the current JAR or from the file system.
      * @param absolutePath  The absolute path to the resource.
      * @param usingInternal If true, look in the current JAR. Otherwise, 
@@ -66,6 +93,11 @@ public final /*static*/ class Loading
     public static InputStream getInputStreamFromPath(String absolutePath, boolean usingInternal)
         throws IOException
     {
+        if (verbose)
+        {
+            Loading.out.printf("LOADER PATH: %s [internal=%s]\n", absolutePath, usingInternal);
+        }
+        
         return (usingInternal) 
                 ? Loading.class.getResourceAsStream(Loading.getInternalPath(absolutePath))
                 : new FileInputStream(absolutePath);
@@ -85,16 +117,26 @@ public final /*static*/ class Loading
     }
     
     
-    ///////////////
-    //           //
-    // Verbosity //
-    //           //
-    ///////////////
+    public static final int DEFAULT_FILE_WRITE_BUFFER_SIZE = 4096;
+    public static void writeInputStreamToFile(InputStream in, File file)
+        throws IOException
+    {
+        Loading.writeInputStreamToFile(in, file, DEFAULT_FILE_WRITE_BUFFER_SIZE);
+    }
     
-    private static PrintStream out = System.err;
-    private static volatile boolean verbose = false;
-    public static void startVerbose() { verbose = true; }
-    public static void stopVerbose() { verbose = false; }
+    public static void writeInputStreamToFile(InputStream in, File file, int bufferSize)
+        throws IOException
+    {
+        try (FileOutputStream out = new FileOutputStream(file))
+        {
+            byte[] buffer = new byte[bufferSize];
+            int bytesToWrite = 0;
+            while ((bytesToWrite = in.read(buffer)) > -1)
+            {
+                out.write(buffer, 0, bytesToWrite);
+            }
+        }
+    }
     
     
     
@@ -106,16 +148,11 @@ public final /*static*/ class Loading
      */
     public static DrawingImage getImage(String absolutePath)
     {
-        return getImage(absolutePath, true);
+        return Loading.getImage(absolutePath, true);
     }
     
     public static DrawingImage getImage(String absolutePath, boolean usingInternal)
     {
-        if (verbose)
-        {
-            Loading.out.printf("LOADER PATH (IMG): %s [internal=%s]\n", absolutePath, usingInternal);
-        }
-        
         DrawingImage img = null;
         try (InputStream input = Loading.getInputStreamFromPath(absolutePath, usingInternal))
         {
@@ -184,11 +221,6 @@ public final /*static*/ class Loading
     
     public static Document getXmlDocument(String absolutePath, boolean usingInternal)
     {
-        if (verbose)
-        {
-            Loading.out.printf("LOADER PATH (XML): %s [internal=%s]\n", absolutePath, usingInternal);
-        }
-        
         Builder parser = new Builder();
         Document doc = null;
         InputStream input = null;
