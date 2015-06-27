@@ -31,8 +31,7 @@ import java.io.OutputStream;
  * <li> numBytes - size of audio data after this header, in bytes.
  * </ul>
  * 
- * Not yet ready to be supported, so
- * @hide
+ * Not yet ready to be supported.
  */
 public class WaveHeader {
     
@@ -176,7 +175,7 @@ public class WaveHeader {
      * Read and initialize a WaveHeader.
      * @param in {@link java.io.InputStream} to read from.
      * @return number of bytes consumed.
-     * @throws IOException
+     * @throws IOException if an error occurs while reading
      */
     public int read(InputStream in) throws IOException {
         /* RIFF header */
@@ -225,7 +224,7 @@ public class WaveHeader {
      * Write a WAVE file header.
      * @param out {@link java.io.OutputStream} to receive the header.
      * @return number of bytes written.
-     * @throws IOException
+     * @throws IOException if an error occurs while writing
      */
     public int write(OutputStream out) throws IOException {
         /* RIFF header */
