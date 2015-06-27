@@ -29,6 +29,18 @@ public class DesktopFont extends Font
     @Override
     public boolean isItalic() { return this.awtFont.isItalic(); }
     
+    public static String convertToAwtFontFamily(Family logicalFamily)
+    {
+        switch (logicalFamily)
+        {
+            case DEFAULT: return null;
+            case MONOSPACED: return java.awt.Font.MONOSPACED;
+            case SANS_SERIF: return java.awt.Font.SANS_SERIF;
+            case SERIF: return java.awt.Font.SERIF;
+            default: return null;
+        }
+    }
+    
     public static int convertFromAwtFontStyle(int awtStyle)
     {
         switch (awtStyle)
@@ -49,6 +61,14 @@ public class DesktopFont extends Font
             case (Font.Style.BOLD | Font.Style.ITALIC): return java.awt.Font.BOLD | java.awt.Font.ITALIC;
             default: return java.awt.Font.PLAIN;
         }
+    }
+    
+    @Override 
+    protected void init(Family logicalFamily, int _style, int _size)
+    {
+        String awtFamily = DesktopFont.convertToAwtFontFamily(logicalFamily);
+        int awtStyle = DesktopFont.convertToAwtFontStyle(_style);
+        this.awtFont = new java.awt.Font(awtFamily, awtStyle, _size);
     }
     
     @Override 

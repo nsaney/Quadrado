@@ -31,6 +31,18 @@ public class AndroidFont extends Font
     @Override
     public boolean isItalic() { return this.typeface.isItalic(); }
     
+    public static Typeface convertToDefaultTypeface(Family logicalFamily)
+    {
+        switch (logicalFamily)
+        {
+            case DEFAULT: return Typeface.DEFAULT;
+            case MONOSPACED: return Typeface.MONOSPACE;
+            case SANS_SERIF: return Typeface.SANS_SERIF;
+            case SERIF: return Typeface.SERIF;
+            default: return null;
+        }
+    }
+    
     public static int convertFromTypefaceStyle(int typefaceStyle)
     {
         switch (typefaceStyle)
@@ -53,7 +65,16 @@ public class AndroidFont extends Font
         }
     }
     
-    @Override protected void init(String _family, int _style, int _size)
+    @Override 
+    protected void init(Family logicalFamily, int _style, int _size)
+    {
+        Typeface typeface = AndroidFont.convertToDefaultTypeface(logicalFamily);
+        int typefaceStyle = AndroidFont.convertToTypefaceStyle(_style);
+        this.typeface = Typeface.create(typeface, typefaceStyle);
+    }
+    
+    @Override 
+    protected void init(String _family, int _style, int _size)
     {
         int typefaceStyle = AndroidFont.convertToTypefaceStyle(_style);
         this.typeface = Typeface.create(_family, typefaceStyle);

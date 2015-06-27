@@ -24,14 +24,15 @@ public abstract class Font
 {
     public static final String EMBEDDED_FONT_FOLDER = "font";
     
-    public static class Family
+    public static enum Family
     {
-        private Family() { }
-        public static final String DIALOG = "Dialog";
-        public static final String DIALOG_INPUT = "DialogInput";
-        public static final String MONOSPACED = "Monospaced";
-        public static final String SANS_SERIF = "SansSerif";
-        public static final String SERIF = "Serif";
+        DEFAULT("Default"),
+        MONOSPACED("Monospaced"),
+        SANS_SERIF("SansSerif"),
+        SERIF("Serif");
+        
+        public final String name;
+        Family(String _name) { this.name = _name; }
     }
     
     public static class Style
@@ -66,6 +67,15 @@ public abstract class Font
         Font result = Dependencies.getNew(Font.class);
         result.setAttributes(_family, _style, _size);
         result.init(_family, _style, _size);
+        return result;
+    }
+    
+    protected abstract void init(Family logicalFamily, int _style, int _size);
+    public static Font create(Family logicalFamily, int _style, int _size)
+    {
+        Font result = Dependencies.getNew(Font.class);
+        result.setAttributes(logicalFamily.name, _style, _size);
+        result.init(logicalFamily, _style, _size);
         return result;
     }
     
