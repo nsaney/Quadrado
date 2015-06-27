@@ -23,6 +23,12 @@ public class DesktopFont extends Font
     protected java.awt.Font awtFont = null;
     public java.awt.Font getAwtFont() { return this.awtFont; }
     
+    @Override
+    public boolean isBold() { return this.awtFont.isBold(); }
+    
+    @Override
+    public boolean isItalic() { return this.awtFont.isItalic(); }
+    
     public static int convertFromAwtFontStyle(int awtStyle)
     {
         switch (awtStyle)

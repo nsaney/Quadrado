@@ -25,6 +25,12 @@ public class AndroidFont extends Font
     protected Typeface typeface = null;
     public Typeface getTypeface() { return this.typeface; }
     
+    @Override
+    public boolean isBold() { return this.typeface.isBold(); }
+    
+    @Override
+    public boolean isItalic() { return this.typeface.isItalic(); }
+    
     public static int convertFromTypefaceStyle(int typefaceStyle)
     {
         switch (typefaceStyle)

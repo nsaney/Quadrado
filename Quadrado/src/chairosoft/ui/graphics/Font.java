@@ -47,6 +47,8 @@ public abstract class Font
     
     protected int style = 0;
     public int getStyle() { return this.style; }
+    public abstract boolean isBold();
+    public abstract boolean isItalic();
     
     protected int size = 0;
     public int getSize() { return this.size; }
