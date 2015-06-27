@@ -14,6 +14,8 @@ import chairosoft.ui.graphics.Font;
 
 import android.graphics.Typeface;
 
+import java.io.File;
+
 public class AndroidFont extends Font
 {
     protected Typeface typeface = null;
@@ -45,5 +47,33 @@ public class AndroidFont extends Font
     {
         int typefaceStyle = AndroidFont.convertToTypefaceStyle(_style);
         this.typeface = Typeface.create(_family, typefaceStyle);
+    }
+    
+    @Override 
+    protected void initAndSetAttributes(File fontFile) 
+    {
+        this.typeface = Typeface.createFromFile(fontFile);
+        this.family = fontFile.getName(); // ??? no idea what to put here
+        this.style = AndroidFont.convertFromTypefaceStyle(this.typeface.getStyle());
+        this.size = 14; // ??? also no idea for this one
+    }
+    
+    @Override 
+    public void deriveByStyle(Font baseFont, int derivedStyle)
+    {
+        int typefaceStyle = AndroidFont.convertToTypefaceStyle(derivedStyle);
+        this.typeface = Typeface.create(((AndroidFont)baseFont).typeface, typefaceStyle);
+    }
+    
+    @Override 
+    public void deriveBySize(Font baseFont, int derivedSize)
+    {
+        this.typeface = ((AndroidFont)baseFont).typeface;
+    }
+    
+    @Override 
+    public void derive(Font baseFont, int derivedStyle, int derivedSize)
+    {
+        this.deriveByStyle(baseFont, derivedStyle);
     }
 }
