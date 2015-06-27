@@ -1,7 +1,7 @@
 /* 
  * Nicholas Saney 
  * 
- * Created: December 22, 2014
+ * Created: June 22, 2015
  * 
  * QBoxStyle.java
  * QBoxStyle class definition
@@ -34,7 +34,7 @@ public class QBoxStyle
     // Constants
     // 
     
-    public static final String SPEC_FOLDER         = "img";
+    public static final String SPEC_FOLDER          = "img";
     public static final String QBOXSTYLES_FILENAME  = "qboxstyles.xml";
     public static final String QBOXSTYLES_FULL_PATH = Loading.getPathInFolder(SPEC_FOLDER, QBOXSTYLES_FILENAME);
     
