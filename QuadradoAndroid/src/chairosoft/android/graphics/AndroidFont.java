@@ -11,10 +11,14 @@
 package chairosoft.android.graphics;
 
 import chairosoft.ui.graphics.Font;
+import chairosoft.ui.SystemLifecycleHelpers;
+import chairosoft.util.Loading;
 
 import android.graphics.Typeface;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
 
 public class AndroidFont extends Font
 {
@@ -50,12 +54,22 @@ public class AndroidFont extends Font
     }
     
     @Override 
-    protected void initAndSetAttributes(File fontFile) 
+    protected void initAndSetAttributes(InputStream fontStream, String fontName) 
     {
-        this.typeface = Typeface.createFromFile(fontFile);
-        this.family = fontFile.getName(); // ??? no idea what to put here
+        try
+        {
+            final File tempFile = File.createTempFile(fontName, ".ttf");
+            SystemLifecycleHelpers.get().deleteFileOnExit(tempFile);
+            Loading.writeInputStreamToFile(fontStream, tempFile);
+            this.typeface = Typeface.createFromFile(tempFile);
+        }
+        catch (IOException ex)
+        {
+            throw new RuntimeException(ex);
+        }
+        this.family = fontName; // ??? no idea what to put here
         this.style = AndroidFont.convertFromTypefaceStyle(this.typeface.getStyle());
-        this.size = 14; // ??? also no idea for this one
+        this.size = 1; 
     }
     
     @Override 

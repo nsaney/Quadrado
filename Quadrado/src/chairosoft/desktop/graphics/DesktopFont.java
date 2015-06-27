@@ -15,6 +15,7 @@ import chairosoft.ui.graphics.Font;
 import java.awt.FontFormatException;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 
 public class DesktopFont extends Font
@@ -58,9 +59,9 @@ public class DesktopFont extends Font
     }
     
     @Override 
-    protected void initAndSetAttributes(File fontFile) 
+    protected void initAndSetAttributes(InputStream fontStream, String fontName) 
     {
-        try { this.awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, fontFile); }
+        try { this.awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, fontStream); }
         catch (IOException | FontFormatException ex) { throw new RuntimeException(ex); }
         this.family = this.awtFont.getFamily();
         this.style = DesktopFont.convertFromAwtFontStyle(this.awtFont.getStyle());

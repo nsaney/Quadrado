@@ -11,7 +11,6 @@
 package chairosoft.ui.graphics;
 
 import chairosoft.dependency.Dependencies;
-import chairosoft.ui.SystemLifecycleHelpers;
 import chairosoft.util.Loading;
 
 import java.io.File;
@@ -68,11 +67,11 @@ public abstract class Font
         return result;
     }
     
-    protected abstract void initAndSetAttributes(File fontFile);
-    public static Font createFromFile(File fontFile)
+    protected abstract void initAndSetAttributes(InputStream fontStream, String fontName);
+    public static Font createFromStream(InputStream fontStream, String fontName)
     {
         Font result = Dependencies.getNew(Font.class);
-        result.initAndSetAttributes(fontFile);
+        result.initAndSetAttributes(fontStream, fontName);
         return result;
     }
     
@@ -80,12 +79,9 @@ public abstract class Font
     {
         try
         {
-            final File tempFile = File.createTempFile(fontName, ".ttf");
-            SystemLifecycleHelpers.get().deleteFileOnExit(tempFile);
             String fontLocation = Loading.getPathInFolder(EMBEDDED_FONT_FOLDER, fontName);
             InputStream fontResourceStream = Loading.getInputStreamFromPath(fontLocation);
-            Loading.writeInputStreamToFile(fontResourceStream, tempFile);
-            return Font.createFromFile(tempFile);
+            return Font.createFromStream(fontResourceStream, fontName);
         }
         catch (IOException ex)
         {
