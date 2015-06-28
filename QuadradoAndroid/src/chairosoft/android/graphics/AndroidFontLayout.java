@@ -19,7 +19,6 @@ import android.graphics.Rect;
 public class AndroidFontLayout extends FontLayout
 {
     protected final Paint paint;
-    public final int height;
     public final Paint.FontMetricsInt fm;
     public AndroidFontLayout(Font _font)
     {
@@ -28,12 +27,12 @@ public class AndroidFontLayout extends FontLayout
         this.paint.setTypeface(((AndroidFont)this.font).getTypeface()); 
         this.paint.setTextSize(this.font.getSize()); 
         this.fm = this.paint.getFontMetricsInt();
-        this.height = this.fm.leading + this.fm.bottom - this.fm.top;
     }
     
-    @Override public int height() { return this.height; }
-    @Override public int ascent() { return this.fm.ascent; }
-    @Override public int descent() { return this.fm.descent; }
+    // in Android, ascent and top are given as negatives (so they are relative to the baseline)
+    // but to make it the same as Desktop, we'll have to negate the value here
+    @Override public int ascent() { return -this.fm.top; }
+    @Override public int descent() { return this.fm.bottom; }
     @Override public int leading() { return this.fm.leading; }
     @Override public int widthOf(String text) { return (int)this.paint.measureText(text); }
 }

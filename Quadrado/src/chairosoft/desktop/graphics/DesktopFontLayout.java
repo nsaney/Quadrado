@@ -26,9 +26,8 @@ public class DesktopFontLayout extends FontLayout
         this.fontMetrics = _gfx.getFontMetrics(awtFont);
     }
     
-    @Override public int height() { return this.fontMetrics.getHeight(); }
-    @Override public int ascent() { return this.fontMetrics.getAscent(); }
-    @Override public int descent() { return this.fontMetrics.getDescent(); }
+    @Override public int ascent() { return this.fontMetrics.getMaxAscent(); }
+    @Override public int descent() { return this.fontMetrics.getMaxDescent(); }
     @Override public int leading() { return this.fontMetrics.getLeading(); }
     @Override public int widthOf(String text) { return this.fontMetrics.stringWidth(text); }
 }
