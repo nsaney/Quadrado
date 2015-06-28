@@ -146,21 +146,10 @@ public class QBoxStyle
             Element xmlBorderLengths = xmlQBoxStyle.getFirstChildElement("border-lengths");
             _borderLengths = BorderLengths.parse(xmlBorderLengths);
             
-            Element xmlUpArrow = xmlQBoxStyle.getFirstChildElement("up-arrow");
-            Element xmlUpArrowRectangle = xmlUpArrow.getFirstChildElement("rectangle");
-            upArrowRectangle = Loading.parseRectangle(xmlUpArrowRectangle, 1, 1);
-            
-            Element xmlRightArrow = xmlQBoxStyle.getFirstChildElement("right-arrow");
-            Element xmlRightArrowRectangle = xmlUpArrow.getFirstChildElement("rectangle");
-            rightArrowRectangle = Loading.parseRectangle(xmlUpArrowRectangle, 1, 1);
-            
-            Element xmlDownArrow = xmlQBoxStyle.getFirstChildElement("bottom-arrow");
-            Element xmlDownArrowRectangle = xmlUpArrow.getFirstChildElement("rectangle");
-            downArrowRectangle = Loading.parseRectangle(xmlUpArrowRectangle, 1, 1);
-            
-            Element xmlLeftArrow = xmlQBoxStyle.getFirstChildElement("left-arrow");
-            Element xmlLeftArrowRectangle = xmlUpArrow.getFirstChildElement("rectangle");
-            leftArrowRectangle = Loading.parseRectangle(xmlUpArrowRectangle, 1, 1);
+            upArrowRectangle = this.getArrowRectangle(xmlQBoxStyle, "up-arrow");
+            rightArrowRectangle = this.getArrowRectangle(xmlQBoxStyle, "right-arrow");
+            downArrowRectangle = this.getArrowRectangle(xmlQBoxStyle, "down-arrow");
+            leftArrowRectangle = this.getArrowRectangle(xmlQBoxStyle, "left-arrow");
             
         }
         catch (Exception ex)
@@ -199,6 +188,15 @@ public class QBoxStyle
         this.bottomBorder      = sourceImage.getImmutableSubimage(xC, yB, this.borderLengths.horizontal, this.borderWidths.bottom);
         this.bottomLeftCorner  = sourceImage.getImmutableSubimage(xL, yB, this.borderWidths.left,        this.borderWidths.bottom);
         this.leftBorder        = sourceImage.getImmutableSubimage(xL, yC, this.borderWidths.left,        this.borderLengths.vertical);
+    }
+    
+    protected Rectangle getArrowRectangle(Element xmlQBoxStyle, String elementName)
+    {
+        Rectangle result = null;
+        Element xmlArrow = xmlQBoxStyle.getFirstChildElement(elementName);
+        Element xmlArrowRectangle = xmlArrow.getFirstChildElement("rectangle");
+        result = Loading.parseRectangle(xmlArrowRectangle, 1, 1);
+        return result;
     }
     
     
