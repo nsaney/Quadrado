@@ -111,7 +111,7 @@ public class QDialogBox extends QTextElement
     }
     
     protected final void configureImage() { if (this.canConfigureImage()) { this.doConfigureImage(); } }
-    protected boolean canConfigureImage() { return this.canConfigureOuterImage(); }
+    protected boolean canConfigureImage() { return this.canConfigureOuterImage() && this.boxStyle != null; }
     protected void doConfigureImage()
     {
         int bwT = this.boxStyle.borderWidths.top;

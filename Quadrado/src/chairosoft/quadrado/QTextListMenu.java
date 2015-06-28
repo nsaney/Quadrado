@@ -44,10 +44,7 @@ public class QTextListMenu extends QListMenu
     protected ArrayList<String> textLines;
     protected DrawingImage outerImage = null;
     private FontLayout fontLayout = null;
-    private int pointerWidth = 0;
     private int pointerSpaceWidth = 0;
-    private int pointerHeight = 0;
-    private int pointerColor = Color.BLACK;
     private int width = -1;
     private int height = -1;
     private QScrollAnimator scrollAnimator = new QScrollAnimator();
@@ -95,18 +92,15 @@ public class QTextListMenu extends QListMenu
     }
     
     protected final void configure() { if (this.canConfigure()) { this.doConfigure(); } }
-    protected boolean canConfigure() { return this.fontLayout != null; }
+    protected boolean canConfigure() { return this.fontLayout != null && this.boxStyle != null; }
     protected void doConfigure()
     {
         int listTextWidth = this.getWidthOfLongestMenuItem(this.fontLayout);
         
         int emWidth = this.fontLayout.widthOf("M");
-        this.pointerWidth = emWidth;
         this.pointerSpaceWidth = emWidth / 2;
-        this.pointerHeight = this.fontLayout.ascent() / 2;
-        this.pointerHeight = this.pointerHeight - (this.pointerHeight % 2) + 1;
         
-        int listWidth = this.pointerSpaceWidth + this.pointerWidth + this.pointerSpaceWidth + listTextWidth;
+        int listWidth = this.pointerSpaceWidth + this.boxStyle.rightArrow.getWidth() + this.pointerSpaceWidth + listTextWidth;
         int listHeight = this.readonlyMenuItems.size() * this.fontLayout.height();
         
         this.outerImage = DrawingImage.create(listWidth, listHeight, DrawingImage.Config.ARGB_8888);
@@ -124,19 +118,16 @@ public class QTextListMenu extends QListMenu
             outerImageContext.fillRect(0, 0, this.outerImage.getWidth(), this.outerImage.getHeight());
             
             // pointer
-            outerImageContext.setColor(this.pointerColor);
-            int x1 = this.pointerSpaceWidth;
-            int x2 = this.pointerSpaceWidth + this.pointerWidth;
-            int pointerOffsetY = ((this.getSelectionIndex() + 1) * this.fontLayout.height()) - this.fontLayout.descent();
-            int y1 = pointerOffsetY - this.pointerHeight;
-            int y2 = pointerOffsetY - (this.pointerHeight / 2) - 1;
-            int y3 = pointerOffsetY;
-            outerImageContext.fillPolygon(new Polygon(new FloatPoint2D(x1, y1), new FloatPoint2D(x1, y3), new FloatPoint2D(x2, y2)));
+            int pointerOffsetX = this.pointerSpaceWidth;
+            int pointerOffsetY = (this.getSelectionIndex() * this.fontLayout.height()) 
+                               + (((this.fontLayout.ascent() * 3 / 2) - this.boxStyle.rightArrow.getHeight()) / 2)
+            ;
+            outerImageContext.drawImage(this.boxStyle.rightArrow, pointerOffsetX, pointerOffsetY);
             
             // text lines
             outerImageContext.setColor(this.textColor);
             outerImageContext.setFont(this.getFontLayout().font);
-            int textOffsetX = this.pointerSpaceWidth + this.pointerWidth + this.pointerSpaceWidth;
+            int textOffsetX = this.pointerSpaceWidth + this.boxStyle.rightArrow.getWidth() + this.pointerSpaceWidth;
             outerImageContext.drawLinesOfText(this.textLines, textOffsetX, 0);
         }
         catch (Exception ex)
