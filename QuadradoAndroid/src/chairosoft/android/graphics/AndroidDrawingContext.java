@@ -27,6 +27,9 @@ import android.graphics.Typeface;
 
 public class AndroidDrawingContext extends DrawingContext
 {
+    private static final Paint DEFAULT_PAINT = new Paint();
+    private static final Font DEFAULT_FONT = Font.create(Font.Family.SANS_SERIF, Font.Style.PLAIN, (int)DEFAULT_PAINT.getTextSize());
+    
     public final Canvas canvas;
     protected final Paint paint;
     protected Font font;
@@ -34,8 +37,8 @@ public class AndroidDrawingContext extends DrawingContext
     public AndroidDrawingContext(Canvas _canvas)
     {
         this.canvas = _canvas;
-        this.paint = new Paint();
-        this.setFont(AndroidFont.create(Font.Family.SANS_SERIF, Font.Style.PLAIN, (int)this.paint.getTextSize()));
+        this.paint = new Paint(DEFAULT_PAINT);
+        this.setFont(DEFAULT_FONT);
         this.path = new Path();
     }
     
