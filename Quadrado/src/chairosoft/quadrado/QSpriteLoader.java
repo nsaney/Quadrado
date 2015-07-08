@@ -290,23 +290,14 @@ public class QSpriteLoader
         {
             Loading.ensureName(xmlAnimation, "animation");
             
+            // required attributes
             AttributeValue<String> attrCode = new AttributeValue<>(xmlAnimation, "code", new Identity<String>());
-            AttributeValue<String> attrRepeat = new AttributeValue<>(xmlAnimation, "repeat", new Identity<String>());
             Loading.ensureAllValidAttributes(attrCode);
             
             String codeValue = attrCode.getValue();
             if (spriteAnimationMap.containsKey(codeValue)) { return; }
             
-            boolean repeatValue = true;
-            if (attrRepeat.isValid())
-            {
-                String repeatString = attrRepeat.getValue();
-                if (repeatString.equalsIgnoreCase("false") || repeatString.equalsIgnoreCase("no") || repeatString.equalsIgnoreCase("0"))
-                {
-                    repeatValue = false;
-                }
-            }
-            
+            // child elements
             final ArrayList<Animation.Frame> frameList = new ArrayList<Animation.Frame>();
             Loading.applyActionToXmlElementChildren(
                 xmlAnimation,
@@ -316,7 +307,9 @@ public class QSpriteLoader
             
             Animation.Frame[] frames = new Animation.Frame[frameList.size()];
             frameList.toArray(frames);
-            spriteAnimationMap.put(codeValue, new Animation(codeValue, repeatValue, frames));
+            
+            // add to map
+            spriteAnimationMap.put(codeValue, new Animation(codeValue, frames));
         }
         catch (Exception ex)
         {
@@ -378,6 +371,7 @@ public class QSpriteLoader
         {
             Loading.ensureName(xmlState, "state");
             
+            // required attributes
             AttributeValue<String> attrCode = new AttributeValue<>(xmlState, "code", new Identity<String>());
             AttributeValue<String> attrShape = new AttributeValue<>(xmlState, "shape", new Identity<String>());
             AttributeValue<String> attrAnimation = new AttributeValue<>(xmlState, "animation", new Identity<String>());
@@ -389,7 +383,20 @@ public class QSpriteLoader
             String shapeValue = attrShape.getValue();
             String animationValue = attrAnimation.getValue(); 
             
-            spriteStateMap.put(codeValue, new State(codeValue, shapeValue, animationValue)); 
+            // optional attributes
+            AttributeValue<String> attrGoto = new AttributeValue<>(xmlState, "goto", new Identity<String>());
+            AttributeValue<Integer> attrRepeatsBeforeGoto = new AttributeValue<>(xmlState, "repeatsBeforeGoto", new RangedIntAttributeParser("Repeats before goto", 0, Integer.MAX_VALUE));
+            
+            String gotoValue = null;
+            int repeatsBeforeGotoValue = 0;
+            if (attrGoto.isValid() && attrRepeatsBeforeGoto.isValid())
+            {
+                gotoValue = attrGoto.getValue();
+                repeatsBeforeGotoValue = attrRepeatsBeforeGoto.getValue();
+            }
+            
+            // add to map
+            spriteStateMap.put(codeValue, new State(codeValue, shapeValue, animationValue, gotoValue, repeatsBeforeGotoValue)); 
         }
         catch (Exception ex)
         {

@@ -176,7 +176,7 @@ public class QSprite extends QPhysical2D
         if (this.currentState == null) { throw new IllegalArgumentException("No state for stateCode \"" + stateCode + "\""); }
         this.currentStateCode = stateCode;
         Animation referenceAnimation = this.animationMap.get(this.currentState.animationCode); 
-        this.currentAnimation = new Animation(referenceAnimation.code, referenceAnimation.repeat, referenceAnimation.frames);
+        this.currentAnimation = new Animation(referenceAnimation);
         this.currentAnimation.resetAnimation();
         this.setImageFromCurrentAnimation();
         
@@ -247,12 +247,20 @@ public class QSprite extends QPhysical2D
     {
         // Instance Variables
         public final String code;
-        public final String animationCode;
         public final String offsetShapeCode;
+        public final String animationCode;
+        public final String gotoCode;
+        public final int    repeatsBeforeGoto;
         
         // Constructor
-        public State(String _code, String _offsetShapeCode, String _animationCode) 
-        { this.code = _code; this.offsetShapeCode = _offsetShapeCode; this.animationCode = _animationCode; }
+        public State(String _code, String _offsetShapeCode, String _animationCode, String _gotoCode, int _repeatsBeforeGoto) 
+        {
+            this.code = _code; 
+            this.offsetShapeCode = _offsetShapeCode; 
+            this.animationCode = _animationCode; 
+            this.gotoCode = _gotoCode;
+            this.repeatsBeforeGoto = _repeatsBeforeGoto;
+        }
     }
     
     public static class OffsetShape
@@ -296,15 +304,19 @@ public class QSprite extends QPhysical2D
         
         // Instance Variables
         protected final String  code;
-        protected final boolean repeat;
         protected final Frame[] frames;
-        protected       int     currentFrame   = 0;
+        protected       int     currentFrame = 0;
+        protected       int     repeats      = 0;
         
-        // Constructor
-        public Animation(String _code, boolean _repeat, Frame[] _frames) 
+        // Constructors
+        public Animation(Animation _template)
+        {
+            this(_template.code, _template.frames);
+        }
+        
+        public Animation(String _code, Frame[] _frames) 
         {
             this.code = _code;
-            this.repeat = _repeat;
             this.frames = new Frame[_frames.length];
             for (int i = 0; i < this.frames.length; ++i)
             {
@@ -328,8 +340,17 @@ public class QSprite extends QPhysical2D
         }
         public void advanceOneFrame(QSprite qs) 
         {
-            int nextFrame = (this.currentFrame + 1) % this.frames.length;
-            if (this.repeat || (nextFrame != 0))
+            int nextFrame = (this.currentFrame + 1);
+            if (nextFrame == this.frames.length)
+            {
+                nextFrame = 0;
+                ++this.repeats;
+            }
+            if (qs.currentState.gotoCode != null && (this.repeats > qs.currentState.repeatsBeforeGoto))
+            {
+                qs.setCurrentStateCode(qs.currentState.gotoCode);
+            }
+            else
             {
                 this.currentFrame = nextFrame;
                 this.setImageForQSprite(qs); 
