@@ -307,13 +307,15 @@ public class QSpriteLoader
                 }
             }
             
-            final ArrayList<Animation.Frame> frames = new ArrayList<Animation.Frame>();
+            final ArrayList<Animation.Frame> frameList = new ArrayList<Animation.Frame>();
             Loading.applyActionToXmlElementChildren(
                 xmlAnimation,
-                new Consumer<Element>() { public void accept(Element child) { addFrameToListFromXmlElement(child, frames, spriteImages); } }
+                new Consumer<Element>() { public void accept(Element child) { addFrameToListFromXmlElement(child, frameList, spriteImages); } }
                 /* child -> addAnimationToMapFromXmlElement(child, spriteAnimationMap, spriteImages) */
             );
             
+            Animation.Frame[] frames = new Animation.Frame[frameList.size()];
+            frameList.toArray(frames);
             spriteAnimationMap.put(codeValue, new Animation(codeValue, repeatValue, frames));
         }
         catch (Exception ex)
@@ -326,7 +328,7 @@ public class QSpriteLoader
     protected static void addFrameToListFromXmlElement
     (
         Element xmlFrame, 
-        List<Animation.Frame> frames, 
+        List<Animation.Frame> frameList, 
         final List<DrawingImage> spriteImages
     )
     {
@@ -343,7 +345,7 @@ public class QSpriteLoader
             
             int durationValue = attrDuration.getValue();
             
-            frames.add(new Animation.Frame(frameImage, durationValue));
+            frameList.add(new Animation.Frame(frameImage, durationValue));
         }
         catch (Exception ex)
         {

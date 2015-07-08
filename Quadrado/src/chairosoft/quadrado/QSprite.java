@@ -295,41 +295,47 @@ public class QSprite extends QPhysical2D
         }
         
         // Instance Variables
-        protected final String      code;
-        protected final boolean     repeat;
-        protected final List<Frame> frames         = new ArrayList<>();
-        protected final int         numberOfFrames;
-        protected       int         currentFrame   = 0;
+        protected final String  code;
+        protected final boolean repeat;
+        protected final Frame[] frames;
+        protected       int     currentFrame   = 0;
         
         // Constructor
-        public Animation(String _code, boolean _repeat, List<Frame> _frames) 
+        public Animation(String _code, boolean _repeat, Frame[] _frames) 
         {
             this.code = _code;
             this.repeat = _repeat;
-            for (Frame f : _frames) { this.frames.add(new Frame(f)); }
-            this.numberOfFrames = this.frames.size();
+            this.frames = new Frame[_frames.length];
+            for (int i = 0; i < this.frames.length; ++i)
+            {
+                this.frames[i] = new Frame(_frames[i]);
+            }
         }
         
         // Instance Accessors
         public String getCode() { return this.code; }
-        public DrawingImage getCurrentImage() { return this.frames.get(this.currentFrame).getImage(); }
-        public int getNumberOfFrames() { return this.numberOfFrames; }
+        public DrawingImage getCurrentImage() { return this.frames[this.currentFrame].getImage(); }
+        public int getNumberOfFrames() { return this.frames.length; }
         
         // Instance Mutators
-        public void advanceOneClick(QSprite qs) { if (0 == this.frames.get(this.currentFrame).advanceOneClick()) { this.advanceOneFrame(qs); } }
+        public void advanceOneClick(QSprite qs) 
+        {
+            int currentFrameClick = this.frames[this.currentFrame].advanceOneClick();
+            if (0 == currentFrameClick) 
+            {
+                this.advanceOneFrame(qs);
+            } 
+        }
         public void advanceOneFrame(QSprite qs) 
         {
-            if (this.repeat || this.currentFrame < (this.numberOfFrames - 1))
+            int nextFrame = (this.currentFrame + 1) % this.frames.length;
+            if (this.repeat || (nextFrame != 0))
             {
-                this.currentFrame++;
-                if (this.repeat && this.currentFrame == this.numberOfFrames)
-                {
-                    this.currentFrame = 0;
-                }
+                this.currentFrame = nextFrame;
                 this.setImageForQSprite(qs); 
             }
         }
         public void setImageForQSprite(QSprite qs) { qs.image = this.getCurrentImage(); }
-        public void resetAnimation() { this.frames.get(this.currentFrame).resetFrame(); this.currentFrame = 0; }
+        public void resetAnimation() { this.frames[this.currentFrame].resetFrame(); this.currentFrame = 0; }
     }
 }
