@@ -38,6 +38,7 @@ public class QPhysical2D extends QCollidable implements QPositionedDrawable
     protected FloatPoint2D velocity     = new FloatPoint2D(0, 0);
     protected FloatPoint2D acceleration = new FloatPoint2D(0, 0);
     protected FloatPoint2D lastMove     = new FloatPoint2D(0, 0);
+    protected FloatPoint2D terminalVelocity = new FloatPoint2D(Float.MAX_VALUE, Float.MAX_VALUE);
     
     
     //
@@ -58,6 +59,7 @@ public class QPhysical2D extends QCollidable implements QPositionedDrawable
     public FloatPoint2D getVelocity()     { return new FloatPoint2D(this.velocity.x,     this.velocity.y); }
     public FloatPoint2D getAcceleration() { return new FloatPoint2D(this.acceleration.x, this.acceleration.y); }
     public FloatPoint2D getLastMove()     { return new FloatPoint2D(this.lastMove.x,     this.lastMove.y); }
+    public FloatPoint2D getTerminalVelocity() { return new FloatPoint2D(this.terminalVelocity.x, this.terminalVelocity.y); }
     
     
     //// Mutators
@@ -76,8 +78,32 @@ public class QPhysical2D extends QCollidable implements QPositionedDrawable
     // Velocity
     public final void setVelocity(FloatPoint2D v) { this.setVelocity(v.x, v.y); }
     public final void setVelocity(float vx, float vy) { this.setXVelocity(vx); this.setYVelocity(vy); }
-    public void setXVelocity(float vx) { this.velocity.x = vx; }
-    public void setYVelocity(float vy) { this.velocity.y = vy; }
+    public void setXVelocity(float vx) 
+    {
+        if (vx < 0)
+        {
+            float min = -this.terminalVelocity.x;
+            if (vx < min) { vx = min; }
+        }
+        else if (vx > this.terminalVelocity.x)
+        {
+            vx = this.terminalVelocity.x;
+        }
+        this.velocity.x = vx; 
+    }
+    public void setYVelocity(float vy) 
+    {
+        if (vy < 0)
+        {
+            float min = -this.terminalVelocity.y;
+            if (vy < min) { vy = min; }
+        }
+        else if (vy > this.terminalVelocity.y)
+        {
+            vy = this.terminalVelocity.y;
+        }
+        this.velocity.y = vy; 
+    }
     
     // Instantaneous Acceleration
     public final void instantaneouslyAccelerate(FloatPoint2D a) { this.instantaneouslyAccelerate(a.x, a.y); }
@@ -90,6 +116,12 @@ public class QPhysical2D extends QCollidable implements QPositionedDrawable
     public final void setAcceleration(float ax, float ay) { this.setXAcceleration(ax); this.setYAcceleration(ay); }
     public void setXAcceleration(float ax) { this.acceleration.x = ax; }
     public void setYAcceleration(float ay) { this.acceleration.y = ay; }
+    
+    // Terminal Velocity
+    public final void setTerminalVelocity(FloatPoint2D tv) { this.setTerminalVelocity(tv.x, tv.y); }
+    public final void setTerminalVelocity(float tvx, float tvy) { this.setXTerminalVelocity(tvx); this.setYTerminalVelocity(tvy); }
+    public void setXTerminalVelocity(float tvx) { this.terminalVelocity.x = (tvx < 0) ? -tvx : tvx; }
+    public void setYTerminalVelocity(float tvy) { this.terminalVelocity.y = (tvy < 0) ? -tvy : tvy; }
     
     // Move
     protected void setLastMove(float dx, float dy) { this.lastMove.setLocation(dx, dy); }
