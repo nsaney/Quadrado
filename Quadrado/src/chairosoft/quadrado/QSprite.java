@@ -107,7 +107,7 @@ public class QSprite extends QPhysical2D
         );
     }
     
-    public QSprite(String spriteCode) { this(spriteMap.get(spriteCode)); }
+    public QSprite(String spriteCode) { this(QSprite.getTemplateQSprite(spriteCode)); }
     
     
     //
@@ -140,6 +140,17 @@ public class QSprite extends QPhysical2D
         if (bound < 0) { throw new RuntimeException("[keepWithinRange] Parameter 'bound' must be positive. "); }
         float sign = Math.signum(num);
         return (Math.abs(num) > bound) ? (sign * bound) : num;
+    }
+    
+    public static QSprite getTemplateQSprite(String code)
+    {
+        QSprite result = QSprite.spriteMap.get(code);
+        if (result == null)
+        {
+            String message = String.format("Could not find QSprite with code \"%s\".", code);
+            throw new IllegalArgumentException(message);
+        }
+        return result;
     }
     
     public static QSprite getNewQSprite(String code)
