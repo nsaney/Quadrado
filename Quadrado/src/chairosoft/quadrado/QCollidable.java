@@ -40,7 +40,7 @@ public class QCollidable extends QDrawable
     // Constructors
     // 
     
-    protected QCollidable() { }
+    public QCollidable() { }
         
     protected QCollidable(int x, int y, int width, int height)
     {
