@@ -30,6 +30,11 @@ public class QMapRoomLoader implements Runnable
     
     public QMapRoomLoader(QMapRoom.MapLink _mapLink, Consumer<Result> _onFinished)
     {
+        if (_mapLink == null)
+        {
+            throw new NullPointerException("Given map link is null.");
+        }
+        
         this.mapLink = _mapLink;
         this.onFinished = _onFinished;
     }
