@@ -67,6 +67,12 @@ public class Polygon
         this.boundsValid = false;
     }
     
+    public void addPoint(float x, float y)
+    {
+        this.points.add(new FloatPoint2D(x, y));
+        this.boundsValid = false;
+    }
+    
     public void translate(int dx, int dy) 
     {
         if ((dx == 0) && (dy == 0)) { return; }

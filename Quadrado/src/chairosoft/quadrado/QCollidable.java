@@ -140,6 +140,7 @@ public class QCollidable extends QDrawable
     }
     
     @Override public void addPoint(int x, int y) { super.addPoint(x, y); this.recalculateSlopes(); }
+    @Override public void addPoint(float x, float y) { super.addPoint(x, y); this.recalculateSlopes(); }
     @Override public void reset() { super.reset(); this.slopes.clear(); }
     
     public void putFirstVertexAt(float x, float y) 
