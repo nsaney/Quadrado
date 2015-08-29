@@ -173,13 +173,20 @@ public class QSprite extends QPhysical2D
     @Override
     public String toString() { return "[" + this.code + "]"; }
     
+    public String getCurrentStateCode() { return this.currentStateCode; }
+    public boolean currentStateCodeEquals(String stateCode) 
+    {
+        return (this.currentStateCode == stateCode) 
+            || (this.currentStateCode != null && this.currentStateCode.equals(stateCode));
+    }
+    
     
     //// Mutators
     
     public void setCurrentStateCode(String stateCode)
     {
         // set state, animation, and shape only if state is different
-        if (this.currentStateCode == stateCode) { return; }
+        if (this.currentStateCodeEquals(stateCode)) { return; }
         
         String oldOffsetShapeCode = (this.currentState == null) ? "" : this.currentState.offsetShapeCode;
         
