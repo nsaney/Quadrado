@@ -85,6 +85,10 @@ public enum QCompassDirection
     public final boolean IS_CARDINAL;
     public final boolean IS_HORIZONTAL;
     public final boolean IS_VERTICAL;
+    public final boolean IS_EAST;
+    public final boolean IS_NORTH;
+    public final boolean IS_WEST;
+    public final boolean IS_SOUTH;
     
     
     //
@@ -110,6 +114,10 @@ public enum QCompassDirection
         this.IS_CARDINAL   = (_alignment != CardinalAlignment.NONE);
         this.IS_HORIZONTAL = (_alignment == CardinalAlignment.HORIZONTAL);
         this.IS_VERTICAL   = (_alignment == CardinalAlignment.VERTICAL);
+        this.IS_EAST       = (this.X > 0);
+        this.IS_NORTH      = (this.Y > 0);
+        this.IS_WEST       = (this.X < 0);
+        this.IS_SOUTH      = (this.Y < 0);
     }
     
     
