@@ -358,4 +358,28 @@ public class QCollidable extends QDrawable
         }
         System.err.println("");
     }
+    
+    
+    //
+    // Integer-Offset Collidable
+    //
+    
+    public static class IntOffset extends QCollidable
+    {
+        // Instance Fields
+        public final int dx;
+        public final int dy;
+        
+        // Constructor
+        public IntOffset(int _dx, int _dy)
+        {
+            this.dx = _dx;
+            this.dy = _dy;
+        }
+        
+        // Instance Methods
+        @Override public void addPoint(int x, int y) { super.addPoint(x + dx, y + dy); }
+        @Override public void addPoint(float x, float y) { super.addPoint(x + dx, y + dy); }
+        @Override public void putFirstVertexAt(float x, float y) { super.putFirstVertexAt(x + dx, y + dy); }
+    }
 }
