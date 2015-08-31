@@ -239,8 +239,19 @@ public class QSprite extends QPhysical2D
     {
         if ((this.lastMove.distance(0, 0) > MIN_MOVE_DISTANCE) && qmaproom.hasTileCollidingWith(this))
         {
+            FloatPoint2D p0 = this.getPosition();
             this.setPositionRounded();
-            while (qmaproom.hasTileCollidingWith(this)) { this.undoLastMoveUnit(); }
+            int undoneUnits = 0;
+            double undoLimit = this.lastMove.getVectorLength();
+            for ( ; undoneUnits < undoLimit && qmaproom.hasTileCollidingWith(this); ++undoneUnits)
+            {
+                this.undoLastMoveUnit();
+            }
+            if (undoneUnits >= undoLimit)
+            {
+                this.setPosition(p0.x, p0.y);
+                this.undoLastMove();
+            }
         }
     }
     
