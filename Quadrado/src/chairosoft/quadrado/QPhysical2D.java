@@ -70,7 +70,7 @@ public class QPhysical2D extends QCollidable implements QPositionedDrawable
     {
         this.setXPosition(px); 
         this.setYPosition(py);
-        super.putFirstVertexAt(px, py);
+        this.putFirstVertexAt(px, py);
     }
     public void setXPosition(float px) { this.position.x = px; }
     public void setYPosition(float py) { this.position.y = py; }
