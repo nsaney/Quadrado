@@ -1,11 +1,3 @@
-Quadrado/bin
-Quadrado/Deploy_*
-Quadrado/doc
-QuadradoAndroid/bin
-QuadradoAndroid/Deploy_*
-QuadradoAndroid/doc
-QuadradoAndroid/*.jar
-QuadradoAndroid/licenses/*
 QuadradoProjectTemplate/bin
 QuadradoProjectTemplate/Deploy_*
 QuadradoProjectTemplate/doc
