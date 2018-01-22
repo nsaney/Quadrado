@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/quadrado-android/quadrado-android.iml" filepath="$PROJECT_DIR$/quadrado-android/quadrado-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quadrado-core/quadrado-core.iml" filepath="$PROJECT_DIR$/quadrado-core/quadrado-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quadrado-desktop/quadrado-desktop.iml" filepath="$PROJECT_DIR$/quadrado-desktop/quadrado-desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quadrado-parent.iml" filepath="$PROJECT_DIR$/quadrado-parent.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>chairosoft.quadrado</groupId>
+    <artifactId>quadrado-parent</artifactId>
+    <version>2.0-alpha</version>
+    <relativePath>../quadrado-parent/pom.xml</relativePath>
+  </parent>
+
+  <artifactId>quadrado-android</artifactId>
+
+  <properties>
+    <android-api-version>21</android-api-version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>chairosoft.quadrado</groupId>
+      <artifactId>quadrado-core</artifactId>
+      <version>2.0-alpha</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.android</groupId>
+      <artifactId>android-sdk</artifactId>
+      <version>api-${android-api-version}</version>
+      <scope>system</scope>
+      <systemPath>${env.ANDROID_HOME}/platforms/android-${android-api-version}/android.jar</systemPath>
+    </dependency>
+
+  </dependencies>
+
+</project>
