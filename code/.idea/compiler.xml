@@ -9,12 +9,14 @@
         <module name="quadrado-android" />
         <module name="quadrado-core" />
         <module name="quadrado-desktop" />
+        <module name="quadrado-example" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="quadrado-android" target="1.8" />
       <module name="quadrado-core" target="1.8" />
       <module name="quadrado-desktop" target="1.8" />
+      <module name="quadrado-example" target="1.8" />
       <module name="quadrado-parent" target="1.8" />
     </bytecodeTargetLevel>
   </component>

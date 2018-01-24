@@ -1,0 +1,17 @@
+<?xml version='1.0'?>
+<qmaproom background='#00bf7f' tileset="TileSet_01">
+<layout>
+' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 
+' W3W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2W2' 
+' W4X3X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2X2' 
+' W4X4` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` E1
+' W4X4` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` E1
+' W4X5X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6' 
+' W5W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6W6' 
+' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' 
+</layout>
+<links>
+    <link row="3" col="-1" map="exampleMap01" row2="12" col2="1"/>
+    <link row="4" col="-1" map="exampleMap01" row2="13" col2="1"/>
+</links>
+</qmaproom>

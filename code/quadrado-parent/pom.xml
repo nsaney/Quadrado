@@ -12,6 +12,7 @@
     <module>../quadrado-core</module>
     <module>../quadrado-desktop</module>
     <module>../quadrado-android</module>
+    <module>../quadrado-example</module>
   </modules>
 
   <properties>
