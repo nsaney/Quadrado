@@ -74,7 +74,7 @@ public class QBoxStyle
         Element root = xmlDocument.getRootElement();
         Loading.ensureName(root, "qboxstyles");
         
-        AttributeValue<String> attrFolder = new AttributeValue<>(root, "folder", new Identity<String>());
+        AttributeValue<String> attrFolder = new AttributeValue<>(root, "folder", Identity.STRING);
         
         Loading.ensureAllValidAttributes(attrFolder);
         

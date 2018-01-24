@@ -73,7 +73,7 @@ public class QTileset
         Element root = xmlDocument.getRootElement();
         Loading.ensureName(root, "qtilesets");
         
-        AttributeValue<String> attrFolder = new AttributeValue<>(root, "folder", new Identity<String>());
+        AttributeValue<String> attrFolder = new AttributeValue<>(root, "folder", Identity.STRING);
         AttributeValue<Integer> attrTileWidth = new AttributeValue<>(root, "tileWidth", new RangedIntAttributeParser("QTileset tileWidth", 1, Integer.MAX_VALUE));
         AttributeValue<Integer> attrTileHeight = new AttributeValue<>(root, "tileHeight", new RangedIntAttributeParser("QTileset tileHeight", 1, Integer.MAX_VALUE));
         

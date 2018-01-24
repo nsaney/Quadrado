@@ -22,7 +22,6 @@ import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 
 import chairosoft.quadrado.util.Identity;
@@ -83,7 +82,7 @@ public class QSpriteLoader
         {
             Loading.ensureName(xmlQSprite, "qsprite");
             
-            AttributeValue<String> attrCode = new AttributeValue<String>(xmlQSprite, "code", new Identity<String>());
+            AttributeValue<String> attrCode = new AttributeValue<String>(xmlQSprite, "code", Identity.STRING);
             AttributeValue<Integer> attrWidth = new AttributeValue<Integer>(xmlQSprite, "width", new RangedIntAttributeParser("QTile width", 1, Integer.MAX_VALUE));
             AttributeValue<Integer> attrHeight = new AttributeValue<Integer>(xmlQSprite, "height", new RangedIntAttributeParser("QTile height", 1, Integer.MAX_VALUE));
             Loading.ensureAllValidAttributes(attrCode, attrWidth, attrHeight);
@@ -165,7 +164,7 @@ public class QSpriteLoader
         {
             Loading.ensureName(xmlSpriteSheet, "spritesheet");
             
-            AttributeValue<String> attrImage = new AttributeValue<String>(xmlSpriteSheet, "image", new Identity<String>());
+            AttributeValue<String> attrImage = new AttributeValue<String>(xmlSpriteSheet, "image", Identity.STRING);
             AttributeValue<Integer> attrTransparent = new AttributeValue<>(xmlSpriteSheet, "transparent", Loading.TRANSPARENCY_DECODER_FUNCTION); 
             Loading.ensureAllValidAttributes(attrImage, attrTransparent);
             
@@ -229,7 +228,7 @@ public class QSpriteLoader
         {
             Loading.ensureName(xmlRectangle, "rectangle");
             
-            AttributeValue<String> attrCode = new AttributeValue<>(xmlRectangle, "code", new Identity<String>());
+            AttributeValue<String> attrCode = new AttributeValue<>(xmlRectangle, "code", Identity.STRING);
             Rectangle r = Loading.parseRectangle(xmlRectangle, 1, 1);
             Loading.ensureAllValidAttributes(attrCode);
             
@@ -280,7 +279,7 @@ public class QSpriteLoader
             Loading.ensureName(xmlAnimation, "animation");
             
             // required attributes
-            AttributeValue<String> attrCode = new AttributeValue<>(xmlAnimation, "code", new Identity<String>());
+            AttributeValue<String> attrCode = new AttributeValue<>(xmlAnimation, "code", Identity.STRING);
             Loading.ensureAllValidAttributes(attrCode);
             
             String codeValue = attrCode.getValue();
@@ -359,9 +358,9 @@ public class QSpriteLoader
             Loading.ensureName(xmlState, "state");
             
             // required attributes
-            AttributeValue<String> attrCode = new AttributeValue<>(xmlState, "code", new Identity<String>());
-            AttributeValue<String> attrShape = new AttributeValue<>(xmlState, "shape", new Identity<String>());
-            AttributeValue<String> attrAnimation = new AttributeValue<>(xmlState, "animation", new Identity<String>());
+            AttributeValue<String> attrCode = new AttributeValue<>(xmlState, "code", Identity.STRING);
+            AttributeValue<String> attrShape = new AttributeValue<>(xmlState, "shape", Identity.STRING);
+            AttributeValue<String> attrAnimation = new AttributeValue<>(xmlState, "animation", Identity.STRING);
             Loading.ensureAllValidAttributes(attrCode, attrShape, attrAnimation);
             
             String codeValue = attrCode.getValue();
@@ -371,7 +370,7 @@ public class QSpriteLoader
             String animationValue = attrAnimation.getValue(); 
             
             // optional attributes
-            AttributeValue<String> attrGoto = new AttributeValue<>(xmlState, "goto", new Identity<String>());
+            AttributeValue<String> attrGoto = new AttributeValue<>(xmlState, "goto", Identity.STRING);
             AttributeValue<Integer> attrRepeatsBeforeGoto = new AttributeValue<>(xmlState, "repeatsBeforeGoto", new RangedIntAttributeParser("Repeats before goto", 0, Integer.MAX_VALUE));
             
             String gotoValue = null;
