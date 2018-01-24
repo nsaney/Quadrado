@@ -12,12 +12,14 @@ package chairosoft.quadrado.game;
 
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 
-import chairosoft.quadrado.util.function.*;
 import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
+import chairosoft.quadrado.util.Identity;
 import nu.xom.*;
 
 /**
@@ -246,9 +248,9 @@ public class QTileset
         {
             Loading.ensureName(xmlQTileset, "qtileset");
             
-            AttributeValue<String> attrCode = new AttributeValue<String>(xmlQTileset, "code", new Identity<String>());
+            AttributeValue<String> attrCode = new AttributeValue<String>(xmlQTileset, "code", Identity.STRING);
             AttributeValue<Integer> attrTransparent = new AttributeValue<>(xmlQTileset, "transparent", Loading.TRANSPARENCY_DECODER_FUNCTION); 
-            AttributeValue<String> attrImage = new AttributeValue<String>(xmlQTileset, "image", new Identity<String>());
+            AttributeValue<String> attrImage = new AttributeValue<String>(xmlQTileset, "image", Identity.STRING);
             Loading.ensureAllValidAttributes(attrCode, attrTransparent, attrImage);
             
             String code = attrCode.getValue();

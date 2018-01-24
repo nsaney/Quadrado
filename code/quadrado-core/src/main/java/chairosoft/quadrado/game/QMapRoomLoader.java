@@ -12,10 +12,11 @@ package chairosoft.quadrado.game;
 
 
 import chairosoft.quadrado.ui.UserInterfaceProvider;
-import chairosoft.quadrado.util.function.*;
 
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.graphics.DrawingContext;
+
+import java.util.function.Consumer;
 
 
 public class QMapRoomLoader implements Runnable

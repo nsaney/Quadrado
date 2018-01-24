@@ -15,13 +15,14 @@ import chairosoft.quadrado.ui.geom.Rectangle;
 
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 
-import chairosoft.quadrado.util.function.*;
 import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 
+import chairosoft.quadrado.util.Identity;
 import nu.xom.*;
 
 public class QTile extends QCollidable implements Comparable<QTile>
@@ -192,7 +193,7 @@ public class QTile extends QCollidable implements Comparable<QTile>
         {
             Loading.ensureName(xmlQTile, "qtile");
             
-            AttributeValue<String> attrCode = new AttributeValue<>(xmlQTile, "code", new Identity<String>());
+            AttributeValue<String> attrCode = new AttributeValue<>(xmlQTile, "code", Identity.STRING);
             AttributeValue<Integer> attrImage = new AttributeValue<>(xmlQTile, "image", new RangedIntAttributeParser("QTile image", 0, Integer.MAX_VALUE));
             Loading.ensureAllValidAttributes(attrCode, attrImage);
             

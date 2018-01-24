@@ -16,12 +16,13 @@ import chairosoft.quadrado.ui.geom.Rectangle;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.graphics.DrawingContext;
 
-import chairosoft.quadrado.util.function.*;
 import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
+import java.util.function.Function;
 
+import chairosoft.quadrado.util.Identity;
 import nu.xom.*;
 
 /**
@@ -130,8 +131,8 @@ public class QBoxStyle
         {
             Loading.ensureName(xmlQBoxStyle, "qboxstyle");
             
-            AttributeValue<String> attrCode = new AttributeValue<String>(xmlQBoxStyle, "code", new Identity<String>());
-            AttributeValue<String> attrImage = new AttributeValue<String>(xmlQBoxStyle, "image", new Identity<String>());
+            AttributeValue<String> attrCode = new AttributeValue<String>(xmlQBoxStyle, "code", Identity.STRING);
+            AttributeValue<String> attrImage = new AttributeValue<String>(xmlQBoxStyle, "image", Identity.STRING);
             AttributeValue<Integer> attrTransparent = new AttributeValue<>(xmlQBoxStyle, "transparent", Loading.TRANSPARENCY_DECODER_FUNCTION); 
             Loading.ensureAllValidAttributes(attrCode, attrImage, attrTransparent);
             

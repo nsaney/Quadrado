@@ -18,13 +18,14 @@ import chairosoft.quadrado.ui.geom.Rectangle;
 
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 
-import chairosoft.quadrado.util.function.*;
 import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 
+import chairosoft.quadrado.util.Identity;
 import nu.xom.*;
 
 
@@ -49,7 +50,7 @@ public class QSpriteLoader
             Element root = xmlDocument.getRootElement();
             Loading.ensureName(root, "qsprites");
             
-            AttributeValue<String> attrFolder = new AttributeValue<>(root, "folder", new Identity<String>());
+            AttributeValue<String> attrFolder = new AttributeValue<>(root, "folder", Identity.STRING);
             Loading.ensureAllValidAttributes(attrFolder);
             
             imageFolder = QSprite.specFolder + "/" + attrFolder.getValue();
@@ -57,7 +58,7 @@ public class QSpriteLoader
             Loading.applyActionToXmlElementChildren
             (
                 root,
-                new Consumer<Element>() { public void accept(Element child) { 
+                new Consumer<Element>() { public void accept(Element child) {
                     QSprite qs = getQSpriteFromXmlElement(child, result); 
                     if (qs != null) { result.put(qs.code, qs); } 
                 } }

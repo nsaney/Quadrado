@@ -11,7 +11,6 @@
 package chairosoft.quadrado.util;
 
 import chairosoft.quadrado.ui.UserInterfaceProvider;
-import chairosoft.quadrado.util.function.*;
 
 import chairosoft.quadrado.ui.geom.FloatPoint2D;
 import chairosoft.quadrado.ui.geom.Rectangle;
@@ -25,6 +24,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import nu.xom.*;
 
@@ -168,8 +170,8 @@ public final /*static*/ class Loading
     }
     
     
-    public final static Function<String,Integer> TRANSPARENCY_DECODER_FUNCTION = new Function<String,Integer>() 
-    { public Integer apply(String input) { return Integer.decode(input); } }; /* input -> Integer.decode(input) */ 
+    public final static Function<String,Integer> TRANSPARENCY_DECODER_FUNCTION = new Function<String,Integer>()
+    { public Integer apply(String input) { return Integer.decode(input); } }; /* input -> Integer.decode(input) */
     
     /**
      * Applies transparency to an image where pixels are marked for transparency.

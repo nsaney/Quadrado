@@ -17,12 +17,15 @@ import chairosoft.quadrado.ui.graphics.Color;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.graphics.DrawingContext;
 
-import chairosoft.quadrado.util.function.*;
 import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
+import chairosoft.quadrado.util.Identity;
 import nu.xom.*;
 
 public class QMapRoom extends QAbstractMapRoom
@@ -150,7 +153,7 @@ public class QMapRoom extends QAbstractMapRoom
         Loading.ensureName(root, "qmaproom");
         
         // background color
-        Function<String,Integer> backgroundFunc = new Function<String,Integer>() { public Integer apply(String input) { return Color.create(Integer.decode(input), false); } }; /* input -> Color.create(Integer.decode(input), false) */ 
+        Function<String,Integer> backgroundFunc = new Function<String,Integer>() { public Integer apply(String input) { return Color.create(Integer.decode(input), false); } }; /* input -> Color.create(Integer.decode(input), false) */
         AttributeValue<Integer> attrBackground = new AttributeValue<>(root, "background", backgroundFunc); 
         
         // tileset
@@ -247,7 +250,7 @@ public class QMapRoom extends QAbstractMapRoom
         
         AttributeValue<Integer> attrRow = new AttributeValue<>(linkElement, "row", parseInteger);
         AttributeValue<Integer> attrCol = new AttributeValue<>(linkElement, "col", parseInteger);
-        AttributeValue<String> attrMap = new AttributeValue<>(linkElement, "map", new Identity<String>());
+        AttributeValue<String> attrMap = new AttributeValue<>(linkElement, "map", Identity.STRING);
         AttributeValue<Integer> attrRow2 = new AttributeValue<>(linkElement, "row2", parseInteger);
         AttributeValue<Integer> attrCol2 = new AttributeValue<>(linkElement, "col2", parseInteger);
         
