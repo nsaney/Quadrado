@@ -170,8 +170,7 @@ public final /*static*/ class Loading
     }
     
     
-    public final static Function<String,Integer> TRANSPARENCY_DECODER_FUNCTION = new Function<String,Integer>()
-    { public Integer apply(String input) { return Integer.decode(input); } }; /* input -> Integer.decode(input) */
+    public final static Function<String,Integer> TRANSPARENCY_DECODER_FUNCTION = Integer::decode;
     
     /**
      * Applies transparency to an image where pixels are marked for transparency.
@@ -501,8 +500,7 @@ public final /*static*/ class Loading
     {
         Loading.ensureName(xmlRectangle, "rectangle");
         
-        Function<String,Integer> parseInteger = new Function<String,Integer>() { public Integer apply(String input) { return Integer.parseInt(input); } };
-        /* input -> Integer.parseInt(input) */
+        Function<String,Integer> parseInteger = Integer::parseInt;
         
         AttributeValue<Integer> attrX0 = new AttributeValue<>(xmlRectangle, "x0", parseInteger);
         AttributeValue<Integer> attrY0 = new AttributeValue<>(xmlRectangle, "y0", parseInteger);

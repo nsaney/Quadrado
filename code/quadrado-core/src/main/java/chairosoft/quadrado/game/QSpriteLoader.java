@@ -58,14 +58,10 @@ public class QSpriteLoader
             Loading.applyActionToXmlElementChildren
             (
                 root,
-                new Consumer<Element>() { public void accept(Element child) {
-                    QSprite qs = getQSpriteFromXmlElement(child, result); 
-                    if (qs != null) { result.put(qs.code, qs); } 
-                } }
-                //  child -> { 
-                //      QSprite qs = getQSpriteFromXmlElement(child); 
-                //      if (qs != null) { result.put(qs.code, qs); } 
-                //  } 
+                child -> {
+                    QSprite qs = getQSpriteFromXmlElement(child, result);
+                    if (qs != null) { result.put(qs.code, qs); }
+                }
             );
         }
         catch (Exception ex)
@@ -208,8 +204,7 @@ public class QSpriteLoader
             Loading.applyActionToXmlElementChildren
             (
                 xmlShapes,
-                new Consumer<Element>() { public void accept(Element child) { addShapeToMapFromElement(child, spriteShapeMap); } }
-                // child -> addShapeToMapFromElement(child, spriteShapeMap)
+                child -> addShapeToMapFromElement(child, spriteShapeMap)
             );
         }
         catch (Exception ex)
@@ -263,8 +258,7 @@ public class QSpriteLoader
             Loading.ensureName(xmlAnimations, "animations");
             Loading.applyActionToXmlElementChildren(
                 xmlAnimations,
-                new Consumer<Element>() { public void accept(Element child) { addAnimationToMapFromXmlElement(child, spriteAnimationMap, spriteImages); } }
-                /* child -> addAnimationToMapFromXmlElement(child, spriteAnimationMap, spriteImages) */
+                child -> addAnimationToMapFromXmlElement(child, spriteAnimationMap, spriteImages)
             );
         }
         catch (Exception ex)
@@ -296,8 +290,7 @@ public class QSpriteLoader
             final ArrayList<Animation.Frame> frameList = new ArrayList<Animation.Frame>();
             Loading.applyActionToXmlElementChildren(
                 xmlAnimation,
-                new Consumer<Element>() { public void accept(Element child) { addFrameToListFromXmlElement(child, frameList, spriteImages); } }
-                /* child -> addAnimationToMapFromXmlElement(child, spriteAnimationMap, spriteImages) */
+                child -> addFrameToListFromXmlElement(child, frameList, spriteImages)
             );
             
             Animation.Frame[] frames = new Animation.Frame[frameList.size()];
@@ -349,8 +342,7 @@ public class QSpriteLoader
             Loading.ensureName(xmlStates, "states");
             Loading.applyActionToXmlElementChildren(
                 xmlStates,
-                new Consumer<Element>() { public void accept(Element child) { addStateToMapFromXmlElement(child, spriteStateMap); } }
-                /* child -> addStateToMapFromXmlElement(child, spriteStateMap) */
+                child -> addStateToMapFromXmlElement(child, spriteStateMap)
             );
         }
         catch (Exception ex)

@@ -297,8 +297,7 @@ public class QBoxStyle
             (
                 root,
                 new PredicateMatchingElementByAttribute("code", code),
-                new Function<Element, QBoxStyle>() { public QBoxStyle apply(Element child) { return new QBoxStyle(child); } }
-                // child -> new QBoxStyle(child)
+                QBoxStyle::new
             );
         }
         catch (Exception ex)

@@ -223,8 +223,7 @@ public class QTileset
             (
                 root,
                 new PredicateMatchingElementByAttribute("code", code),
-                new Function<Element, QTileset>() { public QTileset apply(Element child) { return getQTilesetFromXmlElement(child); } }
-                // child -> getQTilesetFromXmlElement(child)
+                QTileset::getQTilesetFromXmlElement
             );
         }
         catch (Exception ex)
@@ -263,8 +262,7 @@ public class QTileset
             Loading.applyActionToXmlElementChildren
             (
                 xmlQTileset,
-                new Consumer<Element>() { public void accept(Element child) { QTile qt = QTile.getQTileFromXmlElement(child, tileImages); tiles.put(qt.code, qt); } }
-                // child -> { QTile qt = QTile.getQTileFromXmlElement(child, tileImages); tiles.put(qt.code, qt); }
+                child -> { QTile qt = QTile.getQTileFromXmlElement(child, tileImages); tiles.put(qt.code, qt); }
             );
             
             result = new QTileset(code, transparent, location, tiles);

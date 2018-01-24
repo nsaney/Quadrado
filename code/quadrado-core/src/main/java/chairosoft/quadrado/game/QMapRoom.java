@@ -153,11 +153,11 @@ public class QMapRoom extends QAbstractMapRoom
         Loading.ensureName(root, "qmaproom");
         
         // background color
-        Function<String,Integer> backgroundFunc = new Function<String,Integer>() { public Integer apply(String input) { return Color.create(Integer.decode(input), false); } }; /* input -> Color.create(Integer.decode(input), false) */
+        Function<String,Integer> backgroundFunc = input -> Color.create(Integer.decode(input), false);
         AttributeValue<Integer> attrBackground = new AttributeValue<>(root, "background", backgroundFunc); 
         
         // tileset
-        Function<String,QTileset> tilesetFunc = new Function<String,QTileset>() { public QTileset apply(String input) { return QTileset.get(input); } }; /* input -> QTileset.get(input) */
+        Function<String,QTileset> tilesetFunc = QTileset::get;
         AttributeValue<QTileset> attrTileset = new AttributeValue<>(root, "tileset", tilesetFunc); 
         
         Loading.ensureAllValidAttributes(attrBackground, attrTileset);
@@ -166,13 +166,13 @@ public class QMapRoom extends QAbstractMapRoom
         this.qtileset = attrTileset.getValue();
         
         // layout
-        Predicate<Element> layoutMatcher = new Predicate<Element>() { public boolean test(Element input) { return Loading.hasName(input, "layout"); } };
-        Consumer<Element> layoutAction = new Consumer<Element>() { public void accept(Element child) { QMapRoom.this.setQTileLayoutFromXmlElement(child); } };
+        Predicate<Element> layoutMatcher = input -> Loading.hasName(input, "layout");
+        Consumer<Element> layoutAction = QMapRoom.this::setQTileLayoutFromXmlElement;
         Loading.applyActionToFirstMatchingXmlElementChild(root, layoutMatcher, layoutAction);
         
         // links
-        Predicate<Element> linksMatcher = new Predicate<Element>() { public boolean test(Element input) { return Loading.hasName(input, "links"); } };
-        Consumer<Element> linksAction = new Consumer<Element>() { public void accept(Element child) { QMapRoom.this.setMapLinksFromXmlElement(child); } };
+        Predicate<Element> linksMatcher = input -> Loading.hasName(input, "links");
+        Consumer<Element> linksAction = QMapRoom.this::setMapLinksFromXmlElement;
         Loading.applyActionToFirstMatchingXmlElementChild(root, linksMatcher, linksAction);
     }
     
@@ -237,7 +237,7 @@ public class QMapRoom extends QAbstractMapRoom
         
         this.mapLinks = new ArrayList<>();
         
-        Consumer<Element> linkAction = new Consumer<Element>() { public void accept(Element child) { QMapRoom.this.setMapLinkFromXmlElement(child); } };
+        Consumer<Element> linkAction = QMapRoom.this::setMapLinkFromXmlElement;
         Loading.applyActionToXmlElementChildren(linksElement, linkAction);
     }
     
@@ -245,8 +245,7 @@ public class QMapRoom extends QAbstractMapRoom
     {
         Loading.ensureName(linkElement, "link");
         
-        Function<String,Integer> parseInteger = new Function<String,Integer>() { public Integer apply(String input) { return Integer.parseInt(input); } };
-        /* input -> Integer.parseInt(input) */
+        Function<String,Integer> parseInteger = Integer::parseInt;
         
         AttributeValue<Integer> attrRow = new AttributeValue<>(linkElement, "row", parseInteger);
         AttributeValue<Integer> attrCol = new AttributeValue<>(linkElement, "col", parseInteger);

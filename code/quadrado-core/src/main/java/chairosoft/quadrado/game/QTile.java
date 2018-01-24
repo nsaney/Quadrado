@@ -102,89 +102,6 @@ public class QTile extends QCollidable implements Comparable<QTile>
     //
     
     
-    // public static void disposeAllAndSetExternalImgFolder(String path)
-    // {
-        // usingInternal = false;
-        // if (tileMap != null) { disposeAllQTiles(); }
-        // tileMap = null; // to trigger staticInit() on next call to getTileMap() 
-        // imgFolder = path;
-    // }
-    
-    // private static void staticInit()
-    // {
-        // qTilesPath = Loading.getPathInFolder(imgFolder, QTILES_FILENAME);
-        // qTilesXml  = Loading.getXmlDocument(qTilesPath, usingInternal);
-        
-        // Element root = qTilesXml.getRootElement();
-        // if (!Loading.hasName(root, "qtiles")) { return; }
-        
-        // Function<String,String> folderFunc = new Function<String,String>() { public String apply(String input) { return Loading.getPathInFolder(imgFolder, input); } }; /* input -> Loading.getPathInFolder(imgFolder, input) */
-        // AttributeValue<String> attrFolder = new AttributeValue<>(root, "folder", folderFunc); 
-        
-        // Function<String,Integer> transparentFunc = new Function<String,Integer>() { public Integer apply(String input) { return Integer.decode(input); } }; /* input -> Integer.decode(input) */ 
-        // AttributeValue<Integer> attrTransparent = new AttributeValue<>(root, "transparent", transparentFunc); 
-        
-        // if (!Loading.areAllValidAttributes(attrFolder, attrTransparent)) { return; }
-        
-        // tilesFolder = attrFolder.getValue();
-        // transparentValue = attrTransparent.getValue();
-    // }
-    
-    // private static Map<String,QTile> getTileMap()
-    // {
-        // if (tileMap == null)
-        // {
-            // tileMap = new HashMap<String,QTile>();
-            // staticInit();
-        // }
-        // return tileMap;
-    // }
-    
-    
-    // public static void loadAllQTilesToMap()
-    // {
-        // try
-        // {
-            // disposeAllQTiles(); // clear map
-            
-            // Loading.applyActionToXmlElementChildren
-            // (
-                // qTilesXml.getRootElement(),
-                // new Consumer<Element>() { public void accept(Element child) { addQTileToMapFromXmlElement(child); } }
-                // // child -> addQTileToMapFromXmlElement(child)
-            // );
-        // }
-        // catch (RuntimeException rx)
-        // {
-            // throw rx;
-        // }
-        // catch (Exception ex)
-        // {
-            // System.err.println("[qtile from code]");
-            // ex.printStackTrace();
-        // }
-    // }
-    
-    // protected static void addQTileToMap(final String code)
-    // {
-        // try
-        // {
-            // Loading.applyActionToFirstMatchingXmlElementChild
-            // (
-                // qTilesXml.getRootElement(),
-                // new Predicate<Element>() { public boolean test(Element child) { return child.getAttribute("code").getValue().equals(code); } },
-                // // child -> child.getAttribute("code").getValue().equals(code)
-                // new Consumer<Element>() { public void accept(Element child) { addQTileToMapFromXmlElement(child); } }
-                // // child -> addQTileToMapFromXmlElement(child)
-            // );
-        // }
-        // catch (Exception ex)
-        // {
-            // System.err.println("[qtile from code]");
-            // ex.printStackTrace();
-        // }
-    // }
-    
     public static QTile getQTileFromXmlElement(Element xmlQTile, List<? extends DrawingImage> images)
     {
         QTile result = null;
@@ -211,8 +128,7 @@ public class QTile extends QCollidable implements Comparable<QTile>
             Loading.applyActionToXmlElementChildren
             (
                 xmlQTile,
-                new Consumer<Element>() { public void accept(Element child) { QTile.addRectangleOrPointToListFromXmlElement(child, pointList); } }
-                // child -> QTile.addRectangleOrPointToListFromXmlElement(child, pointList)
+                child -> QTile.addRectangleOrPointToListFromXmlElement(child, pointList)
             );
             
             result = new QTile(codeValue, imageValue, tileImage, pointList);
