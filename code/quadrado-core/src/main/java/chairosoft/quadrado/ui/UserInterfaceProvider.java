@@ -19,7 +19,7 @@ public abstract class UserInterfaceProvider {
     private final static UserInterfaceProvider PROVIDER = StreamSupport.stream(SERVICE_LOADER.spliterator(), false)
         .filter(UserInterfaceProvider::isUsableOnCurrentSystem)
         .findFirst()
-        .orElse(null);
+        .orElseThrow(() -> new IllegalStateException("Unable to find a usable " + UserInterfaceProvider.class.getSimpleName()));
     public static UserInterfaceProvider get() { return PROVIDER; }
     
     
