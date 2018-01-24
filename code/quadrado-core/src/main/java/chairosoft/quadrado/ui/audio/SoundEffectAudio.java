@@ -10,7 +10,7 @@
 
 package chairosoft.quadrado.ui.audio;
 
-import chairosoft.quadrado.ui.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 
 import java.io.BufferedInputStream;
 import java.io.Closeable;

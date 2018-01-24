@@ -10,7 +10,7 @@
 
 package chairosoft.quadrado.ui.audio;
 
-import chairosoft.quadrado.ui.LifecycleUtility;
+import chairosoft.quadrado.ui.system.LifecycleUtility;
 import chairosoft.quadrado.util.AppendableFileInputStream;
 import chairosoft.quadrado.util.ByteConverter;
 import chairosoft.quadrado.util.Restartable;

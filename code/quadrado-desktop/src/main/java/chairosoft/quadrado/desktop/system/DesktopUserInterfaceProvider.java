@@ -1,12 +1,12 @@
-package chairosoft.quadrado.desktop;
+package chairosoft.quadrado.desktop.system;
 
 import chairosoft.quadrado.desktop.audio.DesktopMultitrackBackgroundAudio;
 import chairosoft.quadrado.desktop.audio.DesktopSoundEffectAudio;
 import chairosoft.quadrado.desktop.graphics.DesktopDrawingImage;
 import chairosoft.quadrado.desktop.graphics.DesktopFontFace;
-import chairosoft.quadrado.ui.LifecycleUtility;
-import chairosoft.quadrado.ui.UserInterfaceProvider;
-import chairosoft.quadrado.ui.DoubleBufferedUI;
+import chairosoft.quadrado.ui.system.LifecycleUtility;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.DoubleBufferedUI;
 import chairosoft.quadrado.ui.audio.MultitrackBackgroundAudio;
 import chairosoft.quadrado.ui.audio.SoundEffectAudio;
 import chairosoft.quadrado.ui.graphics.DrawingImage;

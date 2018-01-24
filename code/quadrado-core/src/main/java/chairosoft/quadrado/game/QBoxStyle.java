@@ -10,7 +10,7 @@
 
 package chairosoft.quadrado.game;
 
-import chairosoft.quadrado.ui.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.geom.Rectangle;
 
 import chairosoft.quadrado.ui.graphics.DrawingImage;
@@ -20,7 +20,6 @@ import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
-import java.util.function.Function;
 
 import chairosoft.quadrado.util.Identity;
 import nu.xom.*;

@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.quadrado.android;
+package chairosoft.quadrado.android.system;
 
 import android.app.Activity;
 import android.content.Intent;

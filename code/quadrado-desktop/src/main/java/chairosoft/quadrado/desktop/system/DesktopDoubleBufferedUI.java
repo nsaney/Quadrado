@@ -8,10 +8,12 @@
  * 
  */
 
-package chairosoft.quadrado.desktop;
+package chairosoft.quadrado.desktop.system;
 
 
-import chairosoft.quadrado.ui.DoubleBufferedUI;
+import chairosoft.quadrado.desktop.event.DesktopButtonAdapter;
+import chairosoft.quadrado.desktop.event.DesktopPointerAdapter;
+import chairosoft.quadrado.ui.system.DoubleBufferedUI;
 import chairosoft.quadrado.ui.event.ButtonListener;
 import chairosoft.quadrado.ui.event.PointerListener;
 

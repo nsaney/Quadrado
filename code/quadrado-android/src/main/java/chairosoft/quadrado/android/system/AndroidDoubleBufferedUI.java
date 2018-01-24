@@ -8,9 +8,11 @@
  * 
  */
 
-package chairosoft.quadrado.android;
+package chairosoft.quadrado.android.system;
 
-import chairosoft.quadrado.ui.DoubleBufferedUI;
+import chairosoft.quadrado.android.event.AndroidButtonAdapter;
+import chairosoft.quadrado.android.event.AndroidPointerAdapter;
+import chairosoft.quadrado.ui.system.DoubleBufferedUI;
 import chairosoft.quadrado.ui.event.ButtonListener;
 import chairosoft.quadrado.ui.event.PointerListener;
 
@@ -19,7 +21,6 @@ import chairosoft.quadrado.android.graphics.AndroidDrawingContext;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -30,10 +31,12 @@ import java.util.ArrayList;
 public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.OnTouchListener
 {
     protected QuadradoLauncherActivity activity = null;
+    public QuadradoLauncherActivity getActivity() { return this.activity; }
+    
     protected SurfaceView view = null;
     protected SurfaceHolder holder = null;
     protected Bitmap dbImage = null;
-    protected final Rect destinationFrame = new Rect();
+    public final Rect destinationFrame = new Rect();
     
     private ArrayList<View.OnTouchListener> onTouchListeners = new ArrayList<>();
     
@@ -162,7 +165,7 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.On
         if (this.buttonListener != null)
         {
             this.androidButtonAdapter = new AndroidButtonAdapter(this.buttonListener);
-            this.androidButtonAdapterCallback = new AndroidButtonAdapter.Callback(this);
+            this.androidButtonAdapterCallback = new AndroidButtonAdapter.Callback(this, this.androidButtonAdapter);
             
             this.addOnTouchListener(this.androidButtonAdapter);
             this.holder.addCallback(this.androidButtonAdapterCallback);

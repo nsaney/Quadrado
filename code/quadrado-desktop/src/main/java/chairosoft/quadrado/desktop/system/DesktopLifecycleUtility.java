@@ -8,9 +8,9 @@
  * 
  */
 
-package chairosoft.quadrado.desktop;
+package chairosoft.quadrado.desktop.system;
 
-import chairosoft.quadrado.ui.LifecycleUtility;
+import chairosoft.quadrado.ui.system.LifecycleUtility;
 
 public class DesktopLifecycleUtility extends LifecycleUtility {
     

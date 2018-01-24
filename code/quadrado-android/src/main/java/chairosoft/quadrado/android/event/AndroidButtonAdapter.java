@@ -8,8 +8,9 @@
  * 
  */
 
-package chairosoft.quadrado.android;
+package chairosoft.quadrado.android.event;
 
+import chairosoft.quadrado.android.system.AndroidDoubleBufferedUI;
 import chairosoft.quadrado.ui.event.ButtonListener;
 import chairosoft.quadrado.ui.event.ButtonSource;
 import chairosoft.quadrado.ui.event.ButtonEvent;
@@ -240,11 +241,13 @@ public class AndroidButtonAdapter implements View.OnTouchListener
     public static class Callback implements SurfaceHolder.Callback
     {
         public final AndroidDoubleBufferedUI androidDbui;
+        public final AndroidButtonAdapter androidButtonAdapter;
         private Rect frame = null;
         
-        public Callback(AndroidDoubleBufferedUI _androidDbui)
+        public Callback(AndroidDoubleBufferedUI _androidDbui, AndroidButtonAdapter _androidButtonAdapter)
         {
             this.androidDbui = _androidDbui;
+            this.androidButtonAdapter = _androidButtonAdapter;
         }
         
         @Override 
@@ -291,7 +294,6 @@ public class AndroidButtonAdapter implements View.OnTouchListener
             /////////////////////////
             // Set overlay buttons //
             /////////////////////////
-            AndroidButtonAdapter androidButtonAdapter = this.androidDbui.androidButtonAdapter;
             
             // [GAMEPAD MODE]
             // . 0 1 2 3 4 5 6 7 8 9 a
@@ -308,17 +310,17 @@ public class AndroidButtonAdapter implements View.OnTouchListener
             int x6 = width - x4; int x7 = width - x3; int x8 = width - x2; int x9 = width - x1;
             int y5 = height - side; 
             int y4 = y5 - side; int y3 = y4 - side; int y2 = y3 - shs; int y1 = y2 - side; int y0 = y1 - shs;
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.LEFT,  x1, y0, x2, y3);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.RIGHT, x3, y0, x4, y3);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.UP,    x1, y0, x4, y1);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.DOWN,  x1, y2, x4, y3);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.SELECT, x3, y4 + hs, x4, y5);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.START,  x6, y4 + hs, x7, y5);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.A, x8, y1, x9, y2);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.B, x7, y2, x8, y3);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.X, x7, y0, x8, y1);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.Y, x6, y1, x7, y2);
-            androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.DEBUG_9, x8, y4, width, y5);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.LEFT,  x1, y0, x2, y3);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.RIGHT, x3, y0, x4, y3);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.UP,    x1, y0, x4, y1);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.DOWN,  x1, y2, x4, y3);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.SELECT, x3, y4 + hs, x4, y5);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.START,  x6, y4 + hs, x7, y5);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.A, x8, y1, x9, y2);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.B, x7, y2, x8, y3);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.X, x7, y0, x8, y1);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.Y, x6, y1, x7, y2);
+            this.androidButtonAdapter.setButtonRectangleForCode(ButtonEvent.Code.DEBUG_9, x8, y4, width, y5);
             
             
             // [C MODE]

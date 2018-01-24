@@ -1,11 +1,8 @@
-package chairosoft.quadrado.ui;
+package chairosoft.quadrado.ui.system;
 
 import chairosoft.quadrado.ui.audio.MultitrackBackgroundAudio;
 import chairosoft.quadrado.ui.audio.SoundEffectAudio;
-import chairosoft.quadrado.ui.graphics.DrawingImage;
-import chairosoft.quadrado.ui.graphics.FontFace;
-import chairosoft.quadrado.ui.graphics.FontFamily;
-import chairosoft.quadrado.ui.graphics.FontStyle;
+import chairosoft.quadrado.ui.graphics.*;
 
 import java.io.IOException;
 import java.io.InputStream;

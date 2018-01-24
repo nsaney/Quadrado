@@ -10,7 +10,6 @@
 
 package chairosoft.quadrado.android.audio;
 
-import chairosoft.quadrado.android.QuadradoLauncherActivity;
 import chairosoft.quadrado.ui.audio.MultitrackBackgroundAudio;
 
 import android.media.AudioFormat;

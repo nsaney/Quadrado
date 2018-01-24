@@ -8,11 +8,10 @@
  * 
  */
 
-package chairosoft.quadrado.android;
+package chairosoft.quadrado.android.event;
 
-import chairosoft.quadrado.ui.event.PointerListener;
+import chairosoft.quadrado.android.system.AndroidDoubleBufferedUI;
 import chairosoft.quadrado.ui.event.PointerEvent;
-import chairosoft.quadrado.ui.geom.FloatPoint2D;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,8 +33,8 @@ public class AndroidPointerAdapter implements View.OnTouchListener
         for (int i = 0; i < pointerCount; ++i)
         {
             int id = e.getPointerId(i);
-            float x = e.getX(i) * this.androidDbui.getWidth() / this.androidDbui.activity.getWidthPixels();
-            float y = e.getY(i) * this.androidDbui.getHeight() / this.androidDbui.activity.getHeightPixels();
+            float x = e.getX(i) * this.androidDbui.getWidth() / this.androidDbui.getActivity().getWidthPixels();
+            float y = e.getY(i) * this.androidDbui.getHeight() / this.androidDbui.getActivity().getHeightPixels();
             switch (action)
             {
                 case MotionEvent.ACTION_POINTER_DOWN: 

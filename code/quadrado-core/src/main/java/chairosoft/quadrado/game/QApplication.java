@@ -10,9 +10,9 @@
 
 package chairosoft.quadrado.game;
 
-import chairosoft.quadrado.ui.UserInterfaceProvider;
-import chairosoft.quadrado.ui.DoubleBufferedUI;
-import chairosoft.quadrado.ui.LifecycleUtility;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.DoubleBufferedUI;
+import chairosoft.quadrado.ui.system.LifecycleUtility;
 import chairosoft.quadrado.ui.event.ButtonListener;
 import chairosoft.quadrado.ui.event.ButtonEvent;
 import chairosoft.quadrado.ui.event.PointerListener;

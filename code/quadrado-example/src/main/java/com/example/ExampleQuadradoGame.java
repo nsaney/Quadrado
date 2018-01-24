@@ -8,7 +8,7 @@ package com.example;
 
 import static chairosoft.quadrado.game.QCompassDirection.*;
 import chairosoft.quadrado.game.*;
-import chairosoft.quadrado.ui.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.event.*;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;

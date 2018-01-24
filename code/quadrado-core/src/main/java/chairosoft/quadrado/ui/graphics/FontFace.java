@@ -10,7 +10,7 @@
 
 package chairosoft.quadrado.ui.graphics;
 
-import chairosoft.quadrado.ui.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.util.Loading;
 
 import java.io.InputStream;

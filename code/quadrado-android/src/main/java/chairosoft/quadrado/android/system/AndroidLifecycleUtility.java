@@ -8,10 +8,9 @@
  * 
  */
 
-package chairosoft.quadrado.android;
+package chairosoft.quadrado.android.system;
 
-import chairosoft.quadrado.ui.LifecycleUtility;
-import chairosoft.quadrado.android.QuadradoLauncherActivity;
+import chairosoft.quadrado.ui.system.LifecycleUtility;
 
 public class AndroidLifecycleUtility extends LifecycleUtility {
     

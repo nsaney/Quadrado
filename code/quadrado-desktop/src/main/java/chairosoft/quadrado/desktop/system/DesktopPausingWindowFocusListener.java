@@ -1,4 +1,4 @@
-package chairosoft.quadrado.desktop;
+package chairosoft.quadrado.desktop.system;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;

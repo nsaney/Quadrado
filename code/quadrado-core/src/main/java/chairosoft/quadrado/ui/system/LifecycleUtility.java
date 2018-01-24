@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.quadrado.ui;
+package chairosoft.quadrado.ui.system;
 
 import java.io.*;
 

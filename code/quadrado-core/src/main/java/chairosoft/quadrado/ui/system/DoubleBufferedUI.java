@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.quadrado.ui;
+package chairosoft.quadrado.ui.system;
 
 import chairosoft.quadrado.ui.graphics.DrawingContext;
 import chairosoft.quadrado.ui.event.ButtonListener;

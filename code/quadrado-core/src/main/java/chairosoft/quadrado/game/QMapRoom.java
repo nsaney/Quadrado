@@ -10,7 +10,7 @@
 
 package chairosoft.quadrado.game;
 
-import chairosoft.quadrado.ui.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 
 import chairosoft.quadrado.ui.graphics.Color;

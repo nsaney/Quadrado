@@ -1,13 +1,13 @@
-package chairosoft.quadrado.android;
+package chairosoft.quadrado.android.system;
 
 import android.graphics.Typeface;
 import chairosoft.quadrado.android.audio.AndroidMultitrackBackgroundAudio;
 import chairosoft.quadrado.android.audio.AndroidSoundEffectAudio;
 import chairosoft.quadrado.android.graphics.AndroidDrawingImage;
 import chairosoft.quadrado.android.graphics.AndroidFontFace;
-import chairosoft.quadrado.ui.LifecycleUtility;
-import chairosoft.quadrado.ui.UserInterfaceProvider;
-import chairosoft.quadrado.ui.DoubleBufferedUI;
+import chairosoft.quadrado.ui.system.LifecycleUtility;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
+import chairosoft.quadrado.ui.system.DoubleBufferedUI;
 import chairosoft.quadrado.ui.audio.MultitrackBackgroundAudio;
 import chairosoft.quadrado.ui.audio.SoundEffectAudio;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
