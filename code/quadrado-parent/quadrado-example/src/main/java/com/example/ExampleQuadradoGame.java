@@ -404,8 +404,8 @@ public class ExampleQuadradoGame extends QApplication
                             int w = PANEL_WIDTH - 20;
                             int h = 2 * fl.height();
                             this.test__dialogBox.setup(fl, this.test__textForDialog, test__boxStyle, w, h);
-                            this.test__dialogBox.x = (PANEL_WIDTH - w) / 2;// - this.test__dialogBox.getBorderWidth();
-                            this.test__dialogBox.y = PANEL_HEIGHT - h - this.test__dialogBox.x;
+                            this.test__dialogBox.x = (PANEL_WIDTH - w) / 2 - this.test__boxStyle.borderWidths.left;
+                            this.test__dialogBox.y = PANEL_HEIGHT - h - this.test__dialogBox.x - this.test__boxStyle.borderWidths.top - this.test__boxStyle.borderWidths.bottom;
                         }
                         this.test__dialogBox.advanceScrollOneClick();
                         this.test__dialogBox.drawToContextAtOwnPosition(ctx);
