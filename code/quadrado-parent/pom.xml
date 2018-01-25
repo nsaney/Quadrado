@@ -9,10 +9,10 @@
   <packaging>pom</packaging>
   <version>2.0-alpha</version>
   <modules>
-    <module>../quadrado-core</module>
-    <module>../quadrado-desktop</module>
-    <module>../quadrado-android</module>
-    <module>../quadrado-example</module>
+    <module>quadrado-core</module>
+    <module>quadrado-desktop</module>
+    <module>quadrado-android</module>
+    <module>quadrado-example</module>
   </modules>
 
   <properties>
