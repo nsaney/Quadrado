@@ -18,9 +18,6 @@ package chairosoft.quadrado.game;
 // import chairosoft.quadrado.ui.graphics.WrappedText;
 
 // import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
 
 
 /**

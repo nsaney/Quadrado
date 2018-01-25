@@ -13,13 +13,8 @@ package chairosoft.quadrado.android.graphics;
 import chairosoft.quadrado.ui.graphics.FontFace;
 import chairosoft.quadrado.ui.graphics.FontFamily;
 import chairosoft.quadrado.ui.graphics.FontStyle;
-import chairosoft.quadrado.util.Loading;
 
 import android.graphics.Typeface;
-
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
 
 public class AndroidFontFace extends FontFace {
     

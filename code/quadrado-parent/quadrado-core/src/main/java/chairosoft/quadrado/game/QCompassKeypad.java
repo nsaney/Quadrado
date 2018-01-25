@@ -13,10 +13,6 @@ package chairosoft.quadrado.game;
 import static chairosoft.quadrado.game.QCompassDirection.*;
 
 
-import java.io.*; 
-import java.util.*;
-
-
 public class QCompassKeypad
 {
     //

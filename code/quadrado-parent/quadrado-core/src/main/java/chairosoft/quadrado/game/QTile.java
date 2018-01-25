@@ -19,7 +19,6 @@ import chairosoft.quadrado.util.Loading;
 import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 
 import chairosoft.quadrado.util.Identity;
