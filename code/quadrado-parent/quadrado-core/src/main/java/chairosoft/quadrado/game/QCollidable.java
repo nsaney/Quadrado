@@ -40,7 +40,7 @@ public class QCollidable extends QDrawable
     
     public QCollidable() { }
         
-    protected QCollidable(int x, int y, int width, int height)
+    public QCollidable(int x, int y, int width, int height)
     {
         this.addPoint(x,         y);
         this.addPoint(x + width, y);

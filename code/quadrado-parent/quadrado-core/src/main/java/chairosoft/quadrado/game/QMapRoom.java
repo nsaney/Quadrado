@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import chairosoft.quadrado.util.Identity;
+import chairosoft.quadrado.util.function.Identity;
 import nu.xom.*;
 
 public class QMapRoom extends QAbstractMapRoom

@@ -11,13 +11,13 @@
 package chairosoft.quadrado.android.audio;
 
 import chairosoft.quadrado.ui.audio.SoundEffectAudio;
-import chairosoft.quadrado.util.*;
 
 import android.speech.srec.WaveHeader;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import chairosoft.quadrado.util.io.DirectByteArrayOutputStream;
 
 import java.io.*;
 

@@ -1,4 +1,4 @@
-package chairosoft.quadrado.util;
+package chairosoft.quadrado.util.function;
 
 import java.util.function.Function;
 

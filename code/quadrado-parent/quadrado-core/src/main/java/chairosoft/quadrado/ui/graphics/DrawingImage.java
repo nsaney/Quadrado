@@ -11,6 +11,7 @@
 package chairosoft.quadrado.ui.graphics;
 
 import chairosoft.quadrado.ui.geom.Rectangle;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 
 public abstract class DrawingImage {
     
@@ -40,6 +41,32 @@ public abstract class DrawingImage {
     ////// Instance Methods - Concrete //////
     public DrawingImage getImmutableSubimage(Rectangle r) {
         return this.getImmutableSubimage(r.x, r.y, r.width, r.height);
+    }
+    
+    public void applyTransparencyToPixel(int x, int y, int transparentColor) {
+        if ((this.getPixel(x, y) & 0x00FFFFFF) == transparentColor) {
+            this.setPixel(x, y, 0);
+        }
+    }
+    
+    public DrawingImage getCloneWithTransparency(int transparentColor) {
+        int w = this.getWidth();
+        int h = this.getHeight();
+        DrawingImage result = UserInterfaceProvider.get().createDrawingImage(w, h, Config.ARGB_8888);
+        
+        try (DrawingContext resultContext = result.getContext()) {
+            resultContext.drawImage(this, 0, 0);
+            for (int j = 0; j < h; ++j) {
+                for (int i = 0; i < w; ++i) {
+                    result.applyTransparencyToPixel(i, j, transparentColor);
+                }
+            }
+        }
+        catch (Exception ex) {
+            System.err.println("DrawingContext error: " + ex);
+        }
+        
+        return result;
     }
     
 }

@@ -17,7 +17,7 @@ import static chairosoft.quadrado.util.Loading.*;
 
 import java.util.*;
 
-import chairosoft.quadrado.util.Identity;
+import chairosoft.quadrado.util.function.Identity;
 import nu.xom.*;
 
 /**

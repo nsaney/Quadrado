@@ -12,6 +12,7 @@ import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.event.*;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
+import com.example.sprite.ExampleSprite01;
 
 import java.util.function.Consumer;
 
@@ -71,7 +72,7 @@ public class ExampleQuadradoGame extends QApplication
     protected DrawingImage contentImage = null;
     protected DrawingContext contentImageContext = null;
     
-    protected QMapRoomExplorerSprite protagonist = new QMapRoomExplorerSprite("exampleSprite01")
+    protected QMapRoomExplorerSprite<?,?,?> protagonist = new ExampleSprite01()
     {
         @Override public void setNextState(QCompassDirection nextDirection)
         {
@@ -79,10 +80,10 @@ public class ExampleQuadradoGame extends QApplication
             {
                 case NORTHEAST: // passthrough
                 case SOUTHEAST: // passthrough
-                case EAST:      this.setCurrentStateCode("right"); break;
+                case EAST:      this.setCurrentStateCode(ExampleSprite01.StateCode.right); break;
                 case NORTHWEST: // passthrough
                 case SOUTHWEST: // passthrough
-                case WEST:      this.setCurrentStateCode("left"); break;
+                case WEST:      this.setCurrentStateCode(ExampleSprite01.StateCode.left); break;
                 default: 
             }
         }
@@ -322,7 +323,7 @@ public class ExampleQuadradoGame extends QApplication
                     
                     // collision
                     protagonist.moveOneFrameIn(qmaproom);
-                    currentMapLink = protagonist.getMapLinkOrNullFrom(qmaproom);
+                    currentMapLink = qmaproom.getCollidingMapLinkOrNull(protagonist);
                     if (currentMapLink == null)
                     {
                         protagonist.resolveCollisionInQMapRoom(qmaproom, true, true);
