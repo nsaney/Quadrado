@@ -17,7 +17,8 @@ public class AnimationFrame {
     
     ////// Instance Methods //////
     public int advanceOneClick() {
-        return (++this.currentClick) % this.duration;
+        this.currentClick = (this.currentClick + 1) % this.duration;
+        return this.currentClick;
     }
     
     public void reset() {
