@@ -80,10 +80,10 @@ public class ExampleQuadradoGame extends QApplication
             {
                 case NORTHEAST: // passthrough
                 case SOUTHEAST: // passthrough
-                case EAST:      this.setCurrentStateCode(ExampleSprite01.StateCode.right); break;
+                case EAST:      this.setCurrentStateCode(StateCode.right); break;
                 case NORTHWEST: // passthrough
                 case SOUTHWEST: // passthrough
-                case WEST:      this.setCurrentStateCode(ExampleSprite01.StateCode.left); break;
+                case WEST:      this.setCurrentStateCode(StateCode.left); break;
                 default: 
             }
         }
