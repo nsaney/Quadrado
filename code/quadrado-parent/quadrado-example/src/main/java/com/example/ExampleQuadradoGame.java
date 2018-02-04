@@ -8,10 +8,13 @@ package com.example;
 
 import static chairosoft.quadrado.game.QCompassDirection.*;
 import chairosoft.quadrado.game.*;
+import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.event.*;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
+import com.example.box_style.BoxStyle_01;
+import com.example.box_style.BoxStyle_02;
 import com.example.sprite.ExampleSprite01;
 
 import java.util.function.Consumer;
@@ -103,7 +106,8 @@ public class ExampleQuadradoGame extends QApplication
     
     protected boolean test__showDialogBox = false;
     protected QDialogBox test__dialogBox = null;
-    protected QBoxStyle test__boxStyle = QBoxStyle.get("BoxStyle_01");
+    protected QBoxStyle test__boxStyle01 = new BoxStyle_01();
+    protected QBoxStyle test__boxStyle02 = new BoxStyle_02();
     protected String test__textForDialog = "Test dialog... " +
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit, " + 
         "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " + 
@@ -404,9 +408,9 @@ public class ExampleQuadradoGame extends QApplication
                             FontLayout fl = ctx.getFontLayout(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10));
                             int w = PANEL_WIDTH - 20;
                             int h = 2 * fl.height();
-                            this.test__dialogBox.setup(fl, this.test__textForDialog, test__boxStyle, w, h);
-                            this.test__dialogBox.x = (PANEL_WIDTH - w) / 2 - this.test__boxStyle.borderWidths.left;
-                            this.test__dialogBox.y = PANEL_HEIGHT - h - this.test__dialogBox.x - this.test__boxStyle.borderWidths.top - this.test__boxStyle.borderWidths.bottom;
+                            this.test__dialogBox.setup(fl, this.test__textForDialog, test__boxStyle01, w, h);
+                            this.test__dialogBox.x = (PANEL_WIDTH - w) / 2 - this.test__boxStyle01.borderWidths.left;
+                            this.test__dialogBox.y = PANEL_HEIGHT - h - this.test__dialogBox.x - this.test__boxStyle01.borderWidths.top - this.test__boxStyle01.borderWidths.bottom;
                         }
                         this.test__dialogBox.advanceScrollOneClick();
                         this.test__dialogBox.drawToContextAtOwnPosition(ctx);
@@ -420,7 +424,7 @@ public class ExampleQuadradoGame extends QApplication
                             FontFace sansSerifPlain10 = UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10);
                             FontLayout fl = ctx.getFontLayout(sansSerifPlain10);
                             int h = 2 * fl.height();
-                            this.test__selectionMenu.setup(fl, test__boxStyle, h);
+                            this.test__selectionMenu.setup(fl, test__boxStyle02, h);
                             this.test__selectionMenu.x = 20;
                             this.test__selectionMenu.y = PANEL_HEIGHT - h - this.test__selectionMenu.x;
                         }

@@ -1,4 +1,4 @@
-package chairosoft.quadrado.game.resource.sprite;
+package chairosoft.quadrado.game.resource.box_style;
 
 import chairosoft.quadrado.game.resource.loading.ClassBasedResourceKeyDecoder;
 import chairosoft.quadrado.game.resource.loading.ModularResourceLoader;
@@ -9,18 +9,17 @@ import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
 import java.io.IOException;
 import java.io.InputStream;
 
-
-public class SpriteSheetImageLoader extends ModularResourceLoader<Class<? extends QSprite<?, ?, ?>>, DrawingImage> {
+public class BoxStyleImageLoader extends ModularResourceLoader<Class<? extends QBoxStyle>, DrawingImage> {
     
     ////// Constants //////
     public static final boolean IS_INTERNAL = true;
-    public static final String RESOURCE_ROOT = "_sprites";
+    public static final String RESOURCE_ROOT = "_box_styles";
     public static final String EXTENSION = "png";
-    public static final ClassBasedResourceKeyDecoder<QSprite<?, ?, ?>> KEY_DECODER = new ClassBasedResourceKeyDecoder<>(EXTENSION);
+    public static final ClassBasedResourceKeyDecoder<QBoxStyle> KEY_DECODER = new ClassBasedResourceKeyDecoder<>(EXTENSION);
     public static final ExceptionThrowingFunction<InputStream, DrawingImage, IOException> STREAM_RESOLVER = UserInterfaceProvider.get()::createDrawingImage;
     
     ////// Constructor //////
-    public SpriteSheetImageLoader() {
+    public BoxStyleImageLoader() {
         super(IS_INTERNAL, RESOURCE_ROOT, KEY_DECODER, STREAM_RESOLVER);
     }
     

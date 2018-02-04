@@ -34,8 +34,7 @@ public abstract class ResourceLoader<K, V> {
         return absolutePath;
     }
     
-    protected InputStream getResourceAsStream(String relativeResourcePath) throws IOException {
-        String absoluteResourcePath = this.getAbsoluteResourcePath(relativeResourcePath);
+    protected InputStream getResourceAsStream(String absoluteResourcePath) throws IOException {
         if (this.isInternal) {
             return ResourceLoader.class.getResourceAsStream(absoluteResourcePath);
         }
@@ -46,7 +45,8 @@ public abstract class ResourceLoader<K, V> {
     
     public V load(K resourceKey) throws IOException {
         String relativeResourcePath = this.getRelativeResourcePath(resourceKey);
-        InputStream resourceStream = this.getResourceAsStream(relativeResourcePath);
+        String absoluteResourcePath = this.getAbsoluteResourcePath(relativeResourcePath);
+        InputStream resourceStream = this.getResourceAsStream(absoluteResourcePath);
         return this.resolve(resourceStream);
     }
     

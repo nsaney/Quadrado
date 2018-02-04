@@ -205,7 +205,7 @@ public abstract class QSprite<
         S extends Enum<S> & StateCodeLiteral<S>,
         B extends Enum<B> & BoundingShapeCodeLiteral<B>,
         A extends Enum<A> & AnimationCodeLiteral<A>
-        > StateConfig<S, B, A> state(S _stateCode, B _boundingShapeCode, A _animationCode, StateTransition<S> _stateTransition) {
+    > StateConfig<S, B, A> state(S _stateCode, B _boundingShapeCode, A _animationCode, StateTransition<S> _stateTransition) {
         return new StateConfig<>(_stateCode, _boundingShapeCode, _animationCode, _stateTransition);
     }
     

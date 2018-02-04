@@ -10,6 +10,7 @@
 
 package chairosoft.quadrado.game;
 
+import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.graphics.Color;
 import chairosoft.quadrado.ui.graphics.DrawingContext;
@@ -174,6 +175,5 @@ public class QDialogBox extends QTextElement
     public final void setBackgroundColor(int argb) { this.backgroundColor = argb; this.configureOuterImage(); }
     
     public final QBoxStyle getBoxStyle() { return this.boxStyle; }
-    public final void setBoxStyleCode(String code) { this.setBoxStyle(QBoxStyle.get(code)); }
     public final void setBoxStyle(QBoxStyle style) { this.boxStyle = style; this.boxImage = null; this.configureImage(); }
 }

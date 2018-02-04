@@ -1,17 +1,13 @@
 package chairosoft.quadrado.game.resource.sprite;
 
+import chairosoft.quadrado.game.resource.loading.SoftMap;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
-import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
-
-import java.lang.ref.SoftReference;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SpriteSheet {
     
     ////// Constants //////
     public static final SpriteSheetImageLoader IMAGE_LOADER = new SpriteSheetImageLoader();
-    protected static final Map<SpriteSheetConfig, SoftReference<SpriteSheet>> SPRITE_SHEETS_BY_CONFIG = new HashMap<>();
+    protected static final SoftMap<SpriteSheetConfig, SpriteSheet> SPRITE_SHEETS_BY_CONFIG = new SoftMap<>(SpriteSheet::new);
     
     
     ////// Instance Properties //////
@@ -24,7 +20,7 @@ public class SpriteSheet {
     ////// Constructor //////
     protected SpriteSheet(SpriteSheetConfig config) {
         DrawingImage[] _imageArray;
-        DrawingImage spriteSheetImageRaw = ExceptionThrowingFunction.applyOrWrap(IMAGE_LOADER::load, config.spriteClass, RuntimeException::new);
+        DrawingImage spriteSheetImageRaw = IMAGE_LOADER.wrappedLoad(config.spriteClass);
         if (spriteSheetImageRaw == null) {
             _imageArray = new DrawingImage[0];
         }
@@ -53,17 +49,7 @@ public class SpriteSheet {
     
     ////// Static Methods //////
     public static SpriteSheet get(SpriteSheetConfig config) {
-        SpriteSheet result = null;
-        SoftReference<SpriteSheet> softReference = SPRITE_SHEETS_BY_CONFIG.get(config);
-        if (softReference != null) {
-            result = softReference.get();
-        }
-        if (result == null) {
-            result = new SpriteSheet(config);
-            SoftReference<SpriteSheet> freshSoftReference = new SoftReference<>(result);
-            SPRITE_SHEETS_BY_CONFIG.put(config, freshSoftReference);
-        }
-        return result;
+        return SPRITE_SHEETS_BY_CONFIG.get(config);
     }
     
 }
