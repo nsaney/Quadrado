@@ -8,7 +8,7 @@
     <groupId>chairosoft.quadrado</groupId>
     <artifactId>quadrado-parent</artifactId>
     <version>2.0-alpha</version>
-    <relativePath>../quadrado-parent/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>quadrado-core</artifactId>
