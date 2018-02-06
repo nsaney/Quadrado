@@ -1,8 +1,8 @@
 package chairosoft.quadrado.game.resource.sprite;
 
-import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
+import chairosoft.quadrado.game.resource.literals.EnumCodedObjectImpl;
 
-public class StateTransition<S extends Enum<S> & StateCodeLiteral<S>> extends EnumCodedObject<S> {
+public class StateTransition<S extends Enum<S> & StateCodeLiteral<S>> extends EnumCodedObjectImpl<S> {
     
     ////// Instance Fields //////
     public final int repeatsBeforeTransition;

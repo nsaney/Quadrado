@@ -1,8 +1,8 @@
 package chairosoft.quadrado.game.resource.sprite;
 
-import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
+import chairosoft.quadrado.game.resource.literals.EnumCodedObjectImpl;
 
-public class Animation<A extends Enum<A> & AnimationCodeLiteral<A>> extends EnumCodedObject<A> {
+public class Animation<A extends Enum<A> & AnimationCodeLiteral<A>> extends EnumCodedObjectImpl<A> {
     
     ////// Instance Fields //////
     public final AnimationFrame[] frames;

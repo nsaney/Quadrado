@@ -1,6 +1,6 @@
 package chairosoft.quadrado.game.resource.sprite;
 
-import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
+import chairosoft.quadrado.game.resource.literals.EnumCodedObjectImpl;
 
 import java.util.EnumMap;
 
@@ -8,7 +8,7 @@ public class State<
     S extends Enum<S> & StateCodeLiteral<S>,
     B extends Enum<B> & BoundingShapeCodeLiteral<B>,
     A extends Enum<A> & AnimationCodeLiteral<A>
-> extends EnumCodedObject<S>
+> extends EnumCodedObjectImpl<S>
 {
     ////// Instance Fields //////
     public final BoundingShape<B> boundingShape;

@@ -1,10 +1,10 @@
 package chairosoft.quadrado.game.resource.sprite;
 
 import chairosoft.quadrado.game.QCollidable;
-import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
+import chairosoft.quadrado.game.resource.literals.EnumCodedObjectImpl;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 
-public class BoundingShape<B extends Enum<B> & BoundingShapeCodeLiteral<B>> extends EnumCodedObject<B> {
+public class BoundingShape<B extends Enum<B> & BoundingShapeCodeLiteral<B>> extends EnumCodedObjectImpl<B> {
     
     ////// Instance Fields //////
     public final QCollidable shape;
