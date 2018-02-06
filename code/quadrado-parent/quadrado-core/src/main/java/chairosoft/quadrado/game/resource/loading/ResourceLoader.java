@@ -1,5 +1,7 @@
 package chairosoft.quadrado.game.resource.loading;
 
+import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +50,10 @@ public abstract class ResourceLoader<K, V> {
         String absoluteResourcePath = this.getAbsoluteResourcePath(relativeResourcePath);
         InputStream resourceStream = this.getResourceAsStream(absoluteResourcePath);
         return this.resolve(resourceStream);
+    }
+    
+    public V wrappedLoad(K key) {
+        return ExceptionThrowingFunction.applyOrWrap(this::load, key, RuntimeException::new);
     }
     
     

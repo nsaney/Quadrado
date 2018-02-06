@@ -5,7 +5,6 @@ import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 
 public class ModularResourceLoader<K, V> extends ResourceLoader<K, V> {
     
@@ -38,7 +37,4 @@ public class ModularResourceLoader<K, V> extends ResourceLoader<K, V> {
         return this.streamResolver.apply(resourceStream);
     }
     
-    public V wrappedLoad(K key) {
-        return ExceptionThrowingFunction.applyOrWrap(this::load, key, RuntimeException::new);
-    }
 }
