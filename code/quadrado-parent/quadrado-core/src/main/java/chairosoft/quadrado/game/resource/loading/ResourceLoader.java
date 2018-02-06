@@ -56,6 +56,10 @@ public abstract class ResourceLoader<K, V> {
         return ExceptionThrowingFunction.applyOrWrap(this::load, key, RuntimeException::new);
     }
     
+    public V loadOrNull(K key) {
+        return ExceptionThrowingFunction.applyOrNull(this::load, key);
+    }
+    
     
     ////// Static Methods //////
     protected static String getInternalPath(String path) {

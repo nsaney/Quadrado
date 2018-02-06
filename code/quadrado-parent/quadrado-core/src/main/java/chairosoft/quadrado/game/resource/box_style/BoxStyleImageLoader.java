@@ -1,7 +1,7 @@
 package chairosoft.quadrado.game.resource.box_style;
 
 import chairosoft.quadrado.game.resource.loading.ClassBasedResourceKeyDecoder;
-import chairosoft.quadrado.game.resource.loading.ModularResourceLoader;
+import chairosoft.quadrado.game.resource.loading.DrawingImageLoader;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
@@ -9,7 +9,7 @@ import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class BoxStyleImageLoader extends ModularResourceLoader<Class<? extends QBoxStyle>, DrawingImage> {
+public class BoxStyleImageLoader extends DrawingImageLoader<Class<? extends QBoxStyle>> {
     
     ////// Constants //////
     public static final boolean IS_INTERNAL = true;

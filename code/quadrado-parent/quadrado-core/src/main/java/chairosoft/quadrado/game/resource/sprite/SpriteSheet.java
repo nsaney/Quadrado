@@ -19,31 +19,12 @@ public class SpriteSheet {
     
     ////// Constructor //////
     protected SpriteSheet(SpriteSheetConfig config) {
-        DrawingImage[] _imageArray;
-        DrawingImage spriteSheetImageRaw = IMAGE_LOADER.wrappedLoad(config.spriteClass);
-        if (spriteSheetImageRaw == null) {
-            _imageArray = new DrawingImage[0];
-        }
-        else {
-            DrawingImage spriteSheetImage = spriteSheetImageRaw.getCloneWithTransparency(config.transparencyRgb);
-            int spriteSheetHeight = spriteSheetImage.getHeight();
-            int spriteSheetWidth = spriteSheetImage.getWidth();
-            int verticalSpriteCount = spriteSheetHeight / config.spriteHeight;
-            int horizontalSpriteCount = spriteSheetWidth / config.spriteWidth;
-            _imageArray = new DrawingImage[verticalSpriteCount * horizontalSpriteCount];
-            for (int i = 0, y = 0; y < spriteSheetHeight; y += config.spriteHeight) {
-                for (int x = 0; x < spriteSheetWidth; x += config.spriteWidth, ++i) {
-                    DrawingImage spriteImage = spriteSheetImage.getImmutableSubimage(
-                        x,
-                        y,
-                        config.spriteWidth,
-                        config.spriteHeight
-                    );
-                    _imageArray[i] = spriteImage;
-                }
-            }
-        }
-        this.imageArray = _imageArray;
+        this.imageArray = IMAGE_LOADER.loadTiledImages(
+            config.spriteClass,
+            config.transparencyRgb,
+            config.spriteWidth,
+            config.spriteHeight
+        );
     }
     
     

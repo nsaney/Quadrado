@@ -43,14 +43,7 @@ public class QBoxStyle {
         this.borderWidths = _borderWidths;
         this.borderLengths = _borderLengths;
         
-        DrawingImage sourceImage;
-        DrawingImage sourceImageRaw = IMAGE_LOADER.wrappedLoad(this.getClass());
-        if (sourceImageRaw == null) {
-            sourceImage = UserInterfaceProvider.get().createDrawingImage(0, 0, DrawingImage.Config.ARGB_8888);
-        }
-        else {
-            sourceImage = sourceImageRaw.getCloneWithTransparency(this.transparencyRgb);
-        }
+        DrawingImage sourceImage = IMAGE_LOADER.loadOrEmpty(this.getClass(), this.transparencyRgb);
         
         this.upArrow = sourceImage.getImmutableSubimage(upArrowRectangle);
         this.rightArrow = sourceImage.getImmutableSubimage(rightArrowRectangle);

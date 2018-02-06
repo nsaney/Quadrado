@@ -1,7 +1,7 @@
 package chairosoft.quadrado.game.resource.sprite;
 
 import chairosoft.quadrado.game.resource.loading.ClassBasedResourceKeyDecoder;
-import chairosoft.quadrado.game.resource.loading.ModularResourceLoader;
+import chairosoft.quadrado.game.resource.loading.DrawingImageLoader;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class SpriteSheetImageLoader extends ModularResourceLoader<Class<? extends QSprite<?, ?, ?>>, DrawingImage> {
+public class SpriteSheetImageLoader extends DrawingImageLoader<Class<? extends QSprite<?, ?, ?>>> {
     
     ////// Constants //////
     public static final boolean IS_INTERNAL = true;
