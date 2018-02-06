@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class SpriteSheetConfig {
     
     ////// Instance Fields //////
-    public final Class<? extends QSprite<?, ?, ?>> spriteClass;
+    public final Class<? extends QSprite> spriteClass;
     public final int transparencyRgb;
     public final int spriteWidth;
     public final int spriteHeight;
@@ -14,7 +14,7 @@ public class SpriteSheetConfig {
     
     ////// Constructor //////
     public SpriteSheetConfig(
-        Class<? extends QSprite<?, ?, ?>> _spriteClass,
+        Class<? extends QSprite> _spriteClass,
         int _transparencyRgb,
         int _spriteWidth,
         int _spriteHeight

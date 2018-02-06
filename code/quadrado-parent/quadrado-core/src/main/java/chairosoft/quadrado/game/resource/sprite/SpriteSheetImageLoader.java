@@ -10,13 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class SpriteSheetImageLoader extends DrawingImageLoader<Class<? extends QSprite<?, ?, ?>>> {
+public class SpriteSheetImageLoader extends DrawingImageLoader<Class<? extends QSprite>> {
     
     ////// Constants //////
     public static final boolean IS_INTERNAL = true;
     public static final String RESOURCE_ROOT = "_sprites";
     public static final String EXTENSION = "png";
-    public static final ClassBasedResourceKeyDecoder<QSprite<?, ?, ?>> KEY_DECODER = new ClassBasedResourceKeyDecoder<>(EXTENSION);
+    public static final ClassBasedResourceKeyDecoder<QSprite> KEY_DECODER = new ClassBasedResourceKeyDecoder<>(EXTENSION);
     public static final ExceptionThrowingFunction<InputStream, DrawingImage, IOException> STREAM_RESOLVER = UserInterfaceProvider.get()::createDrawingImage;
     
     ////// Constructor //////

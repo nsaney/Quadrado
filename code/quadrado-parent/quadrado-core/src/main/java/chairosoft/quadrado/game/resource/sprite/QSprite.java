@@ -151,7 +151,7 @@ public abstract class QSprite<
     
     ////// Static Methods - Declarative Syntax //////
     protected static SpriteSheetConfig spriteSheetConfig(
-        Class<? extends QSprite<?, ?, ?>> spriteClass,
+        Class<? extends QSprite> spriteClass,
         int transparencyRgb,
         int spriteWidth,
         int spriteHeight
