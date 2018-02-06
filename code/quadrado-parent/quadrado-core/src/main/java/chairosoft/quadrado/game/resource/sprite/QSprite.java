@@ -11,7 +11,6 @@ import chairosoft.quadrado.ui.graphics.DrawingContext;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.function.Function;
 
 // TODO: add documentation
 public abstract class QSprite<
@@ -41,32 +40,14 @@ public abstract class QSprite<
         List<StateConfig<S, B, A>> stateConfigs
     ) {
         this.spriteSheet = SpriteSheet.get(spriteSheetConfig);
-        this.boundingShapesByCode = toMap(boundingShapes, EnumCodedObject::getCode, boundingShape -> boundingShape);
-        this.animationsByCode = toMap(animations, EnumCodedObject::getCode, animation -> animation);
-        this.statesByCode = toMap(
+        this.boundingShapesByCode = EnumCodedObject.toMap(boundingShapes);
+        this.animationsByCode = EnumCodedObject.toMap(animations);
+        this.statesByCode = EnumCodedObject.toMapWithValues(
             stateConfigs,
-            EnumCodedObject::getCode,
             stateConfig -> new State<>(stateConfig, this.boundingShapesByCode, this.animationsByCode)
         );
         S defaultStateCode = stateConfigs.get(0).code;
         this.setCurrentStateCode(defaultStateCode);
-    }
-    
-    
-    ////// Static Methods - Constructor Helpers //////
-    private static <T, K extends Enum<K>, V> EnumMap<K, V> toMap(
-        List<T> items,
-        Function<T, K> keyGetter,
-        Function<T, V> valueGetter
-    ) {
-        Class<K> keyType = keyGetter.apply(items.get(0)).getDeclaringClass();
-        EnumMap<K, V> result = new EnumMap<>(keyType);
-        for (T item : items) {
-            K key = keyGetter.apply(item);
-            V value = valueGetter.apply(item);
-            result.put(key, value);
-        }
-        return result;
     }
     
     
