@@ -62,7 +62,7 @@ public class QTile extends QCollidable implements Comparable<QTile>
         this.code = _code; 
         this.imageIndex = _imageIndex; 
         this.image = _image; 
-        if (_points != null) { for (FloatPoint2D p : _points) { this.addPoint((int)p.x, (int)p.y); } }
+        if (_points != null) { this.addAllPointsAsInt(_points); }
     }
     
     protected QTile(String _code, int _imageIndex, DrawingImage _image, FloatPoint2D[] _points) 

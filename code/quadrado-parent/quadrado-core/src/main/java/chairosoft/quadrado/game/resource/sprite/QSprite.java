@@ -133,9 +133,7 @@ public abstract class QSprite<
         currentShape.putFirstVertexAt(p0.x, p0.y);
         
         this.reset();
-        for (FloatPoint2D pt : currentShape.points) {
-            this.addPoint((int)pt.x, (int)pt.y);
-        }
+        this.addAllPointsAsInt(currentShape.points);
     }
     
     public void setPositionByQTile(int x, int y) {

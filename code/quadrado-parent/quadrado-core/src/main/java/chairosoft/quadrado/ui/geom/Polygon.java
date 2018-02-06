@@ -10,7 +10,6 @@
 
 package chairosoft.quadrado.ui.geom;
 
-import java.util.Collections;
 import java.util.ArrayList;
 
 /**
@@ -51,7 +50,7 @@ public class Polygon
     public Polygon() {}
     public Polygon(FloatPoint2D... initialPoints)
     {
-        Collections.addAll(this.points, initialPoints);
+        this.addAllFloatPoints(initialPoints);
     }
     
     // instance methods
@@ -67,10 +66,46 @@ public class Polygon
         this.boundsValid = false;
     }
     
+    public final void addAllPoints(IntPoint2D... points) {
+        for (IntPoint2D p : points) {
+            this.addPoint(p.x, p.y);
+        }
+    }
+    
+    public final void addAllPoints(Iterable<IntPoint2D> points) {
+        for (IntPoint2D p : points) {
+            this.addPoint(p.x, p.y);
+        }
+    }
+    
+    public final void addAllPointsAsInt(FloatPoint2D... points) {
+        for (FloatPoint2D p : points) {
+            this.addPoint((int)p.x, (int)p.y);
+        }
+    }
+    
+    public final void addAllPointsAsInt(Iterable<FloatPoint2D> points) {
+        for (FloatPoint2D p : points) {
+            this.addPoint((int)p.x, (int)p.y);
+        }
+    }
+    
     public void addPoint(float x, float y)
     {
         this.points.add(new FloatPoint2D(x, y));
         this.boundsValid = false;
+    }
+    
+    public final void addAllPoints(FloatPoint2D... points) {
+        for (FloatPoint2D p : points) {
+            this.addPoint(p.x, p.y);
+        }
+    }
+    
+    public final void addAllFloatPoints(Iterable<FloatPoint2D> points) {
+        for (FloatPoint2D p : points) {
+            this.addPoint(p.x, p.y);
+        }
     }
     
     public void translate(int dx, int dy) 
@@ -94,6 +129,7 @@ public class Polygon
     
     public static class Bounds
     {
+        // TODO: make this thread safe!
         public float x = 0;
         public float y = 0;
         public float width = 0;
