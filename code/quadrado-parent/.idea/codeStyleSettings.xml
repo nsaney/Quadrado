@@ -3,6 +3,7 @@
   <component name="ProjectCodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
       <value>
+        <option name="LINE_SEPARATOR" value="&#10;" />
         <codeStyleSettings language="JAVA">
           <option name="CLASS_BRACE_STYLE" value="5" />
           <option name="ELSE_ON_NEW_LINE" value="true" />
@@ -59,6 +60,5 @@
       </value>
     </option>
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
-    <option name="PREFERRED_PROJECT_CODE_STYLE" value="QuadradoStyle" />
   </component>
 </project>
