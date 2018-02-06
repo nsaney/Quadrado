@@ -96,7 +96,7 @@ public class Polygon
         this.boundsValid = false;
     }
     
-    public final void addAllPoints(FloatPoint2D... points) {
+    public final void addAllFloatPoints(FloatPoint2D... points) {
         for (FloatPoint2D p : points) {
             this.addPoint(p.x, p.y);
         }
