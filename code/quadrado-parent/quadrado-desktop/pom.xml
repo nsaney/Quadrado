@@ -19,6 +19,43 @@
       <artifactId>quadrado-core</artifactId>
       <version>2.0-alpha</version>
     </dependency>
+    <dependency>
+      <groupId>org.scijava</groupId>
+      <artifactId>native-lib-loader</artifactId>
+      <version>2.2.0</version>
+    </dependency>
   </dependencies>
+
+  <packaging>nar</packaging>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.20.1</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.maven-nar</groupId>
+        <artifactId>nar-maven-plugin</artifactId>
+        <version>3.5.2</version>
+        <extensions>true</extensions>
+        <configuration>
+          <libraries>
+            <library>
+              <type>jni</type>
+              <narSystemPackage>chairosoft.quadrado.desktop.system</narSystemPackage>
+              <linkCPP>false</linkCPP>
+            </library>
+          </libraries>
+          <javah>
+            <jniDirectory>${project.build.directory}/generated-jni</jniDirectory>
+          </javah>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
