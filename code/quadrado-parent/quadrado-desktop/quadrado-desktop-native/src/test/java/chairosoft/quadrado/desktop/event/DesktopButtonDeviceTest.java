@@ -1,8 +1,8 @@
 package chairosoft.quadrado.desktop.event;
 
-import org.junit.Test;
+import chairosoft.quadrado.desktop.system.NarSystem;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class DesktopButtonDeviceTest {
     
@@ -12,7 +12,7 @@ public class DesktopButtonDeviceTest {
         System.out.println(System.getProperty("java.library.path", "[no path found]").replaceAll(":", "\n"));
         System.out.println("");
         
-        System.loadLibrary("quadrado-desktop-2.0-alpha");
+        NarSystem.loadLibrary();
         DesktopButtonDevice buttonDevice = new DesktopButtonDevice();
         System.out.println("Button Device ID: " + buttonDevice.getId());
         buttonDevice.close();
