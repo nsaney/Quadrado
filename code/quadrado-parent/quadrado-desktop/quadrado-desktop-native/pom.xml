@@ -54,7 +54,7 @@
           <execution>
             <id>copy-nar-generated-sources</id>
             <!-- here the phase you need -->
-            <phase>install</phase>
+            <phase>generate-test-resources</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>

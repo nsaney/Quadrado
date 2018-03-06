@@ -2,6 +2,7 @@ package chairosoft.quadrado.ui.system;
 
 import chairosoft.quadrado.ui.audio.MultitrackBackgroundAudio;
 import chairosoft.quadrado.ui.audio.SoundEffectAudio;
+import chairosoft.quadrado.ui.event.ButtonDeviceProvider;
 import chairosoft.quadrado.ui.graphics.*;
 
 import java.io.IOException;
@@ -20,8 +21,11 @@ public abstract class UserInterfaceProvider {
     public static UserInterfaceProvider get() { return PROVIDER; }
     
     
-    ////// Instance Methods - Abstract //////
+    ////// Instance Methods - Abstract - Protected //////
     protected abstract Iterable<String> getRequiredSystemClasses();
+    
+    
+    ////// Instance Methods - Abstract - Public //////
     public abstract LifecycleUtility createLifecycleUtility();
     public abstract DoubleBufferedUI createDoubleBufferedUI(String _title, int _width, int _height, int _xScaling, int _yScaling);
     public abstract DrawingImage createDrawingImage(int w, int h, DrawingImage.Config c);
@@ -31,6 +35,7 @@ public abstract class UserInterfaceProvider {
     public abstract FontFace createFontFace(InputStream fontStream, String fontName) throws IOException;
     public abstract MultitrackBackgroundAudio createMultitrackBackgroundAudio();
     public abstract SoundEffectAudio createSoundEffectAudio(InputStream sourceStream);
+    public abstract ButtonDeviceProvider createButtonDeviceProvider();
     
     
     ////// Instance Methods - Concrete //////
