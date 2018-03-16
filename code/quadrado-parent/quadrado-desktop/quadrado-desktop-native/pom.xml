@@ -22,28 +22,40 @@
   <packaging>nar</packaging>
 
   <properties>
-    <quadrado.nar.aol>[unknown-aol]</quadrado.nar.aol>
-    <quadrado.nar.linker>[unknown-linker]</quadrado.nar.linker>
+    <quadrado.nar.skip>false</quadrado.nar.skip>
+    <quadrado.nar.aol>${nar.aol}</quadrado.nar.aol>
+    <quadrado.nar.linker>${nar.linker}</quadrado.nar.linker>
     <quadrado.nar.src-dir>[unknown-src-dir]</quadrado.nar.src-dir>
     <quadrado.libdir.bluetooth>[unknown-libdir-bluetooth]</quadrado.libdir.bluetooth>
-  </properties>
+</properties>
 
   <profiles>
     <profile>
-      <id>windows64</id>
+      <id>unknownProfile</id>
       <activation>
-        <os>
-          <family>windows</family>
-          <arch>amd64</arch>
-        </os>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <quadrado.nar.aol>amd64-Windows-g++</quadrado.nar.aol>
-        <quadrado.nar.linker>g++</quadrado.nar.linker>
-        <quadrado.nar.src-dir>amd64-windows</quadrado.nar.src-dir>
-        <!--<quadrado.libdir.bluetooth></quadrado.libdir.bluetooth>-->
+        <quadrado.nar.skip>true</quadrado.nar.skip>
       </properties>
     </profile>
+
+    <!--<profile>-->
+      <!--<id>windows64</id>-->
+      <!--<activation>-->
+        <!--<os>-->
+          <!--<family>windows</family>-->
+          <!--<arch>amd64</arch>-->
+        <!--</os>-->
+      <!--</activation>-->
+      <!--<properties>-->
+        <!--<quadrado.nar.aol>amd64-Windows-g++</quadrado.nar.aol>-->
+        <!--<quadrado.nar.linker>g++</quadrado.nar.linker>-->
+        <!--<quadrado.nar.src-dir>amd64-windows</quadrado.nar.src-dir>-->
+        <!--<quadrado.libdir.bluetooth>target</quadrado.libdir.bluetooth>-->
+        <!--&lt;!&ndash; the bluetooth lib dir is a placeholder value &ndash;&gt;-->
+      <!--</properties>-->
+    <!--</profile>-->
 
     <profile>
       <id>linux64</id>
@@ -70,10 +82,17 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.20.1</version>
         <configuration>
-          <skipTests>true</skipTests>
+          <skip>true</skip>
         </configuration>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <skip>${quadrado.nar.skip}</skip>
+        </configuration>
+      </plugin>
       <!-- nar -->
       <plugin>
         <groupId>com.github.maven-nar</groupId>
@@ -81,6 +100,7 @@
         <version>3.5.2</version>
         <extensions>true</extensions>
         <configuration>
+          <skip>${quadrado.nar.skip}</skip>
           <aol>${quadrado.nar.aol}</aol>
           <linker>
             <name>${quadrado.nar.linker}</name>

@@ -15,7 +15,12 @@ public class BluetoothDeviceProviderTest {
                 .replaceAll(Pattern.quote(System.getProperty("path.separator", ":")), "\n")
         );
         NarSystem.loadLibrary();
-        BluetoothDeviceProvider.testBluetooth();
+        try {
+            BluetoothDeviceProvider.testBluetooth();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
 }
