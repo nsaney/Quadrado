@@ -26,6 +26,8 @@ public class ButtonEvent
         B,
         X,
         Y,
+        L,
+        R,
         DEBUG_0,
         DEBUG_1,
         DEBUG_2,
