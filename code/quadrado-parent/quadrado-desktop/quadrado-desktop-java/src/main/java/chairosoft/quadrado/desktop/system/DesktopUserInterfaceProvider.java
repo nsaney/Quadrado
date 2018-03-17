@@ -91,8 +91,4 @@ public class DesktopUserInterfaceProvider extends UserInterfaceProvider {
         return new DesktopSoundEffectAudio(sourceStream);
     }
     
-    @Override
-    public ButtonDeviceProvider createButtonDeviceProvider() {
-        return new DesktopBluetoothButtonDeviceProvider();
-    }
 }

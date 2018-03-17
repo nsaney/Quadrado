@@ -90,9 +90,4 @@ public class AndroidUserInterfaceProvider extends UserInterfaceProvider {
         return new AndroidSoundEffectAudio(sourceStream);
     }
     
-    @Override
-    public ButtonDeviceProvider createButtonDeviceProvider() {
-        throw new UnsupportedOperationException();
-    }
-    
 }
