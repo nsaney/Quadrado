@@ -5,7 +5,7 @@ import chairosoft.quadrado.ui.input.ButtonListener;
 
 import java.io.IOException;
 
-public class DesktopButtonDevice implements ButtonDevice {
+public class DesktopKeyboardButtonDevice implements ButtonDevice {
     
     ////// Instance Methods //////
     @Override
