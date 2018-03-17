@@ -22,12 +22,17 @@
   <packaging>nar</packaging>
 
   <properties>
+    <!--
+      If IntelliJ IDEA doesn't like the nar.* properties, a workaround is to define a property in
+      'Settings > Build, Execution, Deployment > Build Tools > Maven > Runner > Properties'.
+      see: https://intellij-support.jetbrains.com/hc/en-us/community/posts/206808945&#45;&#45;Cannot-resolve-symbol-in-my-Maven-POM-file-for-VAR-property-values
+    -->
     <quadrado.nar.skip>false</quadrado.nar.skip>
     <quadrado.nar.aol>${nar.aol}</quadrado.nar.aol>
     <quadrado.nar.linker>${nar.linker}</quadrado.nar.linker>
     <quadrado.nar.src-dir>[unknown-src-dir]</quadrado.nar.src-dir>
     <quadrado.libdir.bluetooth>[unknown-libdir-bluetooth]</quadrado.libdir.bluetooth>
-</properties>
+  </properties>
 
   <profiles>
     <profile>
