@@ -1,4 +1,4 @@
-package chairosoft.quadrado.ui.event;
+package chairosoft.quadrado.ui.input;
 
 public interface ButtonDeviceProvider {
     

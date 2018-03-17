@@ -2,10 +2,10 @@ package chairosoft.quadrado.desktop.system;
 
 import chairosoft.quadrado.desktop.audio.DesktopMultitrackBackgroundAudio;
 import chairosoft.quadrado.desktop.audio.DesktopSoundEffectAudio;
-import chairosoft.quadrado.desktop.event.DesktopButtonDeviceProvider;
+import chairosoft.quadrado.desktop.input.DesktopButtonDeviceProvider;
 import chairosoft.quadrado.desktop.graphics.DesktopDrawingImage;
 import chairosoft.quadrado.desktop.graphics.DesktopFontFace;
-import chairosoft.quadrado.ui.event.ButtonDeviceProvider;
+import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
 import chairosoft.quadrado.ui.system.LifecycleUtility;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;

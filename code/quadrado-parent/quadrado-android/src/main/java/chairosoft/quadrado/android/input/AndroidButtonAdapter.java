@@ -8,12 +8,12 @@
  * 
  */
 
-package chairosoft.quadrado.android.event;
+package chairosoft.quadrado.android.input;
 
 import chairosoft.quadrado.android.system.AndroidDoubleBufferedUI;
-import chairosoft.quadrado.ui.event.ButtonListener;
-import chairosoft.quadrado.ui.event.ButtonSource;
-import chairosoft.quadrado.ui.event.ButtonEvent;
+import chairosoft.quadrado.ui.input.ButtonListener;
+import chairosoft.quadrado.ui.input.ButtonSource;
+import chairosoft.quadrado.ui.input.ButtonEvent;
 import chairosoft.quadrado.ui.geom.FloatPoint2D;
 import chairosoft.quadrado.ui.graphics.Color;
 

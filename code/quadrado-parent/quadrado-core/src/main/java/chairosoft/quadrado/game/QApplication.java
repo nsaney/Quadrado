@@ -13,10 +13,10 @@ package chairosoft.quadrado.game;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;
 import chairosoft.quadrado.ui.system.LifecycleUtility;
-import chairosoft.quadrado.ui.event.ButtonListener;
-import chairosoft.quadrado.ui.event.ButtonEvent;
-import chairosoft.quadrado.ui.event.PointerListener;
-import chairosoft.quadrado.ui.event.PointerEvent;
+import chairosoft.quadrado.ui.input.ButtonListener;
+import chairosoft.quadrado.ui.input.ButtonEvent;
+import chairosoft.quadrado.ui.input.PointerListener;
+import chairosoft.quadrado.ui.input.PointerEvent;
 import chairosoft.quadrado.ui.graphics.*;
 
 import java.util.*;

@@ -11,8 +11,8 @@
 package chairosoft.quadrado.ui.system;
 
 import chairosoft.quadrado.ui.graphics.DrawingContext;
-import chairosoft.quadrado.ui.event.ButtonListener;
-import chairosoft.quadrado.ui.event.PointerListener;
+import chairosoft.quadrado.ui.input.ButtonListener;
+import chairosoft.quadrado.ui.input.PointerListener;
 
 public abstract class DoubleBufferedUI {
     

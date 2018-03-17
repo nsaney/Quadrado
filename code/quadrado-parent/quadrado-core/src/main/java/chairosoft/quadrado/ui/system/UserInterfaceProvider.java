@@ -2,7 +2,7 @@ package chairosoft.quadrado.ui.system;
 
 import chairosoft.quadrado.ui.audio.MultitrackBackgroundAudio;
 import chairosoft.quadrado.ui.audio.SoundEffectAudio;
-import chairosoft.quadrado.ui.event.ButtonDeviceProvider;
+import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
 import chairosoft.quadrado.ui.graphics.*;
 
 import java.io.IOException;

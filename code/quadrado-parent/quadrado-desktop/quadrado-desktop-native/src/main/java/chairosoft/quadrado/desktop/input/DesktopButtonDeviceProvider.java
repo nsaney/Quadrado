@@ -1,7 +1,7 @@
-package chairosoft.quadrado.desktop.event;
+package chairosoft.quadrado.desktop.input;
 
-import chairosoft.quadrado.ui.event.ButtonDevice;
-import chairosoft.quadrado.ui.event.ButtonDeviceProvider;
+import chairosoft.quadrado.ui.input.ButtonDevice;
+import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
 
 public class DesktopButtonDeviceProvider implements ButtonDeviceProvider {
     

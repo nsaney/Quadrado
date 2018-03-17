@@ -8,10 +8,10 @@
  * 
  */
 
-package chairosoft.quadrado.android.event;
+package chairosoft.quadrado.android.input;
 
 import chairosoft.quadrado.android.system.AndroidDoubleBufferedUI;
-import chairosoft.quadrado.ui.event.PointerEvent;
+import chairosoft.quadrado.ui.input.PointerEvent;
 
 import android.view.MotionEvent;
 import android.view.View;

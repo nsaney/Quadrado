@@ -10,7 +10,7 @@ import static chairosoft.quadrado.game.QCompassDirection.*;
 import chairosoft.quadrado.game.*;
 import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
-import chairosoft.quadrado.ui.event.*;
+import chairosoft.quadrado.ui.input.*;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
 import com.example.box_style.BoxStyle_01;

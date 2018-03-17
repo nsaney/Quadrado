@@ -8,11 +8,11 @@
  * 
  */
 
-package chairosoft.quadrado.desktop.event;
+package chairosoft.quadrado.desktop.input;
 
 
-import chairosoft.quadrado.ui.event.PointerListener;
-import chairosoft.quadrado.ui.event.PointerEvent;
+import chairosoft.quadrado.ui.input.PointerListener;
+import chairosoft.quadrado.ui.input.PointerEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

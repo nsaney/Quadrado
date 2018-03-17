@@ -10,11 +10,11 @@
 
 package chairosoft.quadrado.android.system;
 
-import chairosoft.quadrado.android.event.AndroidButtonAdapter;
-import chairosoft.quadrado.android.event.AndroidPointerAdapter;
+import chairosoft.quadrado.android.input.AndroidButtonAdapter;
+import chairosoft.quadrado.android.input.AndroidPointerAdapter;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;
-import chairosoft.quadrado.ui.event.ButtonListener;
-import chairosoft.quadrado.ui.event.PointerListener;
+import chairosoft.quadrado.ui.input.ButtonListener;
+import chairosoft.quadrado.ui.input.PointerListener;
 
 import chairosoft.quadrado.android.graphics.AndroidDrawingContext;
 
