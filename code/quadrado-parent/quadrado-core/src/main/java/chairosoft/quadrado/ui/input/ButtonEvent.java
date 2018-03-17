@@ -40,11 +40,11 @@ public class ButtonEvent
         DEBUG_9
     }
     
-    public final ButtonSource source;
+    public final ButtonDevice.Info sourceInfo;
     public final Code code;
-    public ButtonEvent(ButtonSource _source, Code _code)
+    public ButtonEvent(ButtonDevice.Info _sourceInfo, Code _code)
     {
-        this.source = _source;
+        this.sourceInfo = _sourceInfo;
         this.code = _code;
     }
 }
