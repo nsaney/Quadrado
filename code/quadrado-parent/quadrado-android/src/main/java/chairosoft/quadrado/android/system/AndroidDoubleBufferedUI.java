@@ -12,6 +12,7 @@ package chairosoft.quadrado.android.system;
 
 import chairosoft.quadrado.android.input.AndroidButtonAdapter;
 import chairosoft.quadrado.android.input.AndroidPointerAdapter;
+import chairosoft.quadrado.ui.input.ButtonDevice;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;
 import chairosoft.quadrado.ui.input.ButtonListener;
 import chairosoft.quadrado.ui.input.PointerListener;
@@ -123,6 +124,11 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.On
         }
     }
     
+    @Override
+    protected ButtonDevice chooseButtonDevice() {
+        throw new UnsupportedOperationException();
+    }
+    
     
     /* handle multiple touch listeners */
     protected boolean addOnTouchListener(View.OnTouchListener l)
@@ -151,26 +157,26 @@ public class AndroidDoubleBufferedUI extends DoubleBufferedUI implements View.On
     }
     
     
-    /* watch for button touches */
-    @Override
-    public void setButtonListener(ButtonListener _buttonListener)
-    {
-        super.setButtonListener(_buttonListener);
-        
-        // remove current adapter
-        this.removeOnTouchListener(this.androidButtonAdapter);
-        this.holder.removeCallback(this.androidButtonAdapterCallback);
-        
-        // add new adapter
-        if (this.buttonListener != null)
-        {
-            this.androidButtonAdapter = new AndroidButtonAdapter(this.buttonListener);
-            this.androidButtonAdapterCallback = new AndroidButtonAdapter.Callback(this, this.androidButtonAdapter);
-            
-            this.addOnTouchListener(this.androidButtonAdapter);
-            this.holder.addCallback(this.androidButtonAdapterCallback);
-        }
-    }
+//    /* watch for button touches */
+//    @Override
+//    public void setButtonListener(ButtonListener _buttonListener)
+//    {
+//        super.setButtonListener(_buttonListener);
+//
+//        // remove current adapter
+//        this.removeOnTouchListener(this.androidButtonAdapter);
+//        this.holder.removeCallback(this.androidButtonAdapterCallback);
+//
+//        // add new adapter
+//        if (this.buttonListener != null)
+//        {
+//            this.androidButtonAdapter = new AndroidButtonAdapter(this.buttonListener);
+//            this.androidButtonAdapterCallback = new AndroidButtonAdapter.Callback(this, this.androidButtonAdapter);
+//
+//            this.addOnTouchListener(this.androidButtonAdapter);
+//            this.holder.addCallback(this.androidButtonAdapterCallback);
+//        }
+//    }
     
     /* watch for other pointer touches */
     @Override

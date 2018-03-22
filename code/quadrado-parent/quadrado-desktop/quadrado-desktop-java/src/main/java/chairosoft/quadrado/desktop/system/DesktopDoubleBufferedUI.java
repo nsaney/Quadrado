@@ -11,13 +11,14 @@
 package chairosoft.quadrado.desktop.system;
 
 
-import chairosoft.quadrado.desktop.input.DesktopButtonAdapter;
 import chairosoft.quadrado.desktop.input.DesktopPointerAdapter;
+import chairosoft.quadrado.ui.input.ButtonDevice;
+import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;
-import chairosoft.quadrado.ui.input.ButtonListener;
 import chairosoft.quadrado.ui.input.PointerListener;
 
 import chairosoft.quadrado.desktop.graphics.DesktopDrawingContext;
+import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,6 +27,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -41,21 +43,6 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI {
     protected JPanel panel = null;
     public JPanel getPanel() {
         return this.panel;
-    }
-    
-    protected DesktopButtonAdapter desktopButtonAdapter = null;
-    @Override
-    public void setButtonListener(ButtonListener _buttonListener) {
-        super.setButtonListener(_buttonListener);
-        
-        // remove current adapter
-        this.panel.removeKeyListener(this.desktopButtonAdapter);
-        
-        // add new adapter
-        if (this.buttonListener != null) {
-            this.desktopButtonAdapter = new DesktopButtonAdapter(this.buttonListener);
-            this.panel.addKeyListener(this.desktopButtonAdapter);
-        }
     }
     
     protected DesktopPointerAdapter desktopPointerAdapter = null;
@@ -158,4 +145,20 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI {
             }
         }
     }
+    
+    @Override
+    protected ButtonDevice chooseButtonDevice() {
+        ButtonDevice result = null;
+        List<? extends ButtonDeviceProvider> providers = UserInterfaceProvider.get().getButtonDeviceProviders();
+        for (ButtonDeviceProvider provider : providers) {
+            ButtonDevice.Info[] infos = provider.getAvailableButtonDeviceInfo();
+            // TODO: make this more sophisticated
+            if (infos.length == 0) { continue; }
+            ButtonDevice.Info info = infos[0];
+            result = provider.getButtonDevice(info);
+            break;
+        }
+        return result;
+    }
+    
 }

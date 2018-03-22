@@ -29,7 +29,7 @@ public class ExampleQuadradoGame extends QApplication
     {
         System.err.println("Starting example game... ");
         QApplication app = new ExampleQuadradoGame();
-        app.setUseButtonListener(true);
+        app.setRequireButtonDevice(true);
         app.gameStart();
     }
     

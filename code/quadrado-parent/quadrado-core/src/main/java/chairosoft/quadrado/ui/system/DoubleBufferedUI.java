@@ -10,11 +10,16 @@
 
 package chairosoft.quadrado.ui.system;
 
+import chairosoft.quadrado.game.QApplication;
 import chairosoft.quadrado.ui.graphics.DrawingContext;
+import chairosoft.quadrado.ui.input.ButtonDevice;
 import chairosoft.quadrado.ui.input.ButtonListener;
 import chairosoft.quadrado.ui.input.PointerListener;
 
-public abstract class DoubleBufferedUI {
+import java.io.Closeable;
+import java.io.IOException;
+
+public abstract class DoubleBufferedUI implements Closeable {
     
     ////// Instance Properties //////
     protected String title = "";
@@ -42,14 +47,6 @@ public abstract class DoubleBufferedUI {
         return this.yScaling;
     }
     
-    protected ButtonListener buttonListener = null;
-    public ButtonListener getButtonListener() {
-        return this.buttonListener;
-    }
-    public void setButtonListener(ButtonListener _buttonListener) {
-        this.buttonListener = _buttonListener;
-    }
-    
     protected PointerListener pointerListener = null;
     public PointerListener getPointerListener() {
         return this.pointerListener;
@@ -67,6 +64,7 @@ public abstract class DoubleBufferedUI {
     
     ////// Instance Fields //////
     private boolean isStarted = false;
+    protected ButtonDevice buttonDevice = null;
     
     
     ////// Constructor //////
@@ -83,6 +81,7 @@ public abstract class DoubleBufferedUI {
     protected abstract void doStart();
     protected abstract void ensureRenderContext();
     public abstract void paintScreen();
+    protected abstract ButtonDevice chooseButtonDevice();
     
     /**
      * This method should be overriden in order
@@ -99,6 +98,23 @@ public abstract class DoubleBufferedUI {
             this.doStart();
         }
         return isFirstCall;
+    }
+    
+    public final void ensureInput(QApplication qApplication) {
+        if (this.buttonDevice == null && qApplication.getRequireButtonDevice()) {
+            this.buttonDevice = this.chooseButtonDevice();
+            if (this.buttonDevice == null) {
+                throw new IllegalStateException("Could not ensure a button device for input.");
+            }
+            this.buttonDevice.addButtonListener(qApplication);
+            this.buttonDevice.open();
+        }
+    }
+    
+    public final void close() throws IOException {
+        if (this.buttonDevice != null) {
+            this.buttonDevice.close();
+        }
     }
     
 }

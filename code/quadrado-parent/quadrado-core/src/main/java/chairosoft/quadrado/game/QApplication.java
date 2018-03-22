@@ -10,13 +10,10 @@
 
 package chairosoft.quadrado.game;
 
+import chairosoft.quadrado.ui.input.*;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;
 import chairosoft.quadrado.ui.system.LifecycleUtility;
-import chairosoft.quadrado.ui.input.ButtonListener;
-import chairosoft.quadrado.ui.input.ButtonEvent;
-import chairosoft.quadrado.ui.input.PointerListener;
-import chairosoft.quadrado.ui.input.PointerEvent;
 import chairosoft.quadrado.ui.graphics.*;
 
 import java.util.*;
@@ -73,7 +70,6 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     // Instance Variables 
     // 
     
-    private boolean isStarted = false;
     public final String title;
     
     protected Thread animator;
@@ -90,9 +86,8 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     protected volatile boolean showDebugInConsole = false;
     
     // initial capacity = 16, load factor = 0.75, and concurrencyLevel = 1
-    protected volatile Map<ButtonEvent.Code, ButtonState> buttonStates = new ConcurrentHashMap<>(16, 0.75f, 1);
-    
-    protected volatile ConcurrentLinkedQueue<PointerEvent> pointerEventQueue = new ConcurrentLinkedQueue<>();
+    protected final Map<ButtonEvent.Code, ButtonState> buttonStates = new ConcurrentHashMap<>(16, 0.75f, 1);
+    protected final ConcurrentLinkedQueue<PointerEvent> pointerEventQueue = new ConcurrentLinkedQueue<>();
     
     protected int sleeplessUpdates = 0;
     
@@ -100,12 +95,15 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     protected DoubleBufferedUI dbui = null;
     public DoubleBufferedUI getDbui() { return this.dbui; }
     
-    // listeners
-    protected boolean useButtonListener = false;
-    public void setUseButtonListener(boolean _useButtonListener) { this.useButtonListener = _useButtonListener; }
+    // input requirements
+    protected boolean requireButtonDevice = false;
+    public boolean getRequireButtonDevice() { return this.requireButtonDevice; }
+    public void setRequireButtonDevice(boolean _useButtonListener) { this.requireButtonDevice = _useButtonListener; }
     
     protected boolean usePointerListener = false;
+    public boolean getUsePointerListener() { return this.usePointerListener; }
     public void setUsePointerListener(boolean _usePointerListener) { this.usePointerListener = _usePointerListener; }
+    
     
     // more vars in subclass ...
     
@@ -143,7 +141,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
         if (isFirstCall)
         {
             // attach listeners to UI
-            if (this.useButtonListener) { this.dbui.setButtonListener(this); }
+            // TODO: change over pointer listener to pointer device
             if (this.usePointerListener) { this.dbui.setPointerListener(this); }
             
             // start game thread
@@ -176,7 +174,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
         LifecycleUtility.get().exitApplication(0);
     }
     
-    private void doRun()
+    private void doRun() throws Exception
     {
         // allow initializations
         this.qGameInitialize();
@@ -201,6 +199,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
         this.isRunning = true;
         while (isRunning)
         {
+            this.dbui.ensureInput(this);
             this.gameUpdate();
             
             timePostUpdatePreRender = System.nanoTime();
@@ -251,6 +250,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
         //end-while isRunning
         
         // game finish
+        this.dbui.close();
         this.qGameFinish();
     }
     

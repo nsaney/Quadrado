@@ -156,7 +156,7 @@ public class AndroidButtonAdapter implements View.OnTouchListener
         {
             if (codeToPress == null || codeToPress == ButtonEvent.Code.NONE) { return; }
             mappedCodes.add(codeToPress);
-            ButtonEvent be = new ButtonEvent(ButtonSource.KEYBOARD, codeToPress); // TODO: change to something other than KEYBOARD
+            ButtonEvent be = new ButtonEvent(null, codeToPress); // TODO: change to something other than KEYBOARD
             this.buttonListener.buttonPressed(be);
         }
     }
@@ -167,7 +167,7 @@ public class AndroidButtonAdapter implements View.OnTouchListener
         for (ButtonEvent.Code codeToRemove : codesToRemove)
         {
             if (codeToRemove == null || codeToRemove == ButtonEvent.Code.NONE || !oldCodes.remove(codeToRemove)) { continue; }
-            ButtonEvent be = new ButtonEvent(ButtonSource.KEYBOARD, codeToRemove); // TODO: change to something other than KEYBOARD
+            ButtonEvent be = new ButtonEvent(null, codeToRemove); // TODO: change to something other than KEYBOARD
             this.buttonListener.buttonReleased(be);
         }
     }

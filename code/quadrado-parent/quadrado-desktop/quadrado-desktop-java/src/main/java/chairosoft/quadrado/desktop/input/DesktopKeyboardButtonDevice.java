@@ -6,12 +6,11 @@ import chairosoft.quadrado.ui.input.ButtonListener;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-public class DesktopKeyboardButtonDevice implements ButtonDevice, KeyListener {
+public class DesktopKeyboardButtonDevice implements ButtonDevice, KeyEventDispatcher {
     
     ////// Singleton //////
     public static final DesktopKeyboardButtonDevice SINGLETON = new DesktopKeyboardButtonDevice();
@@ -21,8 +20,7 @@ public class DesktopKeyboardButtonDevice implements ButtonDevice, KeyListener {
     public final Info info;
     private final Set<ButtonListener> buttonListeners = new CopyOnWriteArraySet<>();
     private final Object stateLock = new Object();
-    private boolean isOpen = false;
-    private Component sourceComponent = null;
+    private KeyboardFocusManager keyboardFocusManager = null;
     
     
     ////// Constructor //////
@@ -46,30 +44,28 @@ public class DesktopKeyboardButtonDevice implements ButtonDevice, KeyListener {
     @Override
     public void open() {
         synchronized (this.stateLock) {
-            if (this.isOpen) { return; }
-            Component _sourceComponent = null; // TODO: find this somehow
-            if (_sourceComponent == null) {
-                throw new IllegalStateException("Cannot attach key listener to null component.");
+            if (this.isOpen()) { return; }
+            this.keyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            if (this.keyboardFocusManager == null) {
+                throw new NullPointerException("The returned keyboard focus manager was null.");
             }
-            this.sourceComponent = _sourceComponent;
-            this.sourceComponent.addKeyListener(this);
-            this.isOpen = false;
+            this.keyboardFocusManager.addKeyEventDispatcher(this);
         }
     }
     
     @Override
     public boolean isOpen() {
         synchronized (this.stateLock) {
-            return this.isOpen;
+            return this.keyboardFocusManager != null;
         }
     }
     
     @Override
     public void close() throws IOException {
         synchronized (this.stateLock) {
-            if (!this.isOpen) { return; }
-            
-            this.isOpen = false;
+            if (!this.isOpen()) { return; }
+            this.keyboardFocusManager.removeKeyEventDispatcher(this);
+            this.keyboardFocusManager = null;
         }
     }
     
@@ -84,22 +80,18 @@ public class DesktopKeyboardButtonDevice implements ButtonDevice, KeyListener {
     }
     
     @Override
-    public void keyTyped(KeyEvent e) {
-        // do nothing
-    }
-    
-    @Override
-    public void keyPressed(KeyEvent e) {
-        ButtonEvent.Code code = getButtonForKey(e.getKeyCode());
+    public boolean dispatchKeyEvent(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        ButtonEvent.Code code = getButtonForKey(keyCode);
         ButtonEvent be = new ButtonEvent(this.info, code);
-        this.buttonListeners.forEach(bl -> bl.buttonPressed(be));
-    }
-    
-    @Override
-    public void keyReleased(KeyEvent e) {
-        ButtonEvent.Code code = getButtonForKey(e.getKeyCode());
-        ButtonEvent be = new ButtonEvent(this.info, code);
-        this.buttonListeners.forEach(bl -> bl.buttonReleased(be));
+        int type = e.getID();
+        if (type == KeyEvent.KEY_PRESSED) {
+            this.buttonListeners.forEach(bl -> bl.buttonPressed(be));
+        }
+        else if (type == KeyEvent.KEY_RELEASED) {
+            this.buttonListeners.forEach(bl -> bl.buttonReleased(be));
+        }
+        return true;
     }
     
     
