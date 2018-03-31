@@ -20,7 +20,7 @@ public class SpriteSheet {
     ////// Constructor //////
     protected SpriteSheet(SpriteSheetConfig config) {
         this.imageArray = IMAGE_LOADER.loadTiledImages(
-            config.spriteClass,
+            config.resourceClass,
             config.transparencyRgb,
             config.spriteWidth,
             config.spriteHeight
@@ -28,7 +28,7 @@ public class SpriteSheet {
     }
     
     
-    ////// Static Methods //////
+    ////// Static Methods - Soft Map //////
     public static SpriteSheet get(SpriteSheetConfig config) {
         return SPRITE_SHEETS_BY_CONFIG.get(config);
     }
