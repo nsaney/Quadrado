@@ -17,11 +17,19 @@ public class TileSet_01 extends Tileset<TileSet_01.TileCode> {
     );
     
     public enum TileCode implements TileCodeLiteral<TileCode> {
-        __, _i, Cf, E1, _0,
+        __("` "), _i("' "), Cf, E1, _0("`0"),
         N0, N1, N2, N3,
         W0, W1, W2, W3, W4, W5, W6, W7, W9, Wb, Wd, Wf,
         X0, X1, X2, X3, X4, X5, X6, X7, X9, Xb, Xd, Xf
+        ;
+        
+        private final String alternateCode;
+        public String getAlternateCode() { return this.alternateCode; }
+        
+        TileCode() { this.alternateCode = null; }
+        TileCode(String _alternateCode) { this.alternateCode = _alternateCode; }
     }
+    
     
     public TileSet_01() {
         super(

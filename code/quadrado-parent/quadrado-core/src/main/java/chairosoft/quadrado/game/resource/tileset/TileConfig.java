@@ -1,6 +1,7 @@
 package chairosoft.quadrado.game.resource.tileset;
 
 import chairosoft.quadrado.game.resource.literals.EnumCodedObjectImpl;
+import chairosoft.quadrado.game.resource.literals.EnumLiteral;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.geom.Rectangle;
 

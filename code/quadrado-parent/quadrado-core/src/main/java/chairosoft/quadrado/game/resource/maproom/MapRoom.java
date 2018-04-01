@@ -12,6 +12,7 @@ import chairosoft.quadrado.util.MathUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
@@ -54,6 +55,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
         }
         
         T[] tileCodeValues = _config.tileCodeValuesGetter.get();
+        Map<String, T> tileCodesByAlternateCode = TileCodeLiteral.getTileCodesByAlternateCode(tileCodeValues);
         Class<T> tileEnumClass = tileCodeValues[0].getDeclaringClass();
         final int CODE_LEN = tileCodeValues[0].name().length(); // assumes all tiles have the same length name
         List<String> layoutLinesList = LAYOUT_LOADER.loadOrNull(_config.mapRoomClass.getName());
@@ -71,7 +73,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
             Tile<?>[] tileRow = new Tile<?>[lineWidth];
             for (int x = 0, dx = 0, col = 0; x < tileRow.length; ++x, dx += tileset.tileWidth) {
                 String tileCodeString = line.substring(col, col += CODE_LEN);
-                Tile<T> tile = this.getTileFor(tileEnumClass, tileCodeString);
+                Tile<T> tile = this.getTileFor(tileCodeString, tileEnumClass, tileCodesByAlternateCode);
                 tile.translate(dx, dy);
                 tileRow[x] = tile;
             }
@@ -84,9 +86,10 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
         this.setImageFromLayout();
     }
     
-    protected Tile<T> getTileFor(Class<T> tileEnumClass, String tileCodeString) {
+    protected Tile<T> getTileFor(String tileCodeString, Class<T> tileEnumClass, Map<String, T> tileCodesByAlternateCode) {
         try {
-            T tileCode = Enum.valueOf(tileEnumClass, tileCodeString);
+            T tileCode = tileCodesByAlternateCode.get(tileCodeString);
+            if (tileCode == null) { tileCode = Enum.valueOf(tileEnumClass, tileCodeString); }
             return this.tileset.createTile(tileCode);
         }
         catch (Exception ex) {
