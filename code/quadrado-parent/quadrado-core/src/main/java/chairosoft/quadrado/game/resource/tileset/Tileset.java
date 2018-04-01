@@ -1,7 +1,9 @@
 package chairosoft.quadrado.game.resource.tileset;
 
 import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
-import chairosoft.quadrado.game.resource.literals.EnumLiteral;
+import chairosoft.quadrado.game.resource.loading.SoftMap;
+import chairosoft.quadrado.game.resource.sprite.SpriteSheetConfig;
+import chairosoft.quadrado.game.resource.sprite.SpriteSheetImageLoader;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.geom.Rectangle;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
@@ -10,10 +12,11 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 
-public class Tileset<T extends Enum<T> & EnumLiteral<T>> {
+public class Tileset<T extends Enum<T> & TileCodeLiteral<T>> {
     
     ////// Constants //////
-    public static final TilesetImageLoader IMAGE_LOADER = new TilesetImageLoader();
+    public static final SpriteSheetImageLoader IMAGE_LOADER = new SpriteSheetImageLoader();
+    protected static final SoftMap.ByDefaultConstructor<Tileset<?>> TILESETS_BY_CLASS = new SoftMap.ByDefaultConstructor<>();
     
     
     ////// Instance Fields //////
@@ -30,14 +33,14 @@ public class Tileset<T extends Enum<T> & EnumLiteral<T>> {
     
     
     ////// Constructor //////
-    protected Tileset(int _tileWidth, int _tileHeight, int _transparencyRgb, List<TileConfig<T>> tileConfigs) {
-        this.tileWidth = _tileWidth;
-        this.tileHeight = _tileHeight;
+    protected Tileset(SpriteSheetConfig tileSheetConfig, List<TileConfig<T>> tileConfigs) {
+        this.tileWidth = tileSheetConfig.spriteWidth;
+        this.tileHeight = tileSheetConfig.spriteHeight;
         this.imageArray = IMAGE_LOADER.loadTiledImages(
-            this.getClass(),
-            _transparencyRgb,
-            _tileWidth,
-            _tileHeight
+            tileSheetConfig.sheetName,
+            tileSheetConfig.transparencyRgb,
+            tileSheetConfig.spriteWidth,
+            tileSheetConfig.spriteHeight
         );
         this.tileConfigsByCode = EnumCodedObject.toMap(tileConfigs);
     }
@@ -51,22 +54,28 @@ public class Tileset<T extends Enum<T> & EnumLiteral<T>> {
     }
     
     
+    ////// Static Methods - Soft Map //////
+    @SuppressWarnings("unchecked")
+    public static <T extends Enum<T> & TileCodeLiteral<T>> Tileset<T> get(Class<? extends Tileset<T>> clazz) {
+        return (Tileset<T>) TILESETS_BY_CLASS.get(clazz);
+    }
+    
     ////// Static Methods - Declarative Syntax //////
     @SafeVarargs
-    public static <T extends Enum<T> & EnumLiteral<T>> List<TileConfig<T>> tiles(
+    public static <T extends Enum<T> & TileCodeLiteral<T>> List<TileConfig<T>> tiles(
         TileConfig<T>... tileConfigs
     ) {
         return Arrays.asList(tileConfigs);
     }
     
-    public static <T extends Enum<T> & EnumLiteral<T>> TileConfig<T> tile(
+    public static <T extends Enum<T> & TileCodeLiteral<T>> TileConfig<T> tile(
         T code,
         int imageIndex
     ) {
         return new TileConfig<>(code, imageIndex, new IntPoint2D[0]);
     }
     
-    public static <T extends Enum<T> & EnumLiteral<T>> TileConfig<T> tile(
+    public static <T extends Enum<T> & TileCodeLiteral<T>> TileConfig<T> tile(
         T code,
         int imageIndex,
         IntPoint2D... points
@@ -78,7 +87,7 @@ public class Tileset<T extends Enum<T> & EnumLiteral<T>> {
         return new IntPoint2D(x, y);
     }
     
-    public static <T extends Enum<T> & EnumLiteral<T>> TileConfig<T> tile(
+    public static <T extends Enum<T> & TileCodeLiteral<T>> TileConfig<T> tile(
         T code,
         int imageIndex,
         Rectangle rectangle

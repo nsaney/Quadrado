@@ -1,11 +1,10 @@
 package chairosoft.quadrado.game.resource.tileset;
 
 import chairosoft.quadrado.game.resource.literals.EnumCodedObjectImpl;
-import chairosoft.quadrado.game.resource.literals.EnumLiteral;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.geom.Rectangle;
 
-public class TileConfig<T extends Enum<T> & EnumLiteral<T>> extends EnumCodedObjectImpl<T> {
+public class TileConfig<T extends Enum<T> & TileCodeLiteral<T>> extends EnumCodedObjectImpl<T> {
     
     ////// Instance Fields //////
     public final int imageIndex;

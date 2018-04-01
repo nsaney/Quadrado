@@ -20,7 +20,7 @@ public class SpriteSheet {
     ////// Constructor //////
     protected SpriteSheet(SpriteSheetConfig config) {
         this.imageArray = IMAGE_LOADER.loadTiledImages(
-            config.resourceClass,
+            config.sheetName,
             config.transparencyRgb,
             config.spriteWidth,
             config.spriteHeight

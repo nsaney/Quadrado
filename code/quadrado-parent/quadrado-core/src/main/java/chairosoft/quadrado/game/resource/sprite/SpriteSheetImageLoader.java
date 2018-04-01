@@ -5,23 +5,24 @@ import chairosoft.quadrado.game.resource.loading.DrawingImageLoader;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
+import chairosoft.quadrado.util.function.Identity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Function;
 
 
-public class SpriteSheetImageLoader extends DrawingImageLoader<Class<? extends QSprite>> {
+public class SpriteSheetImageLoader extends DrawingImageLoader<String> {
     
     ////// Constants //////
     public static final boolean IS_INTERNAL = true;
-    public static final String RESOURCE_ROOT = "_sprites";
+    public static final String RESOURCE_ROOT = "img/sheets";
     public static final String EXTENSION = "png";
-    public static final ClassBasedResourceKeyDecoder<QSprite> KEY_DECODER = new ClassBasedResourceKeyDecoder<>(EXTENSION);
     public static final ExceptionThrowingFunction<InputStream, DrawingImage, IOException> STREAM_RESOLVER = UserInterfaceProvider.get()::createDrawingImage;
     
     ////// Constructor //////
     public SpriteSheetImageLoader() {
-        super(IS_INTERNAL, RESOURCE_ROOT, KEY_DECODER, STREAM_RESOLVER);
+        super(IS_INTERNAL, RESOURCE_ROOT, EXTENSION, Identity.STRING, STREAM_RESOLVER);
     }
     
 }

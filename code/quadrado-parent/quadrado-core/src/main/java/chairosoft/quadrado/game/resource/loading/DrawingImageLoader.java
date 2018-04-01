@@ -15,10 +15,11 @@ public class DrawingImageLoader<K> extends ModularResourceLoader<K, DrawingImage
     public DrawingImageLoader(
         boolean _isInternal,
         String _directory,
+        String _extension,
         Function<K, String> _keyDecoder,
         ExceptionThrowingFunction<InputStream, DrawingImage, IOException> _streamResolver
     ) {
-        super(_isInternal, _directory, _keyDecoder, _streamResolver);
+        super(_isInternal, _directory, _extension, _keyDecoder, _streamResolver);
     }
     
     

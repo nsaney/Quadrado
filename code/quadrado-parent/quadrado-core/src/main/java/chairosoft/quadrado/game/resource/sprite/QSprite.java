@@ -131,15 +131,6 @@ public abstract class QSprite<
     
     
     ////// Static Methods - Declarative Syntax //////
-    protected static SpriteSheetConfig spriteSheetConfig(
-        Class<? extends QSprite> spriteClass,
-        int transparencyRgb,
-        int spriteWidth,
-        int spriteHeight
-    ) {
-        return new SpriteSheetConfig(spriteClass, transparencyRgb, spriteWidth, spriteHeight);
-    }
-    
     @SafeVarargs
     protected static <B extends Enum<B> & BoundingShapeCodeLiteral<B>>
     List<BoundingShape<B>> shapes(BoundingShape<B>... shapesArray) {

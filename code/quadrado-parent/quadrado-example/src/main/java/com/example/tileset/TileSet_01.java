@@ -1,6 +1,7 @@
 package com.example.tileset;
 
-import chairosoft.quadrado.game.resource.literals.EnumLiteral;
+import chairosoft.quadrado.game.resource.sprite.SpriteSheetConfig;
+import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
 import chairosoft.quadrado.game.resource.tileset.Tileset;
 
 import static com.example.tileset.TileSet_01.TileCode.*;
@@ -8,18 +9,23 @@ import static com.example.tileset.TileSet_01.TileCode.*;
 
 public class TileSet_01 extends Tileset<TileSet_01.TileCode> {
     
-    public enum TileCode implements EnumLiteral<TileCode> {
+    public static final SpriteSheetConfig TILE_SHEET_CONFIG = new SpriteSheetConfig(
+        "TileSheet_01",
+        0xff00ff,
+        16,
+        16
+    );
+    
+    public enum TileCode implements TileCodeLiteral<TileCode> {
         __, _i, Cf, E1, _0,
         N0, N1, N2, N3,
         W0, W1, W2, W3, W4, W5, W6, W7, W9, Wb, Wd, Wf,
         X0, X1, X2, X3, X4, X5, X6, X7, X9, Xb, Xd, Xf
     }
     
-    protected TileSet_01() {
+    public TileSet_01() {
         super(
-            16,
-            16,
-            0xff00ff,
+            TILE_SHEET_CONFIG,
             tiles(
                 tile(__,  0),
                 tile(_i,  1),

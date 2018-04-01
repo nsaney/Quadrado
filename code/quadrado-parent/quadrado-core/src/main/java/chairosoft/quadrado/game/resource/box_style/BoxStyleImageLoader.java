@@ -20,7 +20,7 @@ public class BoxStyleImageLoader extends DrawingImageLoader<Class<? extends QBox
     
     ////// Constructor //////
     public BoxStyleImageLoader() {
-        super(IS_INTERNAL, RESOURCE_ROOT, KEY_DECODER, STREAM_RESOLVER);
+        super(IS_INTERNAL, RESOURCE_ROOT, EXTENSION, KEY_DECODER, STREAM_RESOLVER);
     }
     
 }

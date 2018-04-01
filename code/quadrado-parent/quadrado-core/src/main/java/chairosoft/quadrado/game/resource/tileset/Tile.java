@@ -2,11 +2,10 @@ package chairosoft.quadrado.game.resource.tileset;
 
 import chairosoft.quadrado.game.QCollidable;
 import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
-import chairosoft.quadrado.game.resource.literals.EnumLiteral;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 
-public class Tile<T extends Enum<T> & EnumLiteral<T>> extends QCollidable implements EnumCodedObject<T> {
+public class Tile<T extends Enum<T> & TileCodeLiteral<T>> extends QCollidable implements EnumCodedObject<T> {
     
     ////// Instance Properties //////
     public final T code;

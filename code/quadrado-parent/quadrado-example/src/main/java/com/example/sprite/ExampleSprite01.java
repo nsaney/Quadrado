@@ -9,8 +9,8 @@ public abstract class ExampleSprite01 extends QMapRoomExplorerSprite<
     ExampleSprite01.AnimationCode
 >
 {
-    public static final SpriteSheetConfig SPRITE_SHEET_CONFIG = spriteSheetConfig(
-        ExampleSprite01.class,
+    public static final SpriteSheetConfig SPRITE_SHEET_CONFIG = new SpriteSheetConfig(
+        "SpriteSheet_01",
         0xe0e0e0,
         32,
         32

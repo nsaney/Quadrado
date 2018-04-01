@@ -17,10 +17,11 @@ public class ModularResourceLoader<K, V> extends ResourceLoader<K, V> {
     public ModularResourceLoader(
         boolean _isInternal,
         String _directory,
+        String _extension,
         Function<K, String> _keyDecoder,
         ExceptionThrowingFunction<InputStream, V, IOException> _streamResolver
     ) {
-        super(_isInternal, _directory);
+        super(_isInternal, _directory, _extension);
         this.keyDecoder = _keyDecoder;
         this.streamResolver = _streamResolver;
     }
@@ -28,7 +29,7 @@ public class ModularResourceLoader<K, V> extends ResourceLoader<K, V> {
     
     ////// Instance Methods //////
     @Override
-    protected String getRelativeResourcePath(K resourceKey) {
+    protected String getResourceName(K resourceKey) {
         return this.keyDecoder.apply(resourceKey);
     }
     
