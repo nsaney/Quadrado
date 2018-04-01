@@ -1,36 +1,23 @@
 package chairosoft.quadrado.game.resource.maproom;
 
 import chairosoft.quadrado.game.resource.loading.ResourceLoader;
-import org.apache.commons.io.IOUtils;
+import chairosoft.quadrado.game.resource.loading.resolver.TextLinesResolver;
+import chairosoft.quadrado.game.resource.loading.decoder.FullyQualifiedKeyDecoder;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class MapRoomLayoutLoader extends ResourceLoader<String, List<String>> {
+public class MapRoomLayoutLoader
+    extends ResourceLoader<Class<?>, List<String>>
+    implements FullyQualifiedKeyDecoder, TextLinesResolver<Class<?>>
+{
     
     ////// Constants //////
-    public static final boolean IS_INTERNAL = true;
-    public static final String DIRECTORY = "map";
-    public static final String EXTENSION = "txt";
+    public static final String EXTENSION = "map.txt";
     
     
     ////// Constructor //////
     public MapRoomLayoutLoader() {
-        super(IS_INTERNAL, DIRECTORY, EXTENSION);
-    }
-    
-    
-    ////// Instance Methods //////
-    @Override
-    protected String getResourceName(String resourceKey) {
-        return resourceKey;
-    }
-    
-    @Override
-    protected List<String> resolve(InputStream resourceStream) throws IOException {
-        return IOUtils.readLines(resourceStream, StandardCharsets.UTF_8);
+        super(IS_INTERNAL, RESOURCE_ROOT, EXTENSION);
     }
     
 }

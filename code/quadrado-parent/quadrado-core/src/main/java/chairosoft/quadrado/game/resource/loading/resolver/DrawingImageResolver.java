@@ -1,30 +1,20 @@
-package chairosoft.quadrado.game.resource.loading;
+package chairosoft.quadrado.game.resource.loading.resolver;
 
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
-import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.function.Function;
 
-public class DrawingImageLoader<K> extends ModularResourceLoader<K, DrawingImage> {
-    
-    
-    ////// Constructor //////
-    public DrawingImageLoader(
-        boolean _isInternal,
-        String _directory,
-        String _extension,
-        Function<K, String> _keyDecoder,
-        ExceptionThrowingFunction<InputStream, DrawingImage, IOException> _streamResolver
-    ) {
-        super(_isInternal, _directory, _extension, _keyDecoder, _streamResolver);
-    }
-    
+public interface DrawingImageResolver<K> extends ResourceValueResolver<K, DrawingImage> {
     
     ////// Instance Methods //////
-    public DrawingImage[] loadTiledImages(K key, int transparencyRgb, int tileWidth, int tileHeight) {
+    @Override
+    default DrawingImage resolve(InputStream resourceStream) throws IOException {
+        return UserInterfaceProvider.get().createDrawingImage(resourceStream);
+    }
+    
+    default DrawingImage[] loadTiledImages(K key, int transparencyRgb, int tileWidth, int tileHeight) {
         DrawingImage[] tiledImages;
         DrawingImage tiledImageRaw = this.loadOrNull(key);
         if (tiledImageRaw == null) {
@@ -52,11 +42,12 @@ public class DrawingImageLoader<K> extends ModularResourceLoader<K, DrawingImage
         return tiledImages;
     }
     
-    public DrawingImage loadOrEmpty(K key, int transparencyRgb) {
+    default DrawingImage loadOrEmpty(K key, int transparencyRgb) {
         DrawingImage sourceImageRaw = this.loadOrNull(key);
         if (sourceImageRaw != null) {
             return sourceImageRaw.getCloneWithTransparency(transparencyRgb);
         }
         return UserInterfaceProvider.get().createDrawingImage(0, 0, DrawingImage.Config.ARGB_8888);
     }
+    
 }

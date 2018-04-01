@@ -58,7 +58,7 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
         Map<String, T> tileCodesByAlternateCode = TileCodeLiteral.getTileCodesByAlternateCode(tileCodeValues);
         Class<T> tileEnumClass = tileCodeValues[0].getDeclaringClass();
         final int CODE_LEN = tileCodeValues[0].name().length(); // assumes all tiles have the same length name
-        List<String> layoutLinesList = LAYOUT_LOADER.loadOrNull(_config.mapRoomClass.getName());
+        List<String> layoutLinesList = LAYOUT_LOADER.loadOrNull(_config.mapRoomClass);
         String[] layoutLines = layoutLinesList.stream()
             .filter(s -> s != null && s.length() >= CODE_LEN)
             .toArray(String[]::new)

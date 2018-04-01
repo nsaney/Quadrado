@@ -1,25 +1,21 @@
 package chairosoft.quadrado.game.resource.box_style;
 
-import chairosoft.quadrado.game.resource.loading.DrawingImageLoader;
+import chairosoft.quadrado.game.resource.loading.resolver.DrawingImageResolver;
+import chairosoft.quadrado.game.resource.loading.decoder.FullyQualifiedKeyDecoder;
+import chairosoft.quadrado.game.resource.loading.ResourceLoader;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
-import chairosoft.quadrado.ui.system.UserInterfaceProvider;
-import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
-import chairosoft.quadrado.util.function.Identity;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-public class BoxStyleImageLoader extends DrawingImageLoader<String> {
+public class BoxStyleImageLoader
+    extends ResourceLoader<Class<?>, DrawingImage>
+    implements FullyQualifiedKeyDecoder, DrawingImageResolver<Class<?>>
+{
     
     ////// Constants //////
-    public static final boolean IS_INTERNAL = true;
-    public static final String RESOURCE_ROOT = "img/box_styles";
-    public static final String EXTENSION = "png";
-    public static final ExceptionThrowingFunction<InputStream, DrawingImage, IOException> STREAM_RESOLVER = UserInterfaceProvider.get()::createDrawingImage;
+    public static final String EXTENSION = "box.png";
     
     ////// Constructor //////
     public BoxStyleImageLoader() {
-        super(IS_INTERNAL, RESOURCE_ROOT, EXTENSION, Identity.STRING, STREAM_RESOLVER);
+        super(IS_INTERNAL, RESOURCE_ROOT, EXTENSION);
     }
     
 }

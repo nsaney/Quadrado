@@ -1,12 +1,13 @@
 package chairosoft.quadrado.game.resource.loading;
 
-import chairosoft.quadrado.util.function.ExceptionThrowingFunction;
+import chairosoft.quadrado.game.resource.loading.decoder.ResourceKeyDecoder;
+import chairosoft.quadrado.game.resource.loading.resolver.ResourceValueResolver;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public abstract class ResourceLoader<K, V> {
+public abstract class ResourceLoader<K, V> implements ResourceKeyDecoder<K>, ResourceValueResolver<K, V> {
     
     ////// Constants //////
     public static final char FILE_SEPARATOR_CHAR = '/';
@@ -27,11 +28,6 @@ public abstract class ResourceLoader<K, V> {
     }
     
     
-    ////// Instance Methods - Abstract //////
-    protected abstract String getResourceName(K resourceKey);
-    protected abstract V resolve(InputStream resourceStream) throws IOException;
-    
-    
     ////// Instance Methods - Concrete //////
     protected String getAbsoluteResourcePath(String resourceName) {
         String absolutePath = this.directory + FILE_SEPARATOR + resourceName + EXTENSION_SEPARATOR + this.extension;
@@ -48,19 +44,12 @@ public abstract class ResourceLoader<K, V> {
         }
     }
     
+    @Override
     public V load(K resourceKey) throws IOException {
         String resourceName = this.getResourceName(resourceKey);
         String absoluteResourcePath = this.getAbsoluteResourcePath(resourceName);
         InputStream resourceStream = this.getResourceAsStream(absoluteResourcePath);
         return this.resolve(resourceStream);
-    }
-    
-    public V wrappedLoad(K key) {
-        return ExceptionThrowingFunction.applyOrWrap(this::load, key, RuntimeException::new);
-    }
-    
-    public V loadOrNull(K key) {
-        return ExceptionThrowingFunction.applyOrNull(this::load, key);
     }
     
     
