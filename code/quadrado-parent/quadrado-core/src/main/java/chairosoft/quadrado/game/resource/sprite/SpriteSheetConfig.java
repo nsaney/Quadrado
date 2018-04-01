@@ -2,8 +2,7 @@ package chairosoft.quadrado.game.resource.sprite;
 
 import chairosoft.quadrado.game.resource.loading.ResourceConfig;
 
-
-public class SpriteSheetConfig extends ResourceConfig {
+public class SpriteSheetConfig extends ResourceConfig<SpriteSheet> {
     
     ////// Instance Fields //////
     public final String sheetName;
@@ -19,11 +18,18 @@ public class SpriteSheetConfig extends ResourceConfig {
         int _spriteWidth,
         int _spriteHeight
     ) {
-        super(_sheetName, _transparencyRgb, _spriteWidth, _spriteHeight);
+        super(null, _sheetName, _transparencyRgb, _spriteWidth, _spriteHeight);
         this.sheetName = _sheetName;
         this.transparencyRgb = _transparencyRgb;
         this.spriteWidth = _spriteWidth;
         this.spriteHeight = _spriteHeight;
+    }
+    
+    
+    ////// Instance Methods //////
+    @Override
+    public SpriteSheet getResource() {
+        return new SpriteSheet(this);
     }
     
 }

@@ -3,13 +3,19 @@ package com.example.__resources;
 import chairosoft.quadrado.game.resource.sprite.SpriteSheetConfig;
 import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
 import chairosoft.quadrado.game.resource.tileset.QTileset;
+import chairosoft.quadrado.game.resource.tileset.TilesetConfig;
 
 import static com.example.__resources.TileSet_01.TileCode.*;
 
 
 public class TileSet_01 extends QTileset<TileSet_01.TileCode> {
     
-    public static final SpriteSheetConfig TILE_SHEET_CONFIG = new SpriteSheetConfig(
+    public static final TilesetConfig<TileSet_01.TileCode> CONFIG = new TilesetConfig<>(
+        TileSet_01::new,
+        TileSet_01.class
+    );
+    
+    public static final SpriteSheetConfig SHEET_CONFIG = new SpriteSheetConfig(
         "TileSheet_01",
         0xff00ff,
         16,
@@ -33,7 +39,7 @@ public class TileSet_01 extends QTileset<TileSet_01.TileCode> {
     
     public TileSet_01() {
         super(
-            TILE_SHEET_CONFIG,
+            SHEET_CONFIG,
             tiles(
                 tile(__,  0),
                 tile(_i,  1),

@@ -40,7 +40,7 @@ public abstract class QSprite<
         List<Animation<A>> animations,
         List<StateConfig<S, B, A>> stateConfigs
     ) {
-        this.spriteSheet = SpriteSheet.get(spriteSheetConfig);
+        this.spriteSheet = SpriteSheet.loadFor(spriteSheetConfig);
         this.boundingShapesByCode = EnumCodedObject.toMap(boundingShapes);
         this.animationsByCode = EnumCodedObject.toMap(animations);
         this.statesByCode = EnumCodedObject.toMapWithValues(

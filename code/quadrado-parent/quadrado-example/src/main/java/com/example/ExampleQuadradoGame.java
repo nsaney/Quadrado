@@ -193,7 +193,7 @@ public class ExampleQuadradoGame extends QApplication
                 {
                     // normal gameplay
                     case START:
-                        this.currentMapLink = new MapLink<TileSet_01.TileCode>(0, 0, ExampleMap_01::new, 13, 2);
+                        this.currentMapLink = new MapLink<TileSet_01.TileCode>(0, 0, ExampleMap_01.CONFIG, 13, 2);
                         this.loadQMapRoomFromCurrentLink();
                         break;
                 }

@@ -1,9 +1,9 @@
 package chairosoft.quadrado.game.resource.tileset;
 
 import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
-import chairosoft.quadrado.game.resource.loading.SoftMap;
+import chairosoft.quadrado.game.resource.loading.ResourceCache;
+import chairosoft.quadrado.game.resource.sprite.SpriteSheet;
 import chairosoft.quadrado.game.resource.sprite.SpriteSheetConfig;
-import chairosoft.quadrado.game.resource.sprite.SpriteSheetImageLoader;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.geom.Rectangle;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
@@ -15,8 +15,7 @@ import java.util.List;
 public class QTileset<T extends Enum<T> & TileCodeLiteral<T>> {
     
     ////// Constants //////
-    public static final SpriteSheetImageLoader IMAGE_LOADER = new SpriteSheetImageLoader();
-    protected static final SoftMap.ByDefaultConstructor<QTileset<?>> TILESETS_BY_CLASS = new SoftMap.ByDefaultConstructor<>();
+    protected static final ResourceCache<QTileset<?>> TILESET_CACHE = new ResourceCache<>();
     
     
     ////// Instance Fields //////
@@ -26,22 +25,14 @@ public class QTileset<T extends Enum<T> & TileCodeLiteral<T>> {
     
     
     ////// Instance Properties /////
-    protected final DrawingImage[] imageArray;
-    public DrawingImage getImage(int imageIndex) {
-        return this.imageArray[imageIndex];
-    }
+    protected final SpriteSheet tileSheet;
     
     
     ////// Constructor //////
-    protected QTileset(SpriteSheetConfig tileSheetConfig, List<TileConfig<T>> tileConfigs) {
-        this.tileWidth = tileSheetConfig.spriteWidth;
-        this.tileHeight = tileSheetConfig.spriteHeight;
-        this.imageArray = IMAGE_LOADER.loadTiledImages(
-            tileSheetConfig.sheetName,
-            tileSheetConfig.transparencyRgb,
-            tileSheetConfig.spriteWidth,
-            tileSheetConfig.spriteHeight
-        );
+    protected QTileset(SpriteSheetConfig config, List<TileConfig<T>> tileConfigs) {
+        this.tileWidth = config.spriteWidth;
+        this.tileHeight = config.spriteHeight;
+        this.tileSheet = SpriteSheet.loadFor(config);
         this.tileConfigsByCode = EnumCodedObject.toMap(tileConfigs);
     }
     
@@ -49,15 +40,15 @@ public class QTileset<T extends Enum<T> & TileCodeLiteral<T>> {
     ////// Instance Methods //////
     public QTile<T> createTile(T code) {
         TileConfig<T> config = this.tileConfigsByCode.get(code);
-        DrawingImage tileImage = this.getImage(config.imageIndex);
+        DrawingImage tileImage = this.tileSheet.getImage(config.imageIndex);
         return new QTile<>(config.code, tileImage, config.points);
     }
     
     
     ////// Static Methods - Soft Map //////
     @SuppressWarnings("unchecked")
-    public static <T extends Enum<T> & TileCodeLiteral<T>> QTileset<T> get(Class<? extends QTileset<T>> clazz) {
-        return (QTileset<T>) TILESETS_BY_CLASS.get(clazz);
+    public static <T extends Enum<T> & TileCodeLiteral<T>> QTileset<T> loadFor(TilesetConfig<T> config) {
+        return (QTileset<T>)TILESET_CACHE.loadResource(config);
     }
     
     ////// Static Methods - Declarative Syntax //////

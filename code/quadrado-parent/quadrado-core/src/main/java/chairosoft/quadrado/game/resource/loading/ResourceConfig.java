@@ -2,17 +2,23 @@ package chairosoft.quadrado.game.resource.loading;
 
 import java.util.Arrays;
 
-public abstract class ResourceConfig {
+public abstract class ResourceConfig<R> {
     
     ////// Instance Fields //////
     private final Object[] comparisonFields;
+    
     
     ////// Constructor //////
     protected ResourceConfig(Object... _comparisonFields) {
         this.comparisonFields = Arrays.copyOf(_comparisonFields, _comparisonFields.length);
     }
     
-    ////// Instance Methods //////
+    
+    ////// Instance Methods - Abstract //////
+    public abstract R getResource();
+    
+    
+    ////// Instance Methods - Concrete //////
     @Override
     public int hashCode() {
         return Arrays.hashCode(this.comparisonFields);

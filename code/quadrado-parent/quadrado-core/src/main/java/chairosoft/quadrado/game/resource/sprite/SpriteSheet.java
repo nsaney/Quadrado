@@ -1,13 +1,13 @@
 package chairosoft.quadrado.game.resource.sprite;
 
-import chairosoft.quadrado.game.resource.loading.SoftMap;
+import chairosoft.quadrado.game.resource.loading.ResourceCache;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 
 public class SpriteSheet {
     
     ////// Constants //////
     public static final SpriteSheetImageLoader IMAGE_LOADER = new SpriteSheetImageLoader();
-    protected static final SoftMap<SpriteSheetConfig, SpriteSheet> SPRITE_SHEETS_BY_CONFIG = new SoftMap<>(SpriteSheet::new);
+    protected static final ResourceCache<SpriteSheet> SPRITE_SHEET_CACHE = new ResourceCache<>();
     
     
     ////// Instance Properties //////
@@ -29,8 +29,8 @@ public class SpriteSheet {
     
     
     ////// Static Methods - Soft Map //////
-    public static SpriteSheet get(SpriteSheetConfig config) {
-        return SPRITE_SHEETS_BY_CONFIG.get(config);
+    public static SpriteSheet loadFor(SpriteSheetConfig config) {
+        return SPRITE_SHEET_CACHE.loadResource(config);
     }
     
 }

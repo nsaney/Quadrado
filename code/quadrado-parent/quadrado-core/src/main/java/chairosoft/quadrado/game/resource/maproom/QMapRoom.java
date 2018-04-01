@@ -2,9 +2,11 @@ package chairosoft.quadrado.game.resource.maproom;
 
 import chairosoft.quadrado.game.QCollidable;
 import chairosoft.quadrado.game.QDrawable;
+import chairosoft.quadrado.game.resource.loading.ResourceCache;
 import chairosoft.quadrado.game.resource.tileset.QTile;
 import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
 import chairosoft.quadrado.game.resource.tileset.QTileset;
+import chairosoft.quadrado.game.resource.tileset.TilesetConfig;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.graphics.*;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
@@ -20,6 +22,7 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
     ////// Constants //////
     public static final int Q_SPACE = 3;
     public static final MapRoomLayoutLoader LAYOUT_LOADER = new MapRoomLayoutLoader();
+    protected static final ResourceCache<QMapRoom<?>> MAP_ROOM_CACHE = new ResourceCache<>();
     
     
     ////// Instance Fields //////
@@ -36,9 +39,14 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
     
     
     ////// Constructor //////
-    public QMapRoom(MapRoomConfig<T> _config, Supplier<QTileset<T>> _tilesetGetter, List<MapLink<T>> _mapLinks) {
-        this.backgroundColor = Color.create(_config.backgroundColor);
-        this.tileset = _tilesetGetter.get();
+    public QMapRoom(
+        int _backgroundColor,
+        TilesetConfig<T> tilesetConfig,
+        Supplier<T[]> _tileCodeValuesGetter,
+        List<MapLink<T>> _mapLinks
+    ) {
+        this.backgroundColor = Color.create(_backgroundColor);
+        this.tileset = QTileset.loadFor(tilesetConfig);
         this.mapLinks = _mapLinks;
         
         this.defaultTileImage = UserInterfaceProvider.get().createDrawingImage(
@@ -54,11 +62,11 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
             ctx.drawString("?", 1, this.tileset.tileHeight - 1);
         }
         
-        T[] tileCodeValues = _config.tileCodeValuesGetter.get();
+        T[] tileCodeValues = _tileCodeValuesGetter.get();
         Map<String, T> tileCodesByAlternateCode = TileCodeLiteral.getTileCodesByAlternateCode(tileCodeValues);
         Class<T> tileEnumClass = tileCodeValues[0].getDeclaringClass();
         final int CODE_LEN = tileCodeValues[0].name().length(); // assumes all tiles have the same length name
-        List<String> layoutLinesList = LAYOUT_LOADER.loadOrNull(_config.mapRoomClass);
+        List<String> layoutLinesList = LAYOUT_LOADER.loadOrNull(this.getClass());
         String[] layoutLines = layoutLinesList.stream()
             .filter(s -> s != null && s.length() >= CODE_LEN)
             .toArray(String[]::new)
@@ -182,6 +190,13 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
     }
     
     
+    ////// Static Methods - Soft Map //////
+    @SuppressWarnings("unchecked")
+    public static <T extends Enum<T> & TileCodeLiteral<T>> QMapRoom<T> loadFor(MapRoomConfig<T> config) {
+        return (QMapRoom<T>) MAP_ROOM_CACHE.loadResource(config);
+    }
+    
+    
     ////// Static Methods - Declarative Syntax //////
     @SafeVarargs
     public static <T extends Enum<T> & TileCodeLiteral<T>> List<MapLink<T>> links(MapLink<T>... mapLinks) {
@@ -191,11 +206,11 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
     public static <T extends Enum<T> & TileCodeLiteral<T>> MapLink<T> link(
         int row,
         int col,
-        Supplier<QMapRoom<T>> mapRoomGetter,
+        MapRoomConfig<T> targetMapConfig,
         int row2,
         int col2
     ) {
-        return new MapLink<>(row, col, mapRoomGetter, row2, col2);
+        return new MapLink<>(row, col, targetMapConfig, row2, col2);
     }
     
 }

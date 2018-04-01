@@ -61,7 +61,7 @@ public class QMapRoomLoader implements Runnable {
     }
     
     @Override public void run() {
-        QMapRoom<?> nextQMapRoom = this.mapLink.mapRoomGetter.get();
+        QMapRoom<?> nextQMapRoom = QMapRoom.loadFor(this.mapLink.targetMapConfig);
         
         int mapWidth = nextQMapRoom.widthPixels;
         int mapHeight = nextQMapRoom.heightPixels;
