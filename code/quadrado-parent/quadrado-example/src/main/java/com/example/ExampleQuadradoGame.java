@@ -101,7 +101,7 @@ public class ExampleQuadradoGame extends QApplication
     protected boolean show_bounding_box = false;
     
     protected volatile boolean isPaused = false;
-    protected final String pauseText = "PAUSED";
+    protected String pauseText = "PAUSED";
     protected int pauseWidthHalf = 0;
     protected int pauseHeightHalf = 0;
     
@@ -469,12 +469,12 @@ public class ExampleQuadradoGame extends QApplication
             {
                 ctx.setColor(Color.CC.RED);
                 ctx.setFontFace(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.BOLD, 14));
-                if (this.pauseText == null)
-                {
-                    FontLayout fl = ctx.getFontLayout();
-                    this.pauseWidthHalf = fl.widthOf(this.pauseText) / 2;
-                    this.pauseHeightHalf = fl.height() / 2;
+                if (this.pauseText == null) {
+                    this.pauseText = "";
                 }
+                FontLayout fl = ctx.getFontLayout();
+                this.pauseWidthHalf = fl.widthOf(this.pauseText) / 2;
+                this.pauseHeightHalf = fl.height() / 2;
                 ctx.drawString(this.pauseText, playerX - this.pauseWidthHalf, playerY + this.pauseHeightHalf);
             }
         }
