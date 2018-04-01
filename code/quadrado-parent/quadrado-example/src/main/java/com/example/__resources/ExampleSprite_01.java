@@ -1,12 +1,12 @@
-package com.example.sprite;
+package com.example.__resources;
 
 import chairosoft.quadrado.game.resource.maproom.QMapRoomExplorerSprite;
 import chairosoft.quadrado.game.resource.sprite.*;
 
-public abstract class ExampleSprite01 extends QMapRoomExplorerSprite<
-    ExampleSprite01.StateCode,
-    ExampleSprite01.BoundingShapeCode,
-    ExampleSprite01.AnimationCode
+public abstract class ExampleSprite_01 extends QMapRoomExplorerSprite<
+    ExampleSprite_01.StateCode,
+    ExampleSprite_01.BoundingShapeCode,
+    ExampleSprite_01.AnimationCode
 >
 {
     public static final SpriteSheetConfig SPRITE_SHEET_CONFIG = new SpriteSheetConfig(
@@ -20,7 +20,7 @@ public abstract class ExampleSprite01 extends QMapRoomExplorerSprite<
     public enum AnimationCode implements AnimationCodeLiteral<AnimationCode> { left, right }
     public enum StateCode implements StateCodeLiteral<StateCode> { left, right }
     
-    public ExampleSprite01() {
+    public ExampleSprite_01() {
         super(
             SPRITE_SHEET_CONFIG,
             shapes(

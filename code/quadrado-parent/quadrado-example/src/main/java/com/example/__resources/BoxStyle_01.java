@@ -1,4 +1,4 @@
-package com.example.box_style;
+package com.example.__resources;
 
 import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
 

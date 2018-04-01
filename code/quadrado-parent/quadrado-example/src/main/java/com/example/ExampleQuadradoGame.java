@@ -17,11 +17,11 @@ import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.input.*;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
-import com.example.box_style.BoxStyle_01;
-import com.example.box_style.BoxStyle_02;
-import com.example.map_room.ExampleMap_01;
-import com.example.sprite.ExampleSprite01;
-import com.example.tileset.TileSet_01;
+import com.example.__resources.BoxStyle_01;
+import com.example.__resources.BoxStyle_02;
+import com.example.__resources.ExampleMap_01;
+import com.example.__resources.ExampleSprite_01;
+import com.example.__resources.TileSet_01;
 
 public class ExampleQuadradoGame extends QApplication
 {
@@ -79,7 +79,7 @@ public class ExampleQuadradoGame extends QApplication
     protected DrawingImage contentImage = null;
     protected DrawingContext contentImageContext = null;
     
-    protected QMapRoomExplorerSprite<?,?,?> protagonist = new ExampleSprite01()
+    protected QMapRoomExplorerSprite<?,?,?> protagonist = new ExampleSprite_01()
     {
         @Override public void setNextState(QCompassDirection nextDirection)
         {

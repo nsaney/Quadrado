@@ -1,10 +1,10 @@
-package com.example.tileset;
+package com.example.__resources;
 
 import chairosoft.quadrado.game.resource.sprite.SpriteSheetConfig;
 import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
 import chairosoft.quadrado.game.resource.tileset.QTileset;
 
-import static com.example.tileset.TileSet_01.TileCode.*;
+import static com.example.__resources.TileSet_01.TileCode.*;
 
 
 public class TileSet_01 extends QTileset<TileSet_01.TileCode> {
