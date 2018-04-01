@@ -8,13 +8,13 @@ import java.util.function.Supplier;
 public class MapRoomConfig<T extends Enum<T> & TileCodeLiteral<T>> extends ResourceConfig {
     
     ////// Instance Fields //////
-    public final Class<? extends MapRoom<? extends T>> mapRoomClass;
+    public final Class<? extends QMapRoom<? extends T>> mapRoomClass;
     public final Supplier<T[]> tileCodeValuesGetter;
     public final int backgroundColor;
     
     
     ////// Constructor //////
-    public MapRoomConfig(Class<? extends MapRoom<T>> _mapRoomClass, Supplier<T[]> _tileCodeValuesGetter, int _backgroundColor) {
+    public MapRoomConfig(Class<? extends QMapRoom<T>> _mapRoomClass, Supplier<T[]> _tileCodeValuesGetter, int _backgroundColor) {
         super(_mapRoomClass, _tileCodeValuesGetter, _backgroundColor);
         this.mapRoomClass = _mapRoomClass;
         this.tileCodeValuesGetter = _tileCodeValuesGetter;

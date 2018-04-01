@@ -2,9 +2,9 @@ package chairosoft.quadrado.game.resource.maproom;
 
 import chairosoft.quadrado.game.QCollidable;
 import chairosoft.quadrado.game.QDrawable;
-import chairosoft.quadrado.game.resource.tileset.Tile;
+import chairosoft.quadrado.game.resource.tileset.QTile;
 import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
-import chairosoft.quadrado.game.resource.tileset.Tileset;
+import chairosoft.quadrado.game.resource.tileset.QTileset;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.graphics.*;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
+public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
     
     ////// Constants //////
     public static final int Q_SPACE = 3;
@@ -28,15 +28,15 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
     public final int heightTiles;
     public final int widthPixels;
     public final int heightPixels;
-    public final Tileset<T> tileset;
+    public final QTileset<T> tileset;
     public final DrawingImage defaultTileImage;
-    public final Tile<?>[][] tileLayout;
+    public final QTile<?>[][] tileLayout;
     public final List<MapLink<T>> mapLinks;
-    protected Tile<?> lastCollidingTile = null;
+    protected QTile<?> lastCollidingTile = null;
     
     
     ////// Constructor //////
-    public MapRoom(MapRoomConfig<T> _config, Supplier<Tileset<T>> _tilesetGetter, List<MapLink<T>> _mapLinks) {
+    public QMapRoom(MapRoomConfig<T> _config, Supplier<QTileset<T>> _tilesetGetter, List<MapLink<T>> _mapLinks) {
         this.backgroundColor = _config.backgroundColor;
         this.tileset = _tilesetGetter.get();
         this.mapLinks = _mapLinks;
@@ -64,16 +64,16 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
             .toArray(String[]::new)
         ;
         int _widthTiles = 0;
-        this.tileLayout = new Tile<?>[layoutLines.length][];
+        this.tileLayout = new QTile<?>[layoutLines.length][];
         
         for (int y = 0, dy = 0; y < layoutLines.length; ++y, dy += tileset.tileHeight) {
             String line = layoutLines[y];
             int lineWidth = line.length() / CODE_LEN;
             _widthTiles = (lineWidth > _widthTiles) ? lineWidth : _widthTiles;
-            Tile<?>[] tileRow = new Tile<?>[lineWidth];
+            QTile<?>[] tileRow = new QTile<?>[lineWidth];
             for (int x = 0, dx = 0, col = 0; x < tileRow.length; ++x, dx += tileset.tileWidth) {
                 String tileCodeString = line.substring(col, col += CODE_LEN);
-                Tile<T> tile = this.getTileFor(tileCodeString, tileEnumClass, tileCodesByAlternateCode);
+                QTile<T> tile = this.getTileFor(tileCodeString, tileEnumClass, tileCodesByAlternateCode);
                 tile.translate(dx, dy);
                 tileRow[x] = tile;
             }
@@ -86,20 +86,20 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
         this.setImageFromLayout();
     }
     
-    protected Tile<T> getTileFor(String tileCodeString, Class<T> tileEnumClass, Map<String, T> tileCodesByAlternateCode) {
+    protected QTile<T> getTileFor(String tileCodeString, Class<T> tileEnumClass, Map<String, T> tileCodesByAlternateCode) {
         try {
             T tileCode = tileCodesByAlternateCode.get(tileCodeString);
             if (tileCode == null) { tileCode = Enum.valueOf(tileEnumClass, tileCodeString); }
             return this.tileset.createTile(tileCode);
         }
         catch (Exception ex) {
-            return new Tile<>(null, this.defaultTileImage, new IntPoint2D[0]);
+            return new QTile<>(null, this.defaultTileImage, new IntPoint2D[0]);
         }
     }
     
     
     ////// Instance Methods - Game //////
-    public Tile<?> getLastCollidingTile() {
+    public QTile<?> getLastCollidingTile() {
         return this.lastCollidingTile;
     }
     
@@ -109,7 +109,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
     }
     
     public void setLastCollidingTileWith(QCollidable c) {
-        Tile result = null;
+        QTile result = null;
         IntPoint2D posC = c.getIntPosition();
         int colC = posC.x / this.tileset.tileWidth;
         int rowC = posC.y / this.tileset.tileHeight;
@@ -122,7 +122,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
         
         outer:
         for (int row = rowFirst; row < rowLastPlusOne; ++row) {
-            Tile<?>[] qtiles = this.tileLayout[row];
+            QTile<?>[] qtiles = this.tileLayout[row];
             
             for (int col = colFirst; col < colLastPlusOne; ++col) {
                 if (qtiles[col].collidesWith(c)) { result = qtiles[col]; break outer; }
@@ -141,7 +141,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
             // TODO: move get wrapped calls into the constructor
             int linkRow = this.getWrappedRowValue(link.row);
             int linkCol = this.getWrappedColValue(link.col);
-            Tile<?> linkTile = this.tileLayout[linkRow][linkCol];
+            QTile<?> linkTile = this.tileLayout[linkRow][linkCol];
             if (linkTile.collidesWith(c)) {
                 result = link;
                 break;
@@ -188,7 +188,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
     public static <T extends Enum<T> & TileCodeLiteral<T>> MapLink<T> link(
         int row,
         int col,
-        Supplier<MapRoom<T>> mapRoomGetter,
+        Supplier<QMapRoom<T>> mapRoomGetter,
         int row2,
         int col2
     ) {

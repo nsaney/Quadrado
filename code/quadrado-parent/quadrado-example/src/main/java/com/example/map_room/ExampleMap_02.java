@@ -1,10 +1,10 @@
 package com.example.map_room;
 
-import chairosoft.quadrado.game.resource.maproom.MapRoom;
+import chairosoft.quadrado.game.resource.maproom.QMapRoom;
 import chairosoft.quadrado.game.resource.maproom.MapRoomConfig;
 import com.example.tileset.TileSet_01;
 
-public class ExampleMap_02 extends MapRoom<TileSet_01.TileCode> {
+public class ExampleMap_02 extends QMapRoom<TileSet_01.TileCode> {
     
     ////// Constants //////
     public static final MapRoomConfig<TileSet_01.TileCode> MAP_ROOM_CONFIG = new MapRoomConfig<>(

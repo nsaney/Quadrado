@@ -5,7 +5,7 @@ import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.graphics.DrawingImage;
 
-public class Tile<T extends Enum<T> & TileCodeLiteral<T>> extends QCollidable implements EnumCodedObject<T> {
+public class QTile<T extends Enum<T> & TileCodeLiteral<T>> extends QCollidable implements EnumCodedObject<T> {
     
     ////// Instance Properties //////
     public final T code;
@@ -13,7 +13,7 @@ public class Tile<T extends Enum<T> & TileCodeLiteral<T>> extends QCollidable im
     
     
     ////// Constructor //////
-    public Tile(T _code, DrawingImage _image, IntPoint2D[] _points) {
+    public QTile(T _code, DrawingImage _image, IntPoint2D[] _points) {
         this.code = _code;
         this.image = _image;
         this.addAllPoints(_points);

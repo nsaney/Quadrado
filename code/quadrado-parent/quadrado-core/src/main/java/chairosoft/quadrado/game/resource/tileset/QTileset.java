@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 
-public class Tileset<T extends Enum<T> & TileCodeLiteral<T>> {
+public class QTileset<T extends Enum<T> & TileCodeLiteral<T>> {
     
     ////// Constants //////
     public static final SpriteSheetImageLoader IMAGE_LOADER = new SpriteSheetImageLoader();
-    protected static final SoftMap.ByDefaultConstructor<Tileset<?>> TILESETS_BY_CLASS = new SoftMap.ByDefaultConstructor<>();
+    protected static final SoftMap.ByDefaultConstructor<QTileset<?>> TILESETS_BY_CLASS = new SoftMap.ByDefaultConstructor<>();
     
     
     ////// Instance Fields //////
@@ -33,7 +33,7 @@ public class Tileset<T extends Enum<T> & TileCodeLiteral<T>> {
     
     
     ////// Constructor //////
-    protected Tileset(SpriteSheetConfig tileSheetConfig, List<TileConfig<T>> tileConfigs) {
+    protected QTileset(SpriteSheetConfig tileSheetConfig, List<TileConfig<T>> tileConfigs) {
         this.tileWidth = tileSheetConfig.spriteWidth;
         this.tileHeight = tileSheetConfig.spriteHeight;
         this.imageArray = IMAGE_LOADER.loadTiledImages(
@@ -47,17 +47,17 @@ public class Tileset<T extends Enum<T> & TileCodeLiteral<T>> {
     
     
     ////// Instance Methods //////
-    public Tile<T> createTile(T code) {
+    public QTile<T> createTile(T code) {
         TileConfig<T> config = this.tileConfigsByCode.get(code);
         DrawingImage tileImage = this.getImage(config.imageIndex);
-        return new Tile<>(config.code, tileImage, config.points);
+        return new QTile<>(config.code, tileImage, config.points);
     }
     
     
     ////// Static Methods - Soft Map //////
     @SuppressWarnings("unchecked")
-    public static <T extends Enum<T> & TileCodeLiteral<T>> Tileset<T> get(Class<? extends Tileset<T>> clazz) {
-        return (Tileset<T>) TILESETS_BY_CLASS.get(clazz);
+    public static <T extends Enum<T> & TileCodeLiteral<T>> QTileset<T> get(Class<? extends QTileset<T>> clazz) {
+        return (QTileset<T>) TILESETS_BY_CLASS.get(clazz);
     }
     
     ////// Static Methods - Declarative Syntax //////

@@ -44,14 +44,14 @@ public class QMapRoomLoader implements Runnable {
     ////// Static Inner Class //////
     public static class Result {
         //// Instance Fields ////
-        public final MapRoom<?>     mapRoom;
+        public final QMapRoom<?> mapRoom;
         public final int            spawnRow;
         public final int            spawnCol;
         public final DrawingImage   contentImage;
         public final DrawingContext contentImageContext;
         
         //// Constructor ////
-        public Result(MapRoom<?> _mapRoom, int _spawnRow, int _spawnCol, DrawingImage _contentImage, DrawingContext _contentImageContext) {
+        public Result(QMapRoom<?> _mapRoom, int _spawnRow, int _spawnCol, DrawingImage _contentImage, DrawingContext _contentImageContext) {
             this.mapRoom = _mapRoom;
             this.spawnRow = _spawnRow;
             this.spawnCol = _spawnCol;
@@ -61,7 +61,7 @@ public class QMapRoomLoader implements Runnable {
     }
     
     @Override public void run() {
-        MapRoom<?> nextQMapRoom = this.mapLink.mapRoomGetter.get();
+        QMapRoom<?> nextQMapRoom = this.mapLink.mapRoomGetter.get();
         
         int mapWidth = nextQMapRoom.widthPixels;
         int mapHeight = nextQMapRoom.heightPixels;

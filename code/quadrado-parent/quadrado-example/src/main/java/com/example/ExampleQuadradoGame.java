@@ -10,7 +10,7 @@ import static chairosoft.quadrado.game.QCompassDirection.*;
 import chairosoft.quadrado.game.*;
 import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
 import chairosoft.quadrado.game.resource.maproom.MapLink;
-import chairosoft.quadrado.game.resource.maproom.MapRoom;
+import chairosoft.quadrado.game.resource.maproom.QMapRoom;
 import chairosoft.quadrado.game.resource.maproom.QMapRoomExplorerSprite;
 import chairosoft.quadrado.game.resource.maproom.QMapRoomLoader;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
@@ -74,8 +74,8 @@ public class ExampleQuadradoGame extends QApplication
     protected QCompassKeypad keypad = new QCompassKeypad();
     
     protected volatile MapLink<?> currentMapLink = null;
-    protected volatile MapRoom<?> nextMapRoom = null;
-    protected MapRoom<?> maproom = null;
+    protected volatile QMapRoom<?> nextMapRoom = null;
+    protected QMapRoom<?> maproom = null;
     protected DrawingImage contentImage = null;
     protected DrawingContext contentImageContext = null;
     

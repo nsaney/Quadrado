@@ -13,7 +13,6 @@ package chairosoft.quadrado.game.resource.maproom;
 import static chairosoft.quadrado.game.QCompassDirection.*;
 
 import chairosoft.quadrado.game.QCompassDirection;
-import chairosoft.quadrado.game.resource.maproom.MapRoom;
 import chairosoft.quadrado.game.resource.sprite.*;
 import chairosoft.quadrado.ui.geom.FloatPoint2D;
 
@@ -90,7 +89,7 @@ public abstract class QMapRoomExplorerSprite<
     
     protected boolean canMoveWithDirectionInQMapRoom(
         QCompassDirection direction,
-        MapRoom<?> maproom,
+        QMapRoom<?> maproom,
         FloatPoint2D originalPoint
     ) {
         boolean result = false;
@@ -106,7 +105,7 @@ public abstract class QMapRoomExplorerSprite<
     }
     
     
-    protected void setDirectionForMovingIn(MapRoom<?> maproom) {
+    protected void setDirectionForMovingIn(QMapRoom<?> maproom) {
         if (this.currentDirection == CENTER) {
             this.velocityDirection = CENTER;
             return;
@@ -130,13 +129,13 @@ public abstract class QMapRoomExplorerSprite<
         this.velocityDirection = result;
     }
     
-    public void moveOneFrameIn(MapRoom<?> maproom) {
+    public void moveOneFrameIn(QMapRoom<?> maproom) {
         this.setDirectionForMovingIn(maproom);
         this.setVelocity(this.velocityDirection);
         super.moveOneFrame();
     }
     
-    public void resolveCollisionInQMapRoom(MapRoom<?> maproom, boolean checkHorizontal, boolean checkVertical) {
+    public void resolveCollisionInQMapRoom(QMapRoom<?> maproom, boolean checkHorizontal, boolean checkVertical) {
         if ((this.lastMove.distance(0, 0) > MIN_MOVE_DISTANCE) && maproom.hasTileCollidingWith(this)) {
             FloatPoint2D p0 = this.getPosition();
             this.setPositionRounded();

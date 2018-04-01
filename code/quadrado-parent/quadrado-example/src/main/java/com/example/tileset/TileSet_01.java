@@ -2,12 +2,12 @@ package com.example.tileset;
 
 import chairosoft.quadrado.game.resource.sprite.SpriteSheetConfig;
 import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
-import chairosoft.quadrado.game.resource.tileset.Tileset;
+import chairosoft.quadrado.game.resource.tileset.QTileset;
 
 import static com.example.tileset.TileSet_01.TileCode.*;
 
 
-public class TileSet_01 extends Tileset<TileSet_01.TileCode> {
+public class TileSet_01 extends QTileset<TileSet_01.TileCode> {
     
     public static final SpriteSheetConfig TILE_SHEET_CONFIG = new SpriteSheetConfig(
         "TileSheet_01",

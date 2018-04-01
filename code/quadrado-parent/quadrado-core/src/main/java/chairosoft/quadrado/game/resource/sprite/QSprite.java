@@ -3,8 +3,8 @@ package chairosoft.quadrado.game.resource.sprite;
 import chairosoft.quadrado.game.QCollidable;
 import chairosoft.quadrado.game.QPhysical2D;
 import chairosoft.quadrado.game.resource.literals.EnumCodedObject;
-import chairosoft.quadrado.game.resource.maproom.MapRoom;
-import chairosoft.quadrado.game.resource.tileset.Tileset;
+import chairosoft.quadrado.game.resource.maproom.QMapRoom;
+import chairosoft.quadrado.game.resource.tileset.QTileset;
 import chairosoft.quadrado.ui.geom.FloatPoint2D;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
 import chairosoft.quadrado.ui.graphics.DrawingContext;
@@ -118,8 +118,8 @@ public abstract class QSprite<
         this.addAllPointsAsInt(currentShape.points);
     }
     
-    public void setPositionByQTile(MapRoom<?> mapRoom, int x, int y) {
-        Tileset<?> tileset = mapRoom.tileset;
+    public void setPositionByQTile(QMapRoom<?> mapRoom, int x, int y) {
+        QTileset<?> tileset = mapRoom.tileset;
         this.setPosition(
             x * tileset.tileWidth,
             y * tileset.tileHeight
