@@ -6,8 +6,7 @@ import chairosoft.quadrado.game.resource.tileset.Tile;
 import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
 import chairosoft.quadrado.game.resource.tileset.Tileset;
 import chairosoft.quadrado.ui.geom.IntPoint2D;
-import chairosoft.quadrado.ui.graphics.DrawingContext;
-import chairosoft.quadrado.ui.graphics.DrawingImage;
+import chairosoft.quadrado.ui.graphics.*;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.util.MathUtils;
 
@@ -29,6 +28,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
     public final int widthPixels;
     public final int heightPixels;
     public final Tileset<T> tileset;
+    public final DrawingImage defaultTileImage;
     public final Tile<?>[][] tileLayout;
     public final List<MapLink<T>> mapLinks;
     protected Tile<?> lastCollidingTile = null;
@@ -39,6 +39,19 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
         this.backgroundColor = _config.backgroundColor;
         this.tileset = _tilesetGetter.get();
         this.mapLinks = _mapLinks;
+        
+        this.defaultTileImage = UserInterfaceProvider.get().createDrawingImage(
+            this.tileset.tileWidth,
+            this.tileset.tileHeight,
+            DrawingImage.Config.ARGB_8888
+        );
+        try (DrawingContext ctx = this.defaultTileImage.getContext()) {
+            ctx.setColor(Color.WHITE);
+            ctx.fillRect(0, 0, this.tileset.tileWidth, this.tileset.tileHeight);
+            ctx.setColor(Color.BLACK);
+            ctx.setFontFace(UserInterfaceProvider.get().createFontFace(FontFamily.MONOSPACED, FontStyle.PLAIN, 12));
+            ctx.drawString("?", 1, this.tileset.tileHeight - 1);
+        }
         
         T[] tileCodeValues = _config.tileCodeValuesGetter.get();
         Class<T> tileEnumClass = tileCodeValues[0].getDeclaringClass();
@@ -77,7 +90,7 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
             return this.tileset.createTile(tileCode);
         }
         catch (Exception ex) {
-            return new Tile<>(null, null, new IntPoint2D[0]);
+            return new Tile<>(null, this.defaultTileImage, new IntPoint2D[0]);
         }
     }
     
@@ -105,12 +118,10 @@ public class MapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable {
         int colLastPlusOne = colC + Q_SPACE; if (colLastPlusOne > this.widthTiles) { colLastPlusOne = this.widthTiles; }
         
         outer:
-        for (int row = rowFirst; row < rowLastPlusOne; ++row)
-        {
+        for (int row = rowFirst; row < rowLastPlusOne; ++row) {
             Tile<?>[] qtiles = this.tileLayout[row];
             
-            for (int col = colFirst; col < colLastPlusOne; ++col)
-            {
+            for (int col = colFirst; col < colLastPlusOne; ++col) {
                 if (qtiles[col].collidesWith(c)) { result = qtiles[col]; break outer; }
             }
         }

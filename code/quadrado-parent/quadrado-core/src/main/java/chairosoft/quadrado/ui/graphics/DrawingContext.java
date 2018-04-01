@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public abstract class DrawingContext implements AutoCloseable
 {
-    public abstract void close() throws Exception;
+    public abstract void close();
     public abstract boolean isReady();
     
     // Color
