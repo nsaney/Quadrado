@@ -9,15 +9,19 @@ package com.example;
 import static chairosoft.quadrado.game.QCompassDirection.*;
 import chairosoft.quadrado.game.*;
 import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
+import chairosoft.quadrado.game.resource.maproom.MapLink;
+import chairosoft.quadrado.game.resource.maproom.MapRoom;
+import chairosoft.quadrado.game.resource.maproom.QMapRoomExplorerSprite;
+import chairosoft.quadrado.game.resource.maproom.QMapRoomLoader;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.input.*;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
 import com.example.box_style.BoxStyle_01;
 import com.example.box_style.BoxStyle_02;
+import com.example.map_room.ExampleMap_01;
 import com.example.sprite.ExampleSprite01;
-
-import java.util.function.Consumer;
+import com.example.tileset.TileSet_01;
 
 public class ExampleQuadradoGame extends QApplication
 {
@@ -52,8 +56,8 @@ public class ExampleQuadradoGame extends QApplication
     public static final int Y_SCALING = 2;
     @Override public int getXScaling() { return X_SCALING; }
     @Override public int getYScaling() { return Y_SCALING; }
-    public static final int PANEL_WIDTH = QTileset.getTileWidth() * 8 * 2;
-    public static final int PANEL_HEIGHT = QTileset.getTileHeight() * 7 * 2;
+    public static final int PANEL_WIDTH = 16 * 8 * 2;
+    public static final int PANEL_HEIGHT = 16 * 7 * 2;
     @Override public int getPanelWidth() { return PANEL_WIDTH; }
     @Override public int getPanelHeight() { return PANEL_HEIGHT; }
     
@@ -69,9 +73,9 @@ public class ExampleQuadradoGame extends QApplication
     
     protected QCompassKeypad keypad = new QCompassKeypad();
     
-    protected volatile QMapRoom.MapLink currentMapLink = null;
-    protected volatile QMapRoom nextQMapRoom = null;
-    protected QMapRoom qmaproom = null;
+    protected volatile MapLink<?> currentMapLink = null;
+    protected volatile MapRoom<?> nextMapRoom = null;
+    protected MapRoom<?> maproom = null;
     protected DrawingImage contentImage = null;
     protected DrawingContext contentImageContext = null;
     
@@ -128,37 +132,26 @@ public class ExampleQuadradoGame extends QApplication
     {
         this.gameState = GameState.MAPROOM_LOADING;
         QMapRoomLoader loader = new QMapRoomLoader(
-            currentMapLink, 
-            new Consumer<QMapRoomLoader.Result>()
-            {
-                @Override public void accept(QMapRoomLoader.Result result)
-                {
-                    ExampleQuadradoGame thiz = ExampleQuadradoGame.this;
-                    thiz.nextQMapRoom = result.qMapRoom;
-                    thiz.spawnRow = result.spawnRow;
-                    thiz.spawnCol = result.spawnCol;
-                    thiz.contentImage = result.contentImage;
-                    thiz.contentImageContext = result.contentImageContext;
-                    
-                    // extra things here
-                    
-                    thiz.gameState = GameState.MAPROOM_LOADED;
-                }
+            currentMapLink,
+            result -> {
+                this.nextMapRoom = result.mapRoom;
+                this.spawnRow = result.spawnRow;
+                this.spawnCol = result.spawnCol;
+                this.contentImage = result.contentImage;
+                this.contentImageContext = result.contentImageContext;
+                
+                // extra things here
+                
+                this.gameState = GameState.MAPROOM_LOADED;
             }
         );
         loader.startLoading();
     }
     
     
-    protected Runnable action_respawn = new Runnable() { @Override public void run() 
-    {
-        protagonist.setPositionByQTile(spawnCol, spawnRow);
-    }};
+    protected Runnable action_respawn = () -> protagonist.setPositionByQTile(this.maproom, spawnCol, spawnRow);
     
-    protected Runnable action_end_game = new Runnable() { @Override public void run() 
-    { 
-        gameStop();
-    }};
+    protected Runnable action_end_game = this::gameStop;
     
     
     @Override
@@ -200,7 +193,7 @@ public class ExampleQuadradoGame extends QApplication
                 {
                     // normal gameplay
                     case START:
-                        this.currentMapLink = new QMapRoom.MapLink(0, 0, "exampleMap01", 13, 2);
+                        this.currentMapLink = new MapLink<TileSet_01.TileCode>(0, 0, ExampleMap_01::new, 13, 2);
                         this.loadQMapRoomFromCurrentLink();
                         break;
                 }
@@ -299,8 +292,8 @@ public class ExampleQuadradoGame extends QApplication
                 break;
                 
             case MAPROOM_LOADED: 
-                qmaproom = nextQMapRoom;
-                protagonist.setPositionByQTile(this.spawnCol, this.spawnRow);
+                maproom = nextMapRoom;
+                protagonist.setPositionByQTile(this.maproom, this.spawnCol, this.spawnRow);
                 gameState = GameState.MAPROOM_EXPLORATION;
                 break;
                 
@@ -326,11 +319,11 @@ public class ExampleQuadradoGame extends QApplication
                     protagonist.setDirection(keypad.getDirection());
                     
                     // collision
-                    protagonist.moveOneFrameIn(qmaproom);
-                    currentMapLink = qmaproom.getCollidingMapLinkOrNull(protagonist);
+                    protagonist.moveOneFrameIn(maproom);
+                    currentMapLink = maproom.getCollidingMapLinkOrNull(protagonist);
                     if (currentMapLink == null)
                     {
-                        protagonist.resolveCollisionInQMapRoom(qmaproom, true, true);
+                        protagonist.resolveCollisionInQMapRoom(maproom, true, true);
                     }
                     else
                     {
@@ -458,10 +451,10 @@ public class ExampleQuadradoGame extends QApplication
         
         try
         {
-            // background and qmaproom
-            ctx.setColor(qmaproom.getBackgroundColor());
-            ctx.fillRect(0, 0, qmaproom.getWidthPixels(), qmaproom.getHeightPixels());
-            qmaproom.drawToContext(ctx, 0, 0);
+            // background and maproom
+            ctx.setColor(maproom.backgroundColor);
+            ctx.fillRect(0, 0, maproom.widthPixels, maproom.heightPixels);
+            maproom.drawToContext(ctx, 0, 0);
             
             // player sprite
             protagonist.advanceAnimationOneClick();

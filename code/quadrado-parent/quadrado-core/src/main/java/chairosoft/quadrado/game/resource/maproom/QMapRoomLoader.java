@@ -8,7 +8,7 @@
  * 
  */
 
-package chairosoft.quadrado.game;
+package chairosoft.quadrado.game.resource.maproom;
 
 
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
@@ -19,36 +19,40 @@ import chairosoft.quadrado.ui.graphics.DrawingContext;
 import java.util.function.Consumer;
 
 
-public class QMapRoomLoader implements Runnable
-{
-    public final QMapRoom.MapLink mapLink;
+public class QMapRoomLoader implements Runnable {
+    
+    ////// Instance Fields //////
+    public final MapLink<?> mapLink;
     public final Consumer<Result> onFinished;
     
+    
+    ////// Instance Properties //////
     protected Result result = null;
     public Result getResult() { return this.result; }
     
-    public QMapRoomLoader(QMapRoom.MapLink _mapLink, Consumer<Result> _onFinished)
-    {
-        if (_mapLink == null)
-        {
+    
+    ////// Constructor //////
+    public QMapRoomLoader(MapLink<?> _mapLink, Consumer<Result> _onFinished) {
+        if (_mapLink == null) {
             throw new NullPointerException("Given map link is null.");
         }
-        
         this.mapLink = _mapLink;
         this.onFinished = _onFinished;
     }
     
-    public static class Result
-    {
-        public final QMapRoom       qMapRoom;
+    
+    ////// Static Inner Class //////
+    public static class Result {
+        //// Instance Fields ////
+        public final MapRoom<?>     mapRoom;
         public final int            spawnRow;
         public final int            spawnCol;
         public final DrawingImage   contentImage;
         public final DrawingContext contentImageContext;
         
-        public Result(QMapRoom _qMapRoom, int _spawnRow, int _spawnCol, DrawingImage _contentImage, DrawingContext _contentImageContext)
-        {
-            this.qMapRoom = _qMapRoom;
+        //// Constructor ////
+        public Result(MapRoom<?> _mapRoom, int _spawnRow, int _spawnCol, DrawingImage _contentImage, DrawingContext _contentImageContext) {
+            this.mapRoom = _mapRoom;
             this.spawnRow = _spawnRow;
             this.spawnCol = _spawnCol;
             this.contentImage = _contentImage;
@@ -56,12 +60,11 @@ public class QMapRoomLoader implements Runnable
         }
     }
     
-    @Override public void run()
-    {
-        QMapRoom nextQMapRoom = new QMapRoom(this.mapLink.map);
+    @Override public void run() {
+        MapRoom<?> nextQMapRoom = this.mapLink.mapRoomGetter.get();
         
-        int mapWidth = nextQMapRoom.getWidthPixels();
-        int mapHeight = nextQMapRoom.getHeightPixels();
+        int mapWidth = nextQMapRoom.widthPixels;
+        int mapHeight = nextQMapRoom.heightPixels;
         int spawnRow = nextQMapRoom.getWrappedRowValue(this.mapLink.row2);
         int spawnCol = nextQMapRoom.getWrappedColValue(this.mapLink.col2);
         //System.err.printf("[spawnRow = %s, spawnCol = %s]\n", spawnRow, spawnCol);
@@ -73,9 +76,9 @@ public class QMapRoomLoader implements Runnable
         this.onFinished.accept(result);
     }
     
-    public void startLoading()
-    {
+    public void startLoading() {
         Thread loaderThread = new Thread(this);
         loaderThread.start();
     }
+    
 }

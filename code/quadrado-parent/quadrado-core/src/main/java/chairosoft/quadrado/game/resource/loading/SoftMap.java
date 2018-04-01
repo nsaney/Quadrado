@@ -1,6 +1,7 @@
 package chairosoft.quadrado.game.resource.loading;
 
 import java.lang.ref.SoftReference;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
@@ -48,6 +49,35 @@ public class SoftMap<K, V> {
             for (K key : invalidKeys) {
                 this.innerMap.remove(key);
             }
+        }
+    }
+    
+    
+    ////// Static Inner Classes //////
+    public static class ByDefaultConstructor<C> extends SoftMap<Class<? extends C>, C> {
+        
+        //// Constructor ////
+        public ByDefaultConstructor() {
+            super(ByDefaultConstructor::getInstance);
+        }
+        
+        //// Constructor Helpers ////
+        public static <C> C getInstance(Class<? extends C> clazz) {
+            Constructor<? extends C> constructor;
+            try {
+                constructor = clazz.getConstructor();
+            }
+            catch (Exception ex) {
+                throw new IllegalArgumentException("Could not find default constructor for class: " + clazz, ex);
+            }
+            C result;
+            try {
+                result = constructor.newInstance();
+            }
+            catch (Exception ex) {
+                throw new IllegalStateException("An error occurred while using the default constructor for class: " + clazz, ex);
+            }
+            return result;
         }
     }
     

@@ -13,7 +13,7 @@ public class Tile<T extends Enum<T> & TileCodeLiteral<T>> extends QCollidable im
     
     
     ////// Constructor //////
-    protected Tile(T _code, DrawingImage _image, IntPoint2D[] _points) {
+    public Tile(T _code, DrawingImage _image, IntPoint2D[] _points) {
         this.code = _code;
         this.image = _image;
         this.addAllPoints(_points);

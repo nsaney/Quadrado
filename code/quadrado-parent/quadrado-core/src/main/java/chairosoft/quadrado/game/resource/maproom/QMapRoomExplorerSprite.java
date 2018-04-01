@@ -8,10 +8,12 @@
  * 
  */
 
-package chairosoft.quadrado.game;
+package chairosoft.quadrado.game.resource.maproom;
 
 import static chairosoft.quadrado.game.QCompassDirection.*;
 
+import chairosoft.quadrado.game.QCompassDirection;
+import chairosoft.quadrado.game.resource.maproom.MapRoom;
 import chairosoft.quadrado.game.resource.sprite.*;
 import chairosoft.quadrado.ui.geom.FloatPoint2D;
 
@@ -88,14 +90,14 @@ public abstract class QMapRoomExplorerSprite<
     
     protected boolean canMoveWithDirectionInQMapRoom(
         QCompassDirection direction,
-        QMapRoom qmaproom,
+        MapRoom<?> maproom,
         FloatPoint2D originalPoint
     ) {
         boolean result = false;
         
         this.move(direction.X_UNIT, direction.Y_UNIT_INVERT, false);
         this.setPositionRounded();
-        if (qmaproom.getCollidingMapLinkOrNull(this) != null || !qmaproom.hasTileCollidingWith(this)) {
+        if (maproom.getCollidingMapLinkOrNull(this) != null || !maproom.hasTileCollidingWith(this)) {
             result = true;
         }
         this.setPosition(originalPoint.x, originalPoint.y);
@@ -104,7 +106,7 @@ public abstract class QMapRoomExplorerSprite<
     }
     
     
-    protected void setDirectionForMovingIn(QMapRoom qmaproom) {
+    protected void setDirectionForMovingIn(MapRoom<?> maproom) {
         if (this.currentDirection == CENTER) {
             this.velocityDirection = CENTER;
             return;
@@ -119,7 +121,7 @@ public abstract class QMapRoomExplorerSprite<
             int n = POTENTIAL_ROTATION[i];
             QCompassDirection potentialResult = this.currentDirection.getCounterclockwiseRotation(n);
             
-            if (this.canMoveWithDirectionInQMapRoom(potentialResult, qmaproom, originalPoint)) {
+            if (this.canMoveWithDirectionInQMapRoom(potentialResult, maproom, originalPoint)) {
                 result = potentialResult;
                 break;
             }
@@ -128,19 +130,19 @@ public abstract class QMapRoomExplorerSprite<
         this.velocityDirection = result;
     }
     
-    public void moveOneFrameIn(QMapRoom qmaproom) {
-        this.setDirectionForMovingIn(qmaproom);
+    public void moveOneFrameIn(MapRoom<?> maproom) {
+        this.setDirectionForMovingIn(maproom);
         this.setVelocity(this.velocityDirection);
         super.moveOneFrame();
     }
     
-    public void resolveCollisionInQMapRoom(QMapRoom qmaproom, boolean checkHorizontal, boolean checkVertical) {
-        if ((this.lastMove.distance(0, 0) > MIN_MOVE_DISTANCE) && qmaproom.hasTileCollidingWith(this)) {
+    public void resolveCollisionInQMapRoom(MapRoom<?> maproom, boolean checkHorizontal, boolean checkVertical) {
+        if ((this.lastMove.distance(0, 0) > MIN_MOVE_DISTANCE) && maproom.hasTileCollidingWith(this)) {
             FloatPoint2D p0 = this.getPosition();
             this.setPositionRounded();
             int undoneUnits = 0;
             double undoLimit = this.lastMove.getVectorLength();
-            for (; undoneUnits < undoLimit && qmaproom.hasTileCollidingWith(this); ++undoneUnits) {
+            for (; undoneUnits < undoLimit && maproom.hasTileCollidingWith(this); ++undoneUnits) {
                 this.undoLastMoveUnit();
             }
             if (undoneUnits >= undoLimit) {
