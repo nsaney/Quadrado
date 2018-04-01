@@ -123,9 +123,12 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
         outer:
         for (int row = rowFirst; row < rowLastPlusOne; ++row) {
             QTile<?>[] qtiles = this.tileLayout[row];
-            
-            for (int col = colFirst; col < colLastPlusOne; ++col) {
-                if (qtiles[col].collidesWith(c)) { result = qtiles[col]; break outer; }
+            for (int col = colFirst; col < colLastPlusOne && col < qtiles.length; ++col) {
+                QTile<?> tile = qtiles[col];
+                if (tile.collidesWith(c)) {
+                    result = tile;
+                    break outer;
+                }
             }
         }
         this.lastCollidingTile = result;
