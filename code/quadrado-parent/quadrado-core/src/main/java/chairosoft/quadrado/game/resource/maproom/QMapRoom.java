@@ -37,7 +37,7 @@ public class QMapRoom<T extends Enum<T> & TileCodeLiteral<T>> extends QDrawable 
     
     ////// Constructor //////
     public QMapRoom(MapRoomConfig<T> _config, Supplier<QTileset<T>> _tilesetGetter, List<MapLink<T>> _mapLinks) {
-        this.backgroundColor = _config.backgroundColor;
+        this.backgroundColor = Color.create(_config.backgroundColor);
         this.tileset = _tilesetGetter.get();
         this.mapLinks = _mapLinks;
         
