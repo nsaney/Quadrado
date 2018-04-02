@@ -21,7 +21,6 @@ import com.example.__resources.BoxStyle_01;
 import com.example.__resources.BoxStyle_02;
 import com.example.__resources.ExampleMap_01;
 import com.example.__resources.ExampleSprite_01;
-import com.example.__resources.TileSet_01;
 
 public class ExampleQuadradoGame extends QApplication
 {
@@ -193,7 +192,7 @@ public class ExampleQuadradoGame extends QApplication
                 {
                     // normal gameplay
                     case START:
-                        this.currentMapLink = new MapLink<TileSet_01.TileCode>(0, 0, ExampleMap_01.CONFIG, 13, 2);
+                        this.currentMapLink = new MapLink<>(0, 0, ExampleMap_01.CONFIG, 13, 2);
                         this.loadQMapRoomFromCurrentLink();
                         break;
                 }
