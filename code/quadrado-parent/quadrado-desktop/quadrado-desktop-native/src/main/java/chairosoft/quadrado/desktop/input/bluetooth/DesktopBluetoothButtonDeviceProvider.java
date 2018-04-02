@@ -1,7 +1,7 @@
 package chairosoft.quadrado.desktop.input.bluetooth;
 
-import chairosoft.quadrado.ui.input.ButtonDevice;
-import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
+import chairosoft.quadrado.ui.input.button.ButtonDevice;
+import chairosoft.quadrado.ui.input.button.ButtonDeviceProvider;
 
 public class DesktopBluetoothButtonDeviceProvider implements ButtonDeviceProvider {
     

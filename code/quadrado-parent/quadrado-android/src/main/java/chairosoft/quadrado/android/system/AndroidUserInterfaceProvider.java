@@ -5,7 +5,6 @@ import chairosoft.quadrado.android.audio.AndroidMultitrackBackgroundAudio;
 import chairosoft.quadrado.android.audio.AndroidSoundEffectAudio;
 import chairosoft.quadrado.android.graphics.AndroidDrawingImage;
 import chairosoft.quadrado.android.graphics.AndroidFontFace;
-import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
 import chairosoft.quadrado.ui.system.LifecycleUtility;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;

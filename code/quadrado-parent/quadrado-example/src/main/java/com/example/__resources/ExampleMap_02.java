@@ -1,7 +1,7 @@
 package com.example.__resources;
 
-import chairosoft.quadrado.game.resource.maproom.QMapRoom;
-import chairosoft.quadrado.game.resource.maproom.MapRoomConfig;
+import chairosoft.quadrado.resource.maproom.QMapRoom;
+import chairosoft.quadrado.resource.maproom.MapRoomConfig;
 
 public class ExampleMap_02 extends QMapRoom<TileSet_01.TileCode> {
     

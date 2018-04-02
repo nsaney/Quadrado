@@ -1,7 +1,7 @@
 package chairosoft.quadrado.desktop.input;
 
-import chairosoft.quadrado.ui.input.ButtonDevice;
-import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
+import chairosoft.quadrado.ui.input.button.ButtonDevice;
+import chairosoft.quadrado.ui.input.button.ButtonDeviceProvider;
 
 /**
  * A button device provider for desktop environments,

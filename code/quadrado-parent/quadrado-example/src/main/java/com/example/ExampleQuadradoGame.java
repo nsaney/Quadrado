@@ -6,15 +6,21 @@
 
 package com.example;
 
-import static chairosoft.quadrado.game.QCompassDirection.*;
-import chairosoft.quadrado.game.*;
-import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
-import chairosoft.quadrado.game.resource.maproom.MapLink;
-import chairosoft.quadrado.game.resource.maproom.QMapRoom;
-import chairosoft.quadrado.game.resource.maproom.QMapRoomExplorerSprite;
-import chairosoft.quadrado.game.resource.maproom.QMapRoomLoader;
+import static chairosoft.quadrado.ui.input.direction.CompassDirection.*;
+
+import chairosoft.quadrado.resource.box_style.QBoxStyle;
+import chairosoft.quadrado.element.QDialogBox;
+import chairosoft.quadrado.element.QSelectableMenu;
+import chairosoft.quadrado.element.QTextListMenu;
+import chairosoft.quadrado.resource.maproom.MapLink;
+import chairosoft.quadrado.resource.maproom.QMapRoom;
+import chairosoft.quadrado.element.QMapRoomExplorerSprite;
+import chairosoft.quadrado.resource.maproom.QMapRoomLoader;
+import chairosoft.quadrado.ui.input.button.ButtonEvent;
+import chairosoft.quadrado.ui.input.direction.CompassDirection;
+import chairosoft.quadrado.ui.input.direction.CompassKeypad;
+import chairosoft.quadrado.ui.system.QApplication;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
-import chairosoft.quadrado.ui.input.*;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
 import com.example.__resources.BoxStyle_01;
@@ -70,7 +76,7 @@ public class ExampleQuadradoGame extends QApplication
     
     protected volatile GameState gameState = GameState.GAME_NOT_LOADED;
     
-    protected QCompassKeypad keypad = new QCompassKeypad();
+    protected CompassKeypad keypad = new CompassKeypad();
     
     protected volatile MapLink<?> currentMapLink = null;
     protected volatile QMapRoom<?> nextMapRoom = null;
@@ -80,7 +86,7 @@ public class ExampleQuadradoGame extends QApplication
     
     protected QMapRoomExplorerSprite<?,?,?> protagonist = new ExampleSprite_01()
     {
-        @Override public void setNextState(QCompassDirection nextDirection)
+        @Override public void setNextState(CompassDirection nextDirection)
         {
             switch (nextDirection)
             {
@@ -171,7 +177,7 @@ public class ExampleQuadradoGame extends QApplication
     protected void qGameUpdateInit() { }
     
     @Override
-    protected void qButtonPressed(ButtonEvent.Code buttonCode) 
+    protected void qButtonPressed(ButtonEvent.Code buttonCode)
     {
         // keypad needs to respond, regardless of game state
         switch (buttonCode)

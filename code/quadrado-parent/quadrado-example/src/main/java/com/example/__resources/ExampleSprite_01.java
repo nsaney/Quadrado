@@ -1,7 +1,7 @@
 package com.example.__resources;
 
-import chairosoft.quadrado.game.resource.maproom.QMapRoomExplorerSprite;
-import chairosoft.quadrado.game.resource.sprite.*;
+import chairosoft.quadrado.element.QMapRoomExplorerSprite;
+import chairosoft.quadrado.resource.sprite.*;
 
 public abstract class ExampleSprite_01 extends QMapRoomExplorerSprite<
     ExampleSprite_01.StateCode,

@@ -1,6 +1,6 @@
 package com.example.__resources;
 
-import chairosoft.quadrado.game.resource.box_style.QBoxStyle;
+import chairosoft.quadrado.resource.box_style.QBoxStyle;
 
 public class BoxStyle_01 extends QBoxStyle {
     

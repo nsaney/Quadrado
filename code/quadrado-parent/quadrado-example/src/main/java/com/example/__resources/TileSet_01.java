@@ -1,9 +1,9 @@
 package com.example.__resources;
 
-import chairosoft.quadrado.game.resource.sprite.SpriteSheetConfig;
-import chairosoft.quadrado.game.resource.tileset.TileCodeLiteral;
-import chairosoft.quadrado.game.resource.tileset.QTileset;
-import chairosoft.quadrado.game.resource.tileset.TilesetConfig;
+import chairosoft.quadrado.resource.sprite.SpriteSheetConfig;
+import chairosoft.quadrado.resource.tileset.TileCodeLiteral;
+import chairosoft.quadrado.resource.tileset.QTileset;
+import chairosoft.quadrado.resource.tileset.TilesetConfig;
 
 import static com.example.__resources.TileSet_01.TileCode.*;
 

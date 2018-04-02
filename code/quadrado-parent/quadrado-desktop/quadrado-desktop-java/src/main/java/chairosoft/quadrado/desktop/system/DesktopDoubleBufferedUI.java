@@ -12,10 +12,10 @@ package chairosoft.quadrado.desktop.system;
 
 
 import chairosoft.quadrado.desktop.input.DesktopPointerAdapter;
-import chairosoft.quadrado.ui.input.ButtonDevice;
-import chairosoft.quadrado.ui.input.ButtonDeviceProvider;
+import chairosoft.quadrado.ui.input.button.ButtonDevice;
+import chairosoft.quadrado.ui.input.button.ButtonDeviceProvider;
 import chairosoft.quadrado.ui.system.DoubleBufferedUI;
-import chairosoft.quadrado.ui.input.PointerListener;
+import chairosoft.quadrado.ui.input.pointer.PointerListener;
 
 import chairosoft.quadrado.desktop.graphics.DesktopDrawingContext;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;

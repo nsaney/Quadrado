@@ -11,15 +11,14 @@
 package chairosoft.quadrado.android.input;
 
 import chairosoft.quadrado.android.system.AndroidDoubleBufferedUI;
-import chairosoft.quadrado.ui.input.ButtonListener;
-import chairosoft.quadrado.ui.input.ButtonSource;
-import chairosoft.quadrado.ui.input.ButtonEvent;
+import chairosoft.quadrado.ui.input.button.ButtonListener;
+import chairosoft.quadrado.ui.input.button.ButtonEvent;
 import chairosoft.quadrado.ui.geom.FloatPoint2D;
 import chairosoft.quadrado.ui.graphics.Color;
 
 import chairosoft.quadrado.android.graphics.AndroidDrawingContext;
 
-import chairosoft.quadrado.game.QCollidable;
+import chairosoft.quadrado.element.QCollidable;
 
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;

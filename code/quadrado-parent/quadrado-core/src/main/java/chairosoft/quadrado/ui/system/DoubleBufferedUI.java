@@ -10,11 +10,9 @@
 
 package chairosoft.quadrado.ui.system;
 
-import chairosoft.quadrado.game.QApplication;
 import chairosoft.quadrado.ui.graphics.DrawingContext;
-import chairosoft.quadrado.ui.input.ButtonDevice;
-import chairosoft.quadrado.ui.input.ButtonListener;
-import chairosoft.quadrado.ui.input.PointerListener;
+import chairosoft.quadrado.ui.input.button.ButtonDevice;
+import chairosoft.quadrado.ui.input.pointer.PointerListener;
 
 import java.io.Closeable;
 import java.io.IOException;
