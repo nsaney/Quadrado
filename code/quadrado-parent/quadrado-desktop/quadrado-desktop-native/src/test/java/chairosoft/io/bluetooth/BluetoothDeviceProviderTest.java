@@ -9,7 +9,7 @@ public class BluetoothDeviceProviderTest {
     
     @Test
     public void test_bluetoothDevice() {
-        System.out.printf(
+        System.err.printf(
             "java.library.path = \n%s\n",
             System.getProperty("java.library.path", "[no path found]")
                 .replaceAll(Pattern.quote(System.getProperty("path.separator", ":")), "\n")
