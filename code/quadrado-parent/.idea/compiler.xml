@@ -8,8 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="quadrado-android" />
         <module name="quadrado-core" />
-        <module name="quadrado-desktop-java" />
-        <module name="quadrado-desktop-native" />
+        <module name="quadrado-desktop" />
         <module name="quadrado-example" />
       </profile>
     </annotationProcessing>

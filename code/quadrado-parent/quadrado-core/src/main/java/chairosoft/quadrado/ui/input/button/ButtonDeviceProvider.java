@@ -1,9 +1,10 @@
 package chairosoft.quadrado.ui.input.button;
 
-public interface ButtonDeviceProvider {
+public interface ButtonDeviceProvider<B extends ButtonDevice> {
     
     ////// Instance Methods //////
+    Class<? extends B> getProvidedClass();
     ButtonDevice.Info[] getAvailableButtonDeviceInfo();
-    ButtonDevice getButtonDevice(ButtonDevice.Info info);
+    B getButtonDevice(ButtonDevice.Info info);
     
 }

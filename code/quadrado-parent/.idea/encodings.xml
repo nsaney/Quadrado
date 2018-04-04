@@ -5,8 +5,6 @@
     <file url="file://$PROJECT_DIR$/quadrado-android" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quadrado-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quadrado-desktop" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/quadrado-desktop/quadrado-desktop-java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/quadrado-desktop/quadrado-desktop-native" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/quadrado-example" charset="UTF-8" />
   </component>
 </project>
