@@ -4,7 +4,7 @@
 #include <winsock2.h>
 #include <ws2bth.h>
 #include <bluetoothapis.h>
-#include "../__common/chairosoft_common.h"
+#include "__common.h"
 
 // example code from: http://www.winsocketdotnetworkprogramming.com/winsock2programming/winsock2advancedotherprotocol4k.html
 // see also: https://github.com/fireice-uk/xmr-stak-amd/issues/167

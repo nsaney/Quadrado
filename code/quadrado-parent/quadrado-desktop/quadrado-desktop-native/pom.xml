@@ -23,8 +23,8 @@
 
   <properties>
     <quadrado.nar.skip>true</quadrado.nar.skip>
-    <quadrado.nar.c.srcDirRoot>src/main/c</quadrado.nar.c.srcDirRoot>
-    <quadrado.nar.c.commonIncludes>__common/*</quadrado.nar.c.commonIncludes>
+    <quadrado.nar.c.srcDirRoot>src/main/c/</quadrado.nar.c.srcDirRoot>
+    <quadrado.nar.c.commonInclude>__common.*</quadrado.nar.c.commonInclude>
     <quadrado.nar.library.type>jni</quadrado.nar.library.type>
     <quadrado.nar.library.narSystemPackage>chairosoft.quadrado.desktop.system</quadrado.nar.library.narSystemPackage>
     <quadrado.nar.javah.jniDirectory>${project.build.directory}/generated-jni</quadrado.nar.javah.jniDirectory>
@@ -74,8 +74,8 @@
                 <toolPath>${quadrado.msvc.dir.tools}</toolPath>
                 <sourceDirectory>${quadrado.nar.c.srcDirRoot}</sourceDirectory>
                 <includes>
-                  <include>${quadrado.nar.c.commonIncludes}</include>
-                  <include>amd64-windows/*</include>
+                  <include>${quadrado.nar.c.commonInclude}</include>
+                  <include>*amd64-windows*</include>
                 </includes>
                 <systemIncludePaths>
                   <systemIncludePath>${quadrado.msvc.dir.base}\include</systemIncludePath>
@@ -131,8 +131,8 @@
               <c>
                 <sourceDirectory>${quadrado.nar.c.srcDirRoot}</sourceDirectory>
                 <includes>
-                  <include>${quadrado.nar.c.commonIncludes}</include>
-                  <include>amd64-unix/*</include>
+                  <include>${quadrado.nar.c.commonInclude}</include>
+                  <include>*amd64-unix*</include>
                 </includes>
               </c>
               <linker>

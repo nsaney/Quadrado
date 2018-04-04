@@ -5,7 +5,7 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
-#include "../__common/chairosoft_common.h"
+#include "__common.h"
 
 JNIEXPORT void JNICALL
 Java_chairosoft_io_bluetooth_BluetoothDeviceProvider_testBluetooth(JNIEnv * env, jclass clazz) {
