@@ -7,6 +7,7 @@ import chairosoft.quadrado.util.function.ExceptionThrowingSupplier;
 import javax.bluetooth.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DesktopBluetoothButtonDeviceProvider
     implements ButtonDeviceProvider<DesktopBluetoothButtonDevice>
@@ -19,13 +20,18 @@ public class DesktopBluetoothButtonDeviceProvider
     
     ////// Instance Fields //////
     private final ArrayList<RemoteDevice> remoteDevices = new ArrayList<>();
-    protected IOException lastException = null;
+    protected AtomicReference<IOException> lastException = new AtomicReference<>(null);
     
     
     ////// Instance Methods - Button Device Provider //////
     @Override
     public Class<? extends DesktopBluetoothButtonDevice> getProvidedClass() {
         return DesktopBluetoothButtonDevice.class;
+    }
+    
+    @Override
+    public IOException getLastException() {
+        return this.lastException.get();
     }
     
     @Override
@@ -47,7 +53,7 @@ public class DesktopBluetoothButtonDeviceProvider
                 }
             }
             catch (IOException ex) {
-                this.lastException = ex;
+                this.lastException.set(ex);
                 this.remoteDevices.clear();
             }
         }

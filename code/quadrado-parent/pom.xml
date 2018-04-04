@@ -43,4 +43,17 @@
     </plugins>
   </build>
 
+  <repositories>
+    <repository>
+      <id>pyx4j-web-snapshot</id>
+      <url>http://repository.pyx4j.com/maven2-snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
 </project>
