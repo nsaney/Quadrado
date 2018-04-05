@@ -8,14 +8,12 @@ import com.intel.bluetooth.BluetoothConsts;
 import com.intel.bluetooth.RemoteDeviceHelper;
 
 import javax.bluetooth.*;
+import javax.bluetooth.UUID;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements DiscoveryListener {
     
@@ -23,8 +21,6 @@ public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements
     private static final int ATTR_ID_SERVICE_NAME = 0x0100;
     private static final UUID[] UUIDS = {
         BluetoothConsts.L2CAP_PROTOCOL_UUID,
-//        BluetoothConsts.OBEX_PROTOCOL_UUID,
-//        BluetoothConsts.OBEXFileTransferServiceClass_UUID,
         BluetoothConsts.SERIAL_PORT_UUID
     };
     private static final int[] ATTR_IDS = { ATTR_ID_SERVICE_NAME };
@@ -39,7 +35,6 @@ public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements
     private volatile boolean isOpen = false;
     protected final Map<UUID,List<ServiceRecord>> serviceRecordsByUuid = new HashMap<>();
     protected final AtomicReference<IOException> lastException = new AtomicReference<>(null);
-//    protected final AtomicInteger lastServiceSearchResult = new AtomicInteger(-1);
     protected final AtomicReference<UUID> currentUuid = new AtomicReference<>(null);
     
     
@@ -95,16 +90,6 @@ public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements
         // nothing here right now
     }
     
-    @Override
-    public void addButtonListener(ButtonListener listener) {
-        throw new UnsupportedOperationException();
-    }
-    
-    @Override
-    public void removeButtonListener(ButtonListener listener) {
-        throw new UnsupportedOperationException();
-    }
-    
     ////// Instance Methods - Discovery Listener //////
     @Override
     public void deviceDiscovered(RemoteDevice remoteDevice, DeviceClass deviceClass) {
@@ -123,24 +108,15 @@ public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements
             currentUuidValue,
             k -> new ArrayList<>()
         );
-        for (ServiceRecord serviceRecord : serviceRecords) {
-            String url = serviceRecord.getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
-            if (url == null) {
-                continue;
-            }
-//            DataElement serviceName = serviceRecord.getAttributeValue(ATTR_ID_SERVICE_NAME);
-//            String serviceFound = serviceName == null
-//                                  ? "service found " + String.valueOf(url)
-//                                  : "service " + serviceName.getValue() + " found " + String.valueOf(url)
-//                ;
-            servicesFound.add(serviceRecord);
-        }
+        Stream.of(serviceRecords)
+            .filter(sr -> getUrlForService(sr) != null)
+            .forEach(servicesFound::add)
+        ;
     }
     
     @Override
     public void serviceSearchCompleted(int transId, int respCode) {
         synchronized (this.operationLock) {
-//            this.lastServiceSearchResult.set(respCode);
             this.operationLock.notifyAll();
         }
     }
@@ -150,7 +126,7 @@ public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements
     @Override
     public String toString() {
         return String.format(
-            "%s|exception=%s|services=%s", //|lastSearch=%s",
+            "%s|exception=%s|services=%s",
             super.toString(),
             this.lastException.get() != null,
             this.serviceRecordsByUuid.entrySet().stream().map(
@@ -158,12 +134,11 @@ public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements
                     "%s:%s",
                     getNameForUuid(e.getKey()),
                     e.getValue().stream()
-                        .map(sr -> sr.getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false))
+                        .map(DesktopBluetoothButtonDevice::getUrlForService)
                         .map(str -> '"' + str + '"')
                         .collect(Collectors.joining("|", "[", "]"))
                 )
             ).collect(Collectors.joining(" , ", "{", "}"))
-//            , getNameForServiceSearchResult(this.lastServiceSearchResult.get())
         );
     }
     
@@ -197,16 +172,9 @@ public class DesktopBluetoothButtonDevice extends ButtonDeviceAdapter implements
         return info;
     }
     
-//    public static String getNameForServiceSearchResult(int serviceSearchResult) {
-//        switch (serviceSearchResult) {
-//            case DiscoveryListener.SERVICE_SEARCH_COMPLETED: return "SERVICE_SEARCH_COMPLETED";
-//            case DiscoveryListener.SERVICE_SEARCH_DEVICE_NOT_REACHABLE: return "SERVICE_SEARCH_DEVICE_NOT_REACHABLE";
-//            case DiscoveryListener.SERVICE_SEARCH_ERROR: return "SERVICE_SEARCH_ERROR";
-//            case DiscoveryListener.SERVICE_SEARCH_NO_RECORDS: return "SERVICE_SEARCH_NO_RECORDS";
-//            case DiscoveryListener.SERVICE_SEARCH_TERMINATED: return "SERVICE_SEARCH_TERMINATED";
-//            default: return "UNKNOWN";
-//        }
-//    }
+    public static String getUrlForService(ServiceRecord serviceRecord) {
+        return serviceRecord.getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
+    }
     
     public static String getNameForUuid(UUID uuid) {
         if (BluetoothConsts.L2CAP_PROTOCOL_UUID.equals(uuid)) {

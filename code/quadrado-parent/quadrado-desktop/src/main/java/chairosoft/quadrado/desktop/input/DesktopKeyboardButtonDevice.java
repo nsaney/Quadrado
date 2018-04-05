@@ -2,13 +2,10 @@ package chairosoft.quadrado.desktop.input;
 
 import chairosoft.quadrado.ui.input.button.ButtonDeviceAdapter;
 import chairosoft.quadrado.ui.input.button.ButtonEvent;
-import chairosoft.quadrado.ui.input.button.ButtonListener;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 public class DesktopKeyboardButtonDevice extends ButtonDeviceAdapter implements  KeyEventDispatcher {
     
@@ -17,7 +14,6 @@ public class DesktopKeyboardButtonDevice extends ButtonDeviceAdapter implements 
     
     
     ////// Instance Fields //////
-    private final Set<ButtonListener> buttonListeners = new CopyOnWriteArraySet<>();
     private final Object stateLock = new Object();
     private volatile KeyboardFocusManager keyboardFocusManager = null;
     
@@ -60,26 +56,16 @@ public class DesktopKeyboardButtonDevice extends ButtonDeviceAdapter implements 
     }
     
     @Override
-    public void addButtonListener(ButtonListener listener) {
-        this.buttonListeners.add(listener);
-    }
-    
-    @Override
-    public void removeButtonListener(ButtonListener listener) {
-        this.buttonListeners.remove(listener);
-    }
-    
-    @Override
     public boolean dispatchKeyEvent(KeyEvent e) {
         int keyCode = e.getKeyCode();
         ButtonEvent.Code code = getButtonForKey(keyCode);
         ButtonEvent be = new ButtonEvent(this.info, code);
         int type = e.getID();
         if (type == KeyEvent.KEY_PRESSED) {
-            this.buttonListeners.forEach(bl -> bl.buttonPressed(be));
+            this.forEachButtonListener(bl -> bl.buttonPressed(be));
         }
         else if (type == KeyEvent.KEY_RELEASED) {
-            this.buttonListeners.forEach(bl -> bl.buttonReleased(be));
+            this.forEachButtonListener(bl -> bl.buttonReleased(be));
         }
         return true;
     }
