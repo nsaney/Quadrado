@@ -19,14 +19,14 @@ public class DesktopKeyboardButtonDevice extends ButtonDeviceAdapter implements 
     ////// Instance Fields //////
     private final Set<ButtonListener> buttonListeners = new CopyOnWriteArraySet<>();
     private final Object stateLock = new Object();
-    private KeyboardFocusManager keyboardFocusManager = null;
+    private volatile KeyboardFocusManager keyboardFocusManager = null;
     
     
     ////// Constructor //////
     private DesktopKeyboardButtonDevice() {
         super(new Info(
             0,
-            "keyboard",
+            "Keyboard",
             "The keyboard attached to this computer"
         ));
     }
@@ -47,9 +47,7 @@ public class DesktopKeyboardButtonDevice extends ButtonDeviceAdapter implements 
     
     @Override
     public boolean isOpen() {
-        synchronized (this.stateLock) {
-            return this.keyboardFocusManager != null;
-        }
+        return this.keyboardFocusManager != null;
     }
     
     @Override

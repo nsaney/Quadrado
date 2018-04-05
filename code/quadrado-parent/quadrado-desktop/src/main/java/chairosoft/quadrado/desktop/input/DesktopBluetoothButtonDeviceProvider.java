@@ -2,7 +2,6 @@ package chairosoft.quadrado.desktop.input;
 
 import chairosoft.quadrado.ui.input.button.ButtonDevice;
 import chairosoft.quadrado.ui.input.button.ButtonDeviceProvider;
-import chairosoft.quadrado.util.function.ExceptionThrowingSupplier;
 
 import javax.bluetooth.*;
 import java.io.IOException;
@@ -19,8 +18,8 @@ public class DesktopBluetoothButtonDeviceProvider
     
     
     ////// Instance Fields //////
-    private final ArrayList<RemoteDevice> remoteDevices = new ArrayList<>();
-    protected AtomicReference<IOException> lastException = new AtomicReference<>(null);
+    private final ArrayList<DesktopBluetoothButtonDevice.DiscoveredDevice> discoveredDevices = new ArrayList<>();
+    protected final AtomicReference<IOException> lastException = new AtomicReference<>(null);
     
     
     ////// Instance Methods - Button Device Provider //////
@@ -36,7 +35,7 @@ public class DesktopBluetoothButtonDeviceProvider
     
     @Override
     public ButtonDevice.Info[] getAvailableButtonDeviceInfo() {
-        this.remoteDevices.clear();
+        this.discoveredDevices.clear();
         synchronized (DISCOVERY_LOCK) {
             try {
                 LocalDevice bluetoothProvider = LocalDevice.getLocalDevice();
@@ -54,25 +53,28 @@ public class DesktopBluetoothButtonDeviceProvider
             }
             catch (IOException ex) {
                 this.lastException.set(ex);
-                this.remoteDevices.clear();
+                this.discoveredDevices.clear();
             }
         }
-        return this.remoteDevices.stream()
-            .map(DesktopBluetoothButtonDeviceProvider::getInfoForRemoteDevice)
+        return this.discoveredDevices.stream()
+            .map(DesktopBluetoothButtonDevice::getInfoForRemoteDevice)
             .toArray(ButtonDevice.Info[]::new)
         ;
     }
     
     @Override
     public DesktopBluetoothButtonDevice getButtonDevice(ButtonDevice.Info info) {
-        return null;
+        return new DesktopBluetoothButtonDevice(info);
     }
     
     
     ////// Instance Methods - Discovery Listener //////
     @Override
     public void deviceDiscovered(RemoteDevice remoteDevice, DeviceClass deviceClass) {
-        this.remoteDevices.add(remoteDevice);
+        this.discoveredDevices.add(new DesktopBluetoothButtonDevice.DiscoveredDevice(
+            remoteDevice,
+            deviceClass
+        ));
     }
     
     @Override
@@ -84,33 +86,12 @@ public class DesktopBluetoothButtonDeviceProvider
     
     @Override
     public void servicesDiscovered(int transId, ServiceRecord[] serviceRecords) {
-        // nothing here right now
+        throw new UnsupportedOperationException();
     }
     
     @Override
     public void serviceSearchCompleted(int transId, int respCode) {
-        // nothing here right now
-    }
-    
-    
-    ////// Static Methods - Info Handling /////
-    public static ButtonDevice.Info getInfoForRemoteDevice(RemoteDevice remoteDevice) {
-        String blueCoveDeviceAddress = remoteDevice.getBluetoothAddress();
-        long id = getLongValueFromBlueCoveDeviceAddress(blueCoveDeviceAddress);
-        String name = ExceptionThrowingSupplier.getOrDefault(
-            () -> remoteDevice.getFriendlyName(false),
-            "[unknown]"
-        );
-        String description = "Bluetooth Device";
-        return new ButtonDevice.Info(id, name, description);
-    }
-    
-    public static long getLongValueFromBlueCoveDeviceAddress(String blueCoveDeviceAddress) {
-        return Long.parseLong(blueCoveDeviceAddress, 16);
-    }
-    
-    public static String getBlueCoveDeviceAddressFromLong(long longValue) {
-        return String.format("%12X", longValue);
+        throw new UnsupportedOperationException();
     }
     
 }

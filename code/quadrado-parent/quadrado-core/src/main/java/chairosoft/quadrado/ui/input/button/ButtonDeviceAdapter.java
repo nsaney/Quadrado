@@ -18,4 +18,13 @@ public abstract class ButtonDeviceAdapter implements ButtonDevice {
         return this.info;
     }
     
+    @Override
+    public String toString() {
+        return String.format(
+            "%s|name=%s|open=%s",
+            this.getClass(),
+            this.info.name,
+            this.isOpen()
+        );
+    }
 }
