@@ -98,7 +98,7 @@ public abstract class DoubleBufferedUI implements Closeable {
         return isFirstCall;
     }
     
-    public final void ensureInput(QApplication qApplication) {
+    public final void ensureInput(QApplication qApplication) throws IOException {
         if (this.buttonDevice == null && qApplication.getRequireButtonDevice()) {
             this.buttonDevice = this.chooseButtonDevice();
             if (this.buttonDevice == null) {

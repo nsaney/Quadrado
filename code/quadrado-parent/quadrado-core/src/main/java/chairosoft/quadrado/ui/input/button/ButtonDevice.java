@@ -1,6 +1,7 @@
 package chairosoft.quadrado.ui.input.button;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -10,7 +11,7 @@ public interface ButtonDevice extends Closeable {
     
     ////// Instance Methods - Abstract //////
     Info getButtonDeviceInfo();
-    void open();
+    void open() throws IOException;
     boolean isOpen();
     void addButtonListener(ButtonListener listener);
     void removeButtonListener(ButtonListener listener);
