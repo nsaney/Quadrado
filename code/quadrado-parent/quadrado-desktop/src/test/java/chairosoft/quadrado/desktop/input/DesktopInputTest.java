@@ -6,7 +6,7 @@ public class DesktopInputTest {
     
     @Test
     public void test_ButtonDevices() throws Exception {
-        DesktopBluetoothButtonDevice.main(null);
+        //DesktopBluetoothButtonDevice.main(null);
     }
     
 }
