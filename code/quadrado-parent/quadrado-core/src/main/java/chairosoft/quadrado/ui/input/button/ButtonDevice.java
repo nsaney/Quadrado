@@ -9,6 +9,10 @@ import java.util.HashMap;
  */
 public interface ButtonDevice extends Closeable {
     
+    ////// Constants //////
+    public static final InfoDataKey<String> SERIAL_NUMBER = new InfoDataKey<>(String.class, "SERIAL_NUMBER");
+    
+    
     ////// Instance Methods - Abstract //////
     Info getButtonDeviceInfo();
     void open() throws IOException;
@@ -20,14 +24,12 @@ public interface ButtonDevice extends Closeable {
     ////// Static Inner Classes //////
     class Info {
         //// Instance Fields ////
-        public final long id;
         public final String name;
         public final String description;
         protected final HashMap<String, Object> data = new HashMap<>();
         
         //// Constructor ////
-        public Info(long _id, String _name, String _description) {
-            this.id = _id;
+        public Info(String _name, String _description) {
             this.name = _name;
             this.description = _description;
         }
@@ -36,7 +38,6 @@ public interface ButtonDevice extends Closeable {
         public <T> T getDataEntry(InfoDataKey<T> key) {
             return key.type.cast(this.data.get(key.name));
         }
-        
         public <T> T putDataEntry(InfoDataKey<T> key, T value) {
             return key.type.cast(this.data.put(key.name, value));
         }
