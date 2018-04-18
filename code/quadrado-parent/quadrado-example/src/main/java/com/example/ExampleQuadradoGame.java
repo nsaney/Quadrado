@@ -8,6 +8,8 @@ package com.example;
 
 import static chairosoft.quadrado.ui.input.direction.CompassDirection.*;
 
+import chairosoft.quadrado.desktop.input.DesktopHidButtonDevice;
+import chairosoft.quadrado.desktop.input.DesktopHidButtonDeviceProvider;
 import chairosoft.quadrado.resource.box_style.QBoxStyle;
 import chairosoft.quadrado.element.QDialogBox;
 import chairosoft.quadrado.element.QSelectableMenu;
@@ -40,6 +42,22 @@ public class ExampleQuadradoGame extends QApplication
         QApplication app = new ExampleQuadradoGame();
         app.setRequireButtonDevice(true);
         app.gameStart();
+        
+        // TODO: remove this test code
+        DesktopHidButtonDeviceProvider provider = new DesktopHidButtonDeviceProvider();
+        DesktopHidButtonDevice.Info[] infos = provider.getAvailableButtonDeviceInfo();
+        for (DesktopHidButtonDevice.Info info : infos) {
+            DesktopHidButtonDevice device = provider.getButtonDevice(info);
+            try { device.open(); }
+            catch (Exception ex) { ex.printStackTrace(); }
+            if (device.isOpen()) {
+                System.out.println("** HID Device Opened: " + device.getHidDevice().hashCode());
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    try { device.close(); }
+                    catch (Exception ex) { ex.printStackTrace(); }
+                }));
+            }
+        }
     }
     
     
