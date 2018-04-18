@@ -2,10 +2,8 @@ package chairosoft.quadrado.desktop.input;
 
 import chairosoft.quadrado.ui.input.button.ButtonDevice;
 import chairosoft.quadrado.ui.input.button.ButtonDeviceProvider;
-import chairosoft.quadrado.util.function.ExceptionThrowingSupplier;
-import com.codeminders.hidapi.ClassPathLibraryLoader;
-import com.codeminders.hidapi.HIDDeviceInfo;
-import com.codeminders.hidapi.HIDManager;
+import purejavahidapi.HidDeviceInfo;
+import purejavahidapi.PureJavaHidApi;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,12 +11,7 @@ import java.util.List;
 
 public class DesktopHidButtonDeviceProvider implements ButtonDeviceProvider<DesktopHidButtonDevice> {
     
-    static {
-        ClassPathLibraryLoader.loadNativeHIDLibrary();
-    }
-    
     ////// Constants //////
-    public static final HIDManager HID_MANAGER = ExceptionThrowingSupplier.getOrWrap(HIDManager::getInstance, RuntimeException::new);
     public static final int HID_USAGE_PAGE_GENERIC_DESKTOP = 0x01;
     public static final int HID_USAGE_ID_GENERIC_DESKTOP_GAME_PAD = 0x05;
     
@@ -36,17 +29,17 @@ public class DesktopHidButtonDeviceProvider implements ButtonDeviceProvider<Desk
     
     @Override
     public ButtonDevice.Info[] getAvailableButtonDeviceInfo() {
-        HIDDeviceInfo[] hidDeviceInfos = ExceptionThrowingSupplier.getOrWrap(HID_MANAGER::listDevices, RuntimeException::new);
-        List<ButtonDevice.Info> results = new ArrayList<>(hidDeviceInfos.length);
-        for (HIDDeviceInfo hidDeviceInfo : hidDeviceInfos) {
+        List<HidDeviceInfo> hidDeviceInfos = PureJavaHidApi.enumerateDevices();
+        List<ButtonDevice.Info> results = new ArrayList<>(hidDeviceInfos.size());
+        for (HidDeviceInfo hidDeviceInfo : hidDeviceInfos) {
             if (hidDeviceInfo == null) { continue; }
-            int usagePage = hidDeviceInfo.getUsage_page();
+            int usagePage = hidDeviceInfo.getUsagePage();
             if (usagePage != HID_USAGE_PAGE_GENERIC_DESKTOP) { continue; }
-            int usageId = hidDeviceInfo.getUsage();
-            if (usageId != HID_USAGE_ID_GENERIC_DESKTOP_GAME_PAD) { continue; }
-            String serialNumber = hidDeviceInfo.getSerial_number();
-            String manufacturer = hidDeviceInfo.getManufacturer_string();
-            String productName = hidDeviceInfo.getProduct_string();
+//            int usageId = hidDeviceInfo.getUsage();
+//            if (usageId != HID_USAGE_ID_GENERIC_DESKTOP_GAME_PAD) { continue; }
+            String serialNumber = hidDeviceInfo.getSerialNumberString();
+            String manufacturer = hidDeviceInfo.getManufacturerString();
+            String productName = hidDeviceInfo.getProductString();
             ButtonDevice.Info info = new ButtonDevice.Info(
                 String.format( "%s%s", manufacturer == null ? "" : (manufacturer + " "), productName),
                 hidDeviceInfo.toString()

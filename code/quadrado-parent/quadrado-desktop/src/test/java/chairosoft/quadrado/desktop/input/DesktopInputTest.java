@@ -3,8 +3,9 @@ package chairosoft.quadrado.desktop.input;
 import chairosoft.quadrado.ui.input.button.ButtonDevice;
 import chairosoft.quadrado.ui.input.button.ButtonDeviceProvider;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
-import com.codeminders.hidapi.HIDDevice;
 import org.junit.Test;
+import purejavahidapi.HidDevice;
+import purejavahidapi.InputReportListener;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -41,16 +42,16 @@ public class DesktopInputTest {
                     finally { System.out.printf("   - %15s: %s\n", "#toString()", device); }
                     if (device instanceof DesktopHidButtonDevice && device.isOpen()) {
                         DesktopHidButtonDevice desktopHidButtonDevice = (DesktopHidButtonDevice)device;
-                        HIDDevice hidDevice = desktopHidButtonDevice.getHidDevice();
-                        byte[] data = new byte[0x400];
-                        hidDevice.readTimeout(data, 1000);
-                        List<Byte> dataBoxed = new ArrayList<>(data.length);
-                        for (byte b : data) { dataBoxed.add(b); }
-                        String dataString = dataBoxed.stream()
-                            .map(b -> String.format("%02x", b))
-                            .collect(Collectors.joining(" ", "[", "]"))
-                        ;
-                        System.out.printf("   - %15s: %s\n", "#read()", dataString);
+                        HidDevice hidDevice = desktopHidButtonDevice.getHidDevice();
+                        System.out.println("   ----> Test Read for 10 Seconds <----");
+                        hidDevice.setInputReportListener((source, reportId, data, reportLength) -> {
+                            System.out.printf("   - %15s: [ ", String.format("report id=0x%02x", reportId));
+                            for (byte b : data) {
+                                System.out.printf("%02x ", b);
+                            }
+                            System.out.println("]");
+                        });
+                        Thread.sleep(1000 * 10);
                     }
                 }
                 catch (Exception ex) {
