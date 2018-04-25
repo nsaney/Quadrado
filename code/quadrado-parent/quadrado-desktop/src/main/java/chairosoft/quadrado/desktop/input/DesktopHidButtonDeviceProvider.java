@@ -36,8 +36,8 @@ public class DesktopHidButtonDeviceProvider implements ButtonDeviceProvider<Desk
             if (hidDeviceInfo == null) { continue; }
             int usagePage = hidDeviceInfo.getUsagePage();
             if (usagePage != HID_USAGE_PAGE_GENERIC_DESKTOP) { continue; }
-//            int usageId = hidDeviceInfo.getUsage();
-//            if (usageId != HID_USAGE_ID_GENERIC_DESKTOP_GAME_PAD) { continue; }
+            int usageId = hidDeviceInfo.getUsageId();
+            if (usageId != HID_USAGE_ID_GENERIC_DESKTOP_GAME_PAD) { continue; }
             String serialNumber = hidDeviceInfo.getSerialNumberString();
             String manufacturer = hidDeviceInfo.getManufacturerString();
             String productName = hidDeviceInfo.getProductString();
