@@ -31,7 +31,7 @@ public class DesktopInputTest {
                     System.out.printf("   - %15s: %s\n", "Serial Number", serialNumber);
                 }
                 System.out.printf("   - %15s: %s\n", "Name", info.name);
-                System.out.printf("   - %15s: %s\n", "Desc", info.description)
+                System.out.printf("   - %15s: %s\n", "Desc", info.description);
             }
             System.out.println("---------------------------------");
         }
