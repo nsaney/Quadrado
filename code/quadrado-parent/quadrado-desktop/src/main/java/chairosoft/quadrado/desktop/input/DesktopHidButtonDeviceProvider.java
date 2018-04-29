@@ -66,19 +66,8 @@ public class DesktopHidButtonDeviceProvider implements ButtonDeviceProvider<Desk
         Scanner scanner = new Scanner(System.in);
         for (DesktopHidButtonDevice.Info info : infos) {
             DesktopHidButtonDevice device = provider.getButtonDevice(info);
-            while (true) {
-                System.out.println();
-                System.out.printf("Open device [%s]? y/n: ", device);
-                String nextLine = scanner.nextLine();
-                if (nextLine.startsWith("y")) {
-                    try { device.open(); }
-                    catch (Exception ex) { ex.printStackTrace(); }
-                    break;
-                }
-                if (nextLine.startsWith("n")) {
-                    break;
-                }
-            }
+            try { device.open(); }
+            catch (Exception ex) { ex.printStackTrace(); }
             if (device.isOpen()) {
                 System.out.println("** HID Device Opened: " + device.getHidDevice().hashCode());
                 openDevices.add(device);
