@@ -1,6 +1,7 @@
 package chairosoft.quadrado.desktop.input;
 
 import chairosoft.quadrado.ui.input.button.ButtonDeviceAdapter;
+import chairosoft.quadrado.ui.input.button.ButtonEvent;
 import purejavahidapi.HidDevice;
 import purejavahidapi.HidDeviceInfo;
 import purejavahidapi.InputReportListener;
@@ -10,6 +11,7 @@ import purejavahidapi.dataparser.ParsedReportDataItem;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.LongBinaryOperator;
 
 public class DesktopHidButtonDevice extends ButtonDeviceAdapter implements InputReportListener {
     
@@ -73,45 +75,105 @@ public class DesktopHidButtonDevice extends ButtonDeviceAdapter implements Input
             data,
             dataLength
         );
-        System.out.printf("**** [%s] HID Parsed Input (%d) =", this.hidDevice.hashCode(), parsedReportDataItems.length);
-        for (int i = 0; i < parsedReportDataItems.length; ++i) {
-            ParsedReportDataItem item = parsedReportDataItems[i];
-            System.out.printf(" [%d][%02x/", i, item.getCapability().getUsagePage());
-            boolean isParsed = item.getIsParsed();
-            if (!isParsed) {
-                System.out.print(" not parsed]");
-                continue;
-            }
-            short[] parsedButtons = item.getParsedButtons();
-            if (parsedButtons != null) {
-                Capability.ButtonRange buttonRange = (Capability.ButtonRange)item.getCapability();
-                System.out.printf("%d:%d][", buttonRange.getUsageMin(), buttonRange.getUsageMax());
-                for (short parsedButton : parsedButtons) {
-                    System.out.printf(" %s", parsedButton);
-                }
-                System.out.print("]");
-            }
-            long[] parsedValues = item.getParsedValues();
-            if (parsedValues != null) {
-                Capability.Value valueCap = (Capability.Value)item.getCapability();
-                long maxValue = valueCap.getLogicalMax();
-                String maxValueString = String.format("%x", maxValue);
-                int maxValueStringLength = maxValueString.length();
-                String parsedValueFormat = String.format(" 0x%%0%dx", maxValueStringLength);
-                System.out.printf("%02x][", valueCap.getUsage());
-                for (long parsedValue : parsedValues) {
-                    System.out.printf(parsedValueFormat, parsedValue);
-                }
-                System.out.print("]");
-            }
-        }
-        System.out.println("");
-        Map<DeviceStateKey, Long> updatedItemsByKey;
         synchronized (this.operationLock) {
-            updatedItemsByKey = this.state.updateAndDiff(parsedReportDataItems);
+            Map<DeviceStateKey, DeviceStateValueDiff> updatedItemsByKey = this.state.updateAndGetDiffMap(parsedReportDataItems);
+            //System.out.printf("**** [%s] Updated Items (%d) = %s\n", this.hidDevice.hashCode(), updatedItemsByKey.size(), updatedItemsByKey);
+            Map<ButtonEvent.Type, Set<ButtonEvent.Code>> buttonUpdateMultiMap = new EnumMap<>(ButtonEvent.Type.class);
+            buttonUpdateMultiMap.put(ButtonEvent.Type.PRESSED, new HashSet<>());
+            buttonUpdateMultiMap.put(ButtonEvent.Type.RELEASED, new HashSet<>());
+            for (DeviceStateKey key : updatedItemsByKey.keySet()) {
+                DeviceStateValueDiff diff = updatedItemsByKey.get(key);
+                this.addButtonsForUpdate(buttonUpdateMultiMap, key, diff);
+            }
+            for (ButtonEvent.Type type : buttonUpdateMultiMap.keySet()) {
+                Set<ButtonEvent.Code> codes = buttonUpdateMultiMap.getOrDefault(type, Collections.emptySet());
+                for (ButtonEvent.Code code : codes) {
+                    ButtonEvent be = new ButtonEvent(this.info, code);
+                    this.forEachButtonListener(bl -> bl.handleButtonEvent(type, be));
+                }
+            }
         }
-        System.out.printf("**** [%s] Updated Items (%d) = %s\n", this.hidDevice.hashCode(), updatedItemsByKey.size(), updatedItemsByKey);
     }
+    
+    
+    // TODO: generalize this
+    public void addButtonsForUpdate(
+        Map<ButtonEvent.Type, Set<ButtonEvent.Code>> buttonUpdateMultiMap,
+        DeviceStateKey key,
+        DeviceStateValueDiff diff
+    ) {
+        HidDevice hidDevice = this.getHidDevice();
+        if (hidDevice == null) { return; }
+        HidDeviceInfo hidDeviceInfo = hidDevice.getHidDeviceInfo();
+        if (hidDeviceInfo == null) { return; }
+        short vendorId = hidDeviceInfo.getVendorId();
+        short productId = hidDeviceInfo.getProductId();
+        if (vendorId == 0x057e && productId == 0x2007) {
+            // Nintendo; Joy-Con (R)
+            if (key.usagePage == 0x09) {
+                // Buttons
+                ButtonEvent.Type type = diff.updatedValue == 1 ? ButtonEvent.Type.PRESSED : ButtonEvent.Type.RELEASED;
+                ButtonEvent.Code code = null;
+                switch (key.usage) {
+                    case 0x01: code = ButtonEvent.Code.B; break;
+                    case 0x02: code = ButtonEvent.Code.A; break;
+                    case 0x03: code = ButtonEvent.Code.Y; break;
+                    case 0x04: code = ButtonEvent.Code.X; break;
+                    case 0x05: code = ButtonEvent.Code.L; break;
+                    case 0x06: code = ButtonEvent.Code.R; break;
+                    case 0x0a: code = ButtonEvent.Code.START; break;
+                    case 0x0d: code = ButtonEvent.Code.SELECT; break;
+                }
+                if (code != null) {
+                    buttonUpdateMultiMap.get(type).add(code);
+                }
+            }
+            else if (key.usagePage == 0x01 && key.usage == 0x39) {
+                // Hat Switch
+                //     0
+                //   7   1
+                // 6  [8]  2
+                //   5   3
+                //     4
+                LongBinaryOperator rotate = (val, off) -> val > 7 ? val : ((val + off) % 8);
+                long previousValue = diff.previousValue == null ? 8 : diff.previousValue;
+                long oldUp = rotate.applyAsLong(previousValue, 1);
+                long newUp = rotate.applyAsLong(diff.updatedValue, 1);
+                long oldLeft = rotate.applyAsLong(previousValue, 3);
+                long newLeft = rotate.applyAsLong(diff.updatedValue, 3);
+                long oldDown = rotate.applyAsLong(previousValue, 5);
+                long newDown = rotate.applyAsLong(diff.updatedValue, 5);
+                long oldRight = rotate.applyAsLong(previousValue, 7);
+                long newRight = rotate.applyAsLong(diff.updatedValue, 7);
+                if (oldUp < 3 && newUp > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.RELEASED).add(ButtonEvent.Code.UP);
+                }
+                if (newUp < 3 && oldUp > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.PRESSED).add(ButtonEvent.Code.UP);
+                }
+                if (oldLeft < 3 && newLeft > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.RELEASED).add(ButtonEvent.Code.LEFT);
+                }
+                if (newLeft < 3 && oldLeft > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.PRESSED).add(ButtonEvent.Code.LEFT);
+                }
+                if (oldDown < 3 && newDown > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.RELEASED).add(ButtonEvent.Code.DOWN);
+                }
+                if (newDown < 3 && oldDown > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.PRESSED).add(ButtonEvent.Code.DOWN);
+                }
+                if (oldRight < 3 && newRight > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.RELEASED).add(ButtonEvent.Code.RIGHT);
+                }
+                if (newRight < 3 && oldRight > 2) {
+                    buttonUpdateMultiMap.get(ButtonEvent.Type.PRESSED).add(ButtonEvent.Code.RIGHT);
+                }
+            }
+        }
+        
+    }
+    
     
     ////// Static Inner Classes //////
     public static class DeviceStateKey implements Comparable<DeviceStateKey> {
@@ -164,6 +226,24 @@ public class DesktopHidButtonDevice extends ButtonDeviceAdapter implements Input
         }
     }
     
+    public static class DeviceStateValueDiff {
+        //// Instance Fields ////
+        public final Long previousValue;
+        public final long updatedValue;
+        
+        //// Constructor ////
+        public DeviceStateValueDiff(Long _previousValue, long _updatedValue) {
+            this.previousValue = _previousValue;
+            this.updatedValue = _updatedValue;
+        }
+        
+        //// Instance Methods ////
+        @Override
+        public String toString() {
+            return String.format("[%s->%s]", this.previousValue, this.updatedValue);
+        }
+    }
+    
     public static class DeviceState {
         //// Instance Fields ////
         protected Map<DeviceStateKey, Long> state = new HashMap<>();
@@ -203,8 +283,8 @@ public class DesktopHidButtonDevice extends ButtonDeviceAdapter implements Input
             this.state.clear();
         }
         
-        public Map<DeviceStateKey, Long> updateAndDiff(ParsedReportDataItem[] parsedItems) {
-            Map<DeviceStateKey, Long> diff = new HashMap<>();
+        public Map<DeviceStateKey, DeviceStateValueDiff> updateAndGetDiffMap(ParsedReportDataItem[] parsedItems) {
+            Map<DeviceStateKey, DeviceStateValueDiff> diffMap = new TreeMap<>();
             for (ParsedReportDataItem parsedItem : parsedItems) {
                 Capability capability = parsedItem.getCapability();
                 if (capability == null) { continue; }
@@ -222,7 +302,7 @@ public class DesktopHidButtonDevice extends ButtonDeviceAdapter implements Input
                     }
                     for (short i = 0, usage = usageMin; usage <= usageMax; ++i, ++usage) {
                         long updatedValue = updatedStates[i];
-                        this.doIndividualDiff(diff, reportId, usagePage, usage, 0, updatedValue);
+                        this.doIndividualDiff(diffMap, reportId, usagePage, usage, 0, updatedValue);
                     }
                 }
                 else if (capability instanceof Capability.Value) {
@@ -233,15 +313,15 @@ public class DesktopHidButtonDevice extends ButtonDeviceAdapter implements Input
                     int maxIndex = reportCount < parsedValues.length ? reportCount : parsedValues.length;
                     for (int index = 0; index < maxIndex; ++index) {
                         long updatedValue = parsedValues[index];
-                        this.doIndividualDiff(diff, reportId, usagePage, usage, index, updatedValue);
+                        this.doIndividualDiff(diffMap, reportId, usagePage, usage, index, updatedValue);
                     }
                 }
             }
-            return diff;
+            return diffMap;
         }
         
         protected void doIndividualDiff(
-            Map<DeviceStateKey, Long> diff,
+            Map<DeviceStateKey, DeviceStateValueDiff> diffMap,
             byte reportId,
             short usagePage,
             short usage,
@@ -252,7 +332,8 @@ public class DesktopHidButtonDevice extends ButtonDeviceAdapter implements Input
             Long currentValue = this.state.get(key);
             if (!Objects.equals(currentValue, updatedValue)) {
                 this.state.put(key, updatedValue);
-                diff.put(key, updatedValue);
+                DeviceStateValueDiff diff = new DeviceStateValueDiff(currentValue, updatedValue);
+                diffMap.put(key, diff);
             }
         }
     }

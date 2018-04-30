@@ -44,7 +44,6 @@ public interface ButtonDevice extends Closeable {
     }
     
     class InfoDataKey<T> {
-        
         //// Instance Fields ////
         public final Class<? extends T> type;
         public final String name;
@@ -55,6 +54,11 @@ public interface ButtonDevice extends Closeable {
             this.name = _name;
         }
         
+        //// Instance Methods ////
+        @Override
+        public String toString() {
+            return String.format("(%s)%s", this.type.getName(), this.name);
+        }
     }
     
 }

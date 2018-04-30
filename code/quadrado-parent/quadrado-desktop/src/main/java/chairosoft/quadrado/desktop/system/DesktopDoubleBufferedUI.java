@@ -11,6 +11,9 @@
 package chairosoft.quadrado.desktop.system;
 
 
+import chairosoft.quadrado.desktop.input.DesktopHidButtonDevice;
+import chairosoft.quadrado.desktop.input.DesktopHidButtonDeviceProvider;
+import chairosoft.quadrado.desktop.input.DesktopKeyboardButtonDevice;
 import chairosoft.quadrado.desktop.input.DesktopPointerAdapter;
 import chairosoft.quadrado.ui.input.button.ButtonDevice;
 import chairosoft.quadrado.ui.input.button.ButtonDeviceProvider;
@@ -19,6 +22,7 @@ import chairosoft.quadrado.ui.input.pointer.PointerListener;
 
 import chairosoft.quadrado.desktop.graphics.DesktopDrawingContext;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
+import purejavahidapi.HidDeviceInfo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -149,14 +153,33 @@ public class DesktopDoubleBufferedUI extends DoubleBufferedUI {
     @Override
     protected ButtonDevice chooseButtonDevice() {
         ButtonDevice result = null;
-        List<? extends ButtonDeviceProvider> providers = UserInterfaceProvider.get().getButtonDeviceProviders();
-        for (ButtonDeviceProvider provider : providers) {
-            ButtonDevice.Info[] infos = provider.getAvailableButtonDeviceInfo();
-            // TODO: make this more sophisticated
-            if (infos.length == 0) { continue; }
-            ButtonDevice.Info info = infos[0];
-            result = provider.getButtonDevice(info);
-            break;
+//        List<? extends ButtonDeviceProvider> providers = UserInterfaceProvider.get().getButtonDeviceProviders();
+//        for (ButtonDeviceProvider provider : providers) {
+//            ButtonDevice.Info[] infos = provider.getAvailableButtonDeviceInfo();
+//            if (infos == null) { continue; }
+//            // TODO: make this more sophisticated
+//
+//            if (infos.length == 0) { continue; }
+//            ButtonDevice.Info info = infos[0];
+//            result = provider.getButtonDevice(info);
+//            break;
+//        }
+        DesktopHidButtonDeviceProvider provider = new DesktopHidButtonDeviceProvider();
+        ButtonDevice.Info[] infos = provider.getAvailableButtonDeviceInfo();
+        try {
+            for (ButtonDevice.Info info : infos) {
+                HidDeviceInfo hidDeviceInfo = info.getDataEntry(DesktopHidButtonDevice.HID_DEVICE_INFO);
+                if (hidDeviceInfo.getVendorId() == 0x057e && hidDeviceInfo.getProductId() == 0x2007) {
+                    result = provider.getButtonDevice(info);
+                    break;
+                }
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (result == null) {
+            result = DesktopKeyboardButtonDevice.SINGLETON;
         }
         return result;
     }
