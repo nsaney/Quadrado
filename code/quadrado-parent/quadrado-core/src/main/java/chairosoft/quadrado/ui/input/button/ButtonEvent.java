@@ -7,14 +7,16 @@
  * ButtonEvent class definition
  * 
  */
-
 package chairosoft.quadrado.ui.input.button;
 
-
-public class ButtonEvent
-{
-    public static enum Code
-    {
+public class ButtonEvent {
+    ////// Static Inner Classes //////
+    public enum Type {
+        PRESSED,
+        RELEASED
+    }
+    
+    public enum Code {
         NONE,
         LEFT,
         RIGHT,
@@ -40,10 +42,12 @@ public class ButtonEvent
         DEBUG_9
     }
     
+    ////// Instance Fields /////
     public final ButtonDevice.Info sourceInfo;
     public final Code code;
-    public ButtonEvent(ButtonDevice.Info _sourceInfo, Code _code)
-    {
+    
+    ////// Constructor //////
+    public ButtonEvent(ButtonDevice.Info _sourceInfo, Code _code) {
         this.sourceInfo = _sourceInfo;
         this.code = _code;
     }

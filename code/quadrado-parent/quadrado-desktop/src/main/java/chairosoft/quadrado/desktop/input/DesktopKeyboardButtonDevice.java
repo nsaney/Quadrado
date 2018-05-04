@@ -21,7 +21,6 @@ public class DesktopKeyboardButtonDevice extends ButtonDeviceAdapter implements 
     ////// Constructor //////
     private DesktopKeyboardButtonDevice() {
         super(new Info(
-            0,
             "Keyboard",
             "The keyboard attached to this computer"
         ));
