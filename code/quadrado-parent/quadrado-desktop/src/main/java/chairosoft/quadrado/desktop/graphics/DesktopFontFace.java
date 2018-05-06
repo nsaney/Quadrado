@@ -51,7 +51,7 @@ public class DesktopFontFace extends FontFace {
     
     public DesktopFontFace(Font _awtFont) {
         super(
-            DesktopFontFamily.fromAwtFontFamily(_awtFont.getFamily()).name,
+            _awtFont.getFamily(),
             DesktopFontStyle.fromAwtFontStyle(_awtFont.getStyle()),
             _awtFont.getSize()
         );

@@ -11,9 +11,7 @@
 package chairosoft.quadrado.ui.graphics;
 
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
-import chairosoft.quadrado.util.Loading;
 
-import java.io.InputStream;
 import java.io.IOException;
 
 /**
@@ -22,7 +20,7 @@ import java.io.IOException;
 public abstract class FontFace {
     
     ////// Constants //////
-    public static final String EMBEDDED_FONT_FOLDER = "font";
+    public static final TrueTypeFontFaceLoader FONT_FACE_LOADER = new TrueTypeFontFaceLoader();
     
     
     ////// Instance Properties //////
@@ -52,9 +50,7 @@ public abstract class FontFace {
     
     ////// Static Methods //////
     public static FontFace createFromEmbeddedFont(String fontName) throws IOException {
-        String fontLocation = Loading.getPathInFolder(EMBEDDED_FONT_FOLDER, fontName);
-        InputStream fontResourceStream = Loading.getInputStreamFromPath(fontLocation);
-        return UserInterfaceProvider.get().createFontFace(fontResourceStream, fontName);
+        return FONT_FACE_LOADER.load(fontName);
     }
     
     

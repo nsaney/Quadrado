@@ -28,6 +28,8 @@ import com.example.__resources.BoxStyle_02;
 import com.example.__resources.ExampleMap_01;
 import com.example.__resources.ExampleSprite_01;
 
+import java.io.IOException;
+
 public class ExampleQuadradoGame extends QApplication
 {
     //
@@ -403,7 +405,16 @@ public class ExampleQuadradoGame extends QApplication
                         if (this.test__dialogBox == null)
                         {
                             this.test__dialogBox = new QDialogBox();
-                            FontLayout fl = ctx.getFontLayout(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10));
+                            FontFace font;
+                            try {
+                                font = FontFace.createFromEmbeddedFont("MinavyaFixed");
+                                font = font.deriveBySize(14);
+                            }
+                            catch (IOException ioex) {
+                                ioex.printStackTrace();
+                                font = UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10);
+                            }
+                            FontLayout fl = ctx.getFontLayout(font);
                             int w = PANEL_WIDTH - 20;
                             int h = 2 * fl.height();
                             this.test__dialogBox.setup(fl, this.test__textForDialog, test__boxStyle01, w, h);

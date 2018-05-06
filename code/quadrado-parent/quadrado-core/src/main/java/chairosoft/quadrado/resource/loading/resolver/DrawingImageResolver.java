@@ -10,7 +10,7 @@ public interface DrawingImageResolver<K> extends ResourceValueResolver<K, Drawin
     
     ////// Instance Methods //////
     @Override
-    default DrawingImage resolve(InputStream resourceStream) throws IOException {
+    default DrawingImage resolve(String resourceName, InputStream resourceStream) throws IOException {
         return UserInterfaceProvider.get().createDrawingImage(resourceStream);
     }
     

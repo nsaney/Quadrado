@@ -11,7 +11,7 @@ public interface TextLinesResolver<K> extends ResourceValueResolver<K, List<Stri
     
     ////// Instance Methods //////
     @Override
-    default List<String> resolve(InputStream resourceStream) throws IOException {
+    default List<String> resolve(String resourceName, InputStream resourceStream) throws IOException {
         return IOUtils.readLines(resourceStream, StandardCharsets.UTF_8);
     }
 }

@@ -49,7 +49,7 @@ public abstract class ResourceLoader<K, V> implements ResourceKeyDecoder<K>, Res
         String resourceName = this.getResourceName(resourceKey);
         String absoluteResourcePath = this.getAbsoluteResourcePath(resourceName);
         InputStream resourceStream = this.getResourceAsStream(absoluteResourcePath);
-        return this.resolve(resourceStream);
+        return this.resolve(resourceName, resourceStream);
     }
     
     

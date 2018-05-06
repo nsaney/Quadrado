@@ -14,9 +14,10 @@ import chairosoft.quadrado.ui.graphics.DrawingImage;
 import chairosoft.quadrado.ui.graphics.FontFace;
 import chairosoft.quadrado.ui.graphics.FontFamily;
 import chairosoft.quadrado.ui.graphics.FontStyle;
-import chairosoft.quadrado.util.Loading;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -74,7 +75,9 @@ public class AndroidUserInterfaceProvider extends UserInterfaceProvider {
     public FontFace createFontFace(InputStream fontStream, String fontName) throws IOException {
         final File tempFile = File.createTempFile(fontName, ".ttf");
         LifecycleUtility.get().deleteFileOnExit(tempFile);
-        Loading.writeInputStreamToFile(fontStream, tempFile);
+        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+            IOUtils.copy(fontStream, out);
+        }
         Typeface typeface = Typeface.createFromFile(tempFile);
         return new AndroidFontFace(typeface);
     }

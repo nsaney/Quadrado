@@ -8,7 +8,7 @@ import java.io.InputStream;
 public interface ResourceValueResolver<K, V> {
     
     ////// Instance Methods - Abstract //////
-    V resolve(InputStream resourceStream) throws IOException;
+    V resolve(String resourceName, InputStream resourceStream) throws IOException;
     V load(K resourceKey) throws IOException;
     
     
