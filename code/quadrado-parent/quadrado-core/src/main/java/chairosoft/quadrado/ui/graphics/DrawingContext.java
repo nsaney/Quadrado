@@ -12,6 +12,8 @@ package chairosoft.quadrado.ui.graphics;
 
 import chairosoft.quadrado.ui.geom.Polygon;
 import chairosoft.quadrado.ui.geom.Rectangle;
+import chairosoft.quadrado.util.function.ExceptionThrowingConsumer;
+import chairosoft.quadrado.util.function.ExceptionThrowingRunnable;
 
 import java.util.Arrays;
 
@@ -71,6 +73,24 @@ public abstract class DrawingContext implements AutoCloseable
         {
             y += dy;
             this.drawString(line, x, y);
+        }
+    }
+    
+    
+    //// Helper Methods ////
+    public <Ex extends Throwable> void withSettingsRestored(ExceptionThrowingRunnable<Ex> action) throws Ex {
+        this.withSettingsRestored(x -> action.run());
+    }
+    
+    public <Ex extends Throwable> void withSettingsRestored(ExceptionThrowingConsumer<DrawingContext, Ex> action) throws Ex {
+        int ctxColor = this.getColor();
+        FontFace ctxFont = this.getFontFace();
+        try {
+            action.accept(this);
+        }
+        finally {
+            this.setFontFace(ctxFont);
+            this.setColor(ctxColor);
         }
     }
 }

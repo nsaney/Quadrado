@@ -343,17 +343,12 @@ public class ExampleQuadradoGame extends QApplication
     }
     
     @Override
-    protected void qGameRender(DrawingContext ctx) 
+    protected void qGameRender(DrawingContext ctx)
     {
-        // save current graphics settings
-        int ctxColor = ctx.getColor();
-        FontFace ctxFont = ctx.getFontFace();
-        
-        try
-        {
+        ctx.withSettingsRestored(() -> {
             switch (gameState)
             {
-                case GAME_NOT_LOADED: 
+                case GAME_NOT_LOADED:
                 {
                     // cycle bar
                     ctx.setColor(Color.BLACK);
@@ -375,7 +370,7 @@ public class ExampleQuadradoGame extends QApplication
                     
                     break;
                 }
-                case MAPROOM_LOADING: 
+                case MAPROOM_LOADING:
                 {
                     // cycle bar
                     ctx.setColor(Color.RED);
@@ -384,15 +379,15 @@ public class ExampleQuadradoGame extends QApplication
                     ctx.fillRect(cb.x + 1 + (int)(framesElapsedTotal % 100), cb.y, 2, 8); // cycle
                     break;
                 }
-                case MAPROOM_LOADED: 
+                case MAPROOM_LOADED:
                     break;
                     
-                case MAPROOM_EXPLORATION: 
+                case MAPROOM_EXPLORATION:
                 {
-                    // background 
+                    // background
                     // this is taken care of in QApplication class (using Color.WHITE)
                     
-                    // content graphics 
+                    // content graphics
                     IntPoint2D p = protagonist.getIntCenterPosition();
                     int clipX = this.getPanelHalfWidth() - p.x;
                     int clipY = this.getPanelHalfHeight() - p.y;
@@ -450,23 +445,12 @@ public class ExampleQuadradoGame extends QApplication
                     break;
                 }
             }
-        }
-        finally
-        {
-            // put back graphics settings
-            ctx.setFontFace(ctxFont);
-            ctx.setColor(ctxColor);
-        }
+        });
     }
     
     private void drawContent(DrawingContext ctx, int playerX, int playerY)
     {
-        // save current graphics settings
-        int ctxColor = ctx.getColor();
-        FontFace ctxFontFace = ctx.getFontFace();
-        
-        try
-        {
+        ctx.withSettingsRestored(() -> {
             // background and maproom
             ctx.setColor(maproom.backgroundColor);
             ctx.fillRect(0, 0, maproom.widthPixels, maproom.heightPixels);
@@ -481,7 +465,7 @@ public class ExampleQuadradoGame extends QApplication
             
             
             // pause message
-            if (this.isPaused) 
+            if (this.isPaused)
             {
                 ctx.setColor(Color.CC.RED);
                 ctx.setFontFace(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.BOLD, 14));
@@ -493,13 +477,7 @@ public class ExampleQuadradoGame extends QApplication
                 this.pauseHeightHalf = fl.height() / 2;
                 ctx.drawString(this.pauseText, playerX - this.pauseWidthHalf, playerY + this.pauseHeightHalf);
             }
-        }
-        finally
-        {
-            // put back graphics settings
-            ctx.setFontFace(ctxFontFace);
-            ctx.setColor(ctxColor);
-        }
+        });
     }
     
     @Override
