@@ -375,11 +375,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
         DrawingContext ctx = this.dbui.getRenderContext();
         if (this.showDebug && (ctx != null) && ctx.isReady())
         {
-            int ctxColor = ctx.getColor();
-            FontFace ctxFontFace = ctx.getFontFace();
-            
-            try
-            {
+            ctx.withSettingsRestored(() -> {
                 ctx.setColor(0xbfffffff);
                 ctx.fillRect(0, 0, this.getPanelWidth(), 200);
                 
@@ -387,12 +383,10 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
                 ctx.setFontFace(QApplication.DEBUG_FONT_FACE);
                 
                 long timeTotalLoopLength = timeUpdateLength + timeRenderLength + timeActualSleptLength;
-                
-                timeRenderLength -= timePaintLength;
-                
+                long timeActualRenderLength = timeRenderLength - timePaintLength;
                 ctx.drawLinesOfText(new String[] {
                     QApplication.getNumericDebugMessage("Actual update (ms)", timeUpdateLength / (double10e6)),
-                    QApplication.getNumericDebugMessage("Actual render (ms)", timeRenderLength / (double10e6)),
+                    QApplication.getNumericDebugMessage("Actual render (ms)", timeActualRenderLength / (double10e6)),
                     QApplication.getNumericDebugMessage("Actual paint  (ms)", timePaintLength / (double10e6)),
                     QApplication.getNumericDebugMessage("Actual sleep  (ms)", timeActualSleptLength / (double10e6)),
                     QApplication.getNumericDebugMessage("Actual total  (ms)", timeTotalLoopLength / (double10e6)),
@@ -401,12 +395,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
                     QApplication.getNumericDebugMessage("Actual rate   (Hz)", (double10e9) / timeTotalLoopLength, 10),
                     QApplication.getNumericDebugMessage("Time elapsed   (s)", (System.nanoTime() - timeThreadStart) / (double10e9), 0)
                 }, 20, 0);
-            }
-            finally
-            {
-                ctx.setColor(ctxColor);
-                ctx.setFontFace(ctxFontFace);
-            }
+            });
         }
     }
     
