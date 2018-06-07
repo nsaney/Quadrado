@@ -1,13 +1,12 @@
 package chairosoft.quadrado.resource.loading.decoder;
 
-public interface FullyQualifiedKeyDecoder extends ResourceKeyDecoder<Class<?>> {
-    
+public interface SimpleClassNameKeyDecoder extends ResourceKeyDecoder<Class<?>> {
     ////// Constants //////
     boolean IS_INTERNAL = true;
-    String RESOURCE_ROOT = "qualified";
     
+    ////// Instance Methods //////
     @Override
     default String getResourceName(Class<?> resourceKey) {
-        return resourceKey.getName();
+        return resourceKey.getSimpleName();
     }
 }

@@ -1,26 +1,27 @@
-package com.example.__resources;
+package com.example.__resources.maproom;
 
 import chairosoft.quadrado.resource.maproom.QMapRoom;
 import chairosoft.quadrado.resource.maproom.MapRoomConfig;
+import com.example.__resources.tileset.TileSet_01;
 
-public class ExampleMap_02 extends QMapRoom<TileSet_01.TileCode> {
+public class ExampleMap_01 extends QMapRoom<TileSet_01.TileCode> {
     
     ////// Constants //////
     public static final MapRoomConfig<TileSet_01.TileCode> CONFIG = new MapRoomConfig<>(
-        ExampleMap_02::new,
-        ExampleMap_02.class
+        ExampleMap_01::new,
+        ExampleMap_01.class
     );
     
     
     ////// Constructor //////
-    public ExampleMap_02() {
+    public ExampleMap_01() {
         super(
             0x00bf7f,
             TileSet_01.CONFIG,
             TileSet_01.TileCode::values,
             links(
-                link(3, -1, ExampleMap_01.CONFIG, 12, 1),
-                link(4, -1, ExampleMap_01.CONFIG, 13, 1)
+                link(12, 0, ExampleMap_02.CONFIG, 3, -2),
+                link(13, 0, ExampleMap_02.CONFIG, 4, -2)
             )
         );
     }

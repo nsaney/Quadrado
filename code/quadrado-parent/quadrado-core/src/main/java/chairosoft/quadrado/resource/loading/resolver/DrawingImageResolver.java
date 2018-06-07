@@ -8,6 +8,10 @@ import java.io.InputStream;
 
 public interface DrawingImageResolver<K> extends ResourceValueResolver<K, DrawingImage> {
     
+    ////// Constants //////
+    String EXTENSION = "png";
+    
+    
     ////// Instance Methods //////
     @Override
     default DrawingImage resolve(String resourceName, InputStream resourceStream) throws IOException {

@@ -1,4 +1,4 @@
-package com.example.__resources;
+package com.example.__resources.sprite;
 
 import chairosoft.quadrado.element.QMapRoomExplorerSprite;
 import chairosoft.quadrado.resource.sprite.*;

@@ -8,6 +8,10 @@ import java.io.InputStream;
 
 public interface TrueTypeFontResolver<K> extends ResourceValueResolver<K, FontFace> {
     
+    ////// Constants //////
+    String EXTENSION = "ttf";
+    
+    
     ////// Instance Methods //////
     @Override
     default FontFace resolve(String resourceName, InputStream resourceStream) throws IOException {

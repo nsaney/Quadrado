@@ -9,15 +9,12 @@ public class TrueTypeFontFaceLoader
     extends ResourceLoader<String, FontFace>
     implements ExactNameResourceDecoder, TrueTypeFontResolver<String>
 {
-    
     ////// Constants //////
     public static final boolean IS_INTERNAL = true;
     public static final String RESOURCE_ROOT = "font";
-    public static final String EXTENSION = "ttf";
     
     ////// Constructor //////
     public TrueTypeFontFaceLoader() {
         super(IS_INTERNAL, RESOURCE_ROOT, EXTENSION);
     }
-    
 }

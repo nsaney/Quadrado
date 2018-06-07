@@ -10,15 +10,12 @@ public class SpriteSheetImageLoader
     extends ResourceLoader<String, DrawingImage>
     implements ExactNameResourceDecoder, DrawingImageResolver<String>
 {
-    
     ////// Constants //////
     public static final boolean IS_INTERNAL = true;
-    public static final String RESOURCE_ROOT = "img/sheets";
-    public static final String EXTENSION = "png";
+    public static final String RESOURCE_ROOT = "sheet";
     
     ////// Constructor //////
     public SpriteSheetImageLoader() {
         super(IS_INTERNAL, RESOURCE_ROOT, EXTENSION);
     }
-    
 }

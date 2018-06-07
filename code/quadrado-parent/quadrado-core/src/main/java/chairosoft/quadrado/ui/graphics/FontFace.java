@@ -19,10 +19,6 @@ import java.io.IOException;
  */
 public abstract class FontFace {
     
-    ////// Constants //////
-    public static final TrueTypeFontFaceLoader FONT_FACE_LOADER = new TrueTypeFontFaceLoader();
-    
-    
     ////// Instance Properties //////
     protected final String family;
     public String getFamily() {
@@ -45,12 +41,6 @@ public abstract class FontFace {
         this.family = _family;
         this.style = _style;
         this.size = _size;
-    }
-    
-    
-    ////// Static Methods //////
-    public static FontFace createFromEmbeddedFont(String fontName) throws IOException {
-        return FONT_FACE_LOADER.load(fontName);
     }
     
     

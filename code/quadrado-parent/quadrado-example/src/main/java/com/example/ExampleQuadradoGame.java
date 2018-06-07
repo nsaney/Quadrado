@@ -23,10 +23,11 @@ import chairosoft.quadrado.ui.system.QApplication;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
-import com.example.__resources.BoxStyle_01;
-import com.example.__resources.BoxStyle_02;
-import com.example.__resources.ExampleMap_01;
-import com.example.__resources.ExampleSprite_01;
+import com.example.__resources.box_style.BoxStyle_01;
+import com.example.__resources.box_style.BoxStyle_02;
+import com.example.__resources.font.Fonts;
+import com.example.__resources.maproom.ExampleMap_01;
+import com.example.__resources.sprite.ExampleSprite_01;
 
 import java.io.IOException;
 
@@ -402,7 +403,7 @@ public class ExampleQuadradoGame extends QApplication
                             this.test__dialogBox = new QDialogBox();
                             FontFace font;
                             try {
-                                font = FontFace.createFromEmbeddedFont("MinavyaFixed");
+                                font = Fonts.MINAVYA_FIXED.load();
                                 font = font.deriveBySize(14);
                             }
                             catch (IOException ioex) {
