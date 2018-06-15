@@ -20,6 +20,7 @@ import chairosoft.quadrado.ui.input.button.ButtonEvent;
 import chairosoft.quadrado.ui.input.direction.CompassDirection;
 import chairosoft.quadrado.ui.input.direction.CompassKeypad;
 import chairosoft.quadrado.ui.system.QApplication;
+import chairosoft.quadrado.ui.system.QGameState;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.geom.*;
 import chairosoft.quadrado.ui.graphics.*;
@@ -40,9 +41,9 @@ public class ExampleQuadradoGame extends QApplication
     public static void main(String[] args)
     {
         System.err.println("Starting example game... ");
-        QApplication app = new ExampleQuadradoGame();
+        ExampleQuadradoGame app = new ExampleQuadradoGame();
         app.setRequireButtonDevice(true);
-        app.gameStart();
+        app.gameStart(app.GAME_NOT_LOADED);
     }
     
     
@@ -75,9 +76,7 @@ public class ExampleQuadradoGame extends QApplication
     // Instance Variables
     //
     
-    public enum GameState { GAME_NOT_LOADED, MAPROOM_LOADING, MAPROOM_LOADED, MAPROOM_EXPLORATION; }
-    
-    protected volatile GameState gameState = GameState.GAME_NOT_LOADED;
+    private final ExampleQuadradoGame self = this;
     
     protected CompassKeypad keypad = new CompassKeypad();
     
@@ -138,7 +137,7 @@ public class ExampleQuadradoGame extends QApplication
     
     public void loadQMapRoomFromCurrentLink()
     {
-        this.gameState = GameState.MAPROOM_LOADING;
+        this.setNextGameState(MAPROOM_LOADING);
         QMapRoomLoader loader = new QMapRoomLoader(
             currentMapLink,
             result -> {
@@ -150,7 +149,7 @@ public class ExampleQuadradoGame extends QApplication
                 
                 // extra things here
                 
-                this.gameState = GameState.MAPROOM_LOADED;
+                this.setNextGameState(MAPROOM_LOADED);
             }
         );
         loader.startLoading();
@@ -177,9 +176,6 @@ public class ExampleQuadradoGame extends QApplication
     }
     
     @Override
-    protected void qGameUpdateInit() { }
-    
-    @Override
     protected void qButtonPressed(ButtonEvent.Code buttonCode)
     {
         // keypad needs to respond, regardless of game state
@@ -194,74 +190,8 @@ public class ExampleQuadradoGame extends QApplication
             case DEBUG_9: this.showDebug = !this.showDebug; break;
         }
         
-        switch (gameState)
-        {
-            case GAME_NOT_LOADED:
-                switch (buttonCode)
-                {
-                    // normal gameplay
-                    case START:
-                        this.currentMapLink = new MapLink<>(0, 0, ExampleMap_01.CONFIG, 13, 2);
-                        this.loadQMapRoomFromCurrentLink();
-                        break;
-                }
-                break;
-            
-            case MAPROOM_EXPLORATION:
-                if (this.isPaused)
-                {
-                    switch (buttonCode)
-                    {
-                        case START: this.isPaused = false; break;
-                    }
-                }
-                else if (this.test__showDialogBox && this.test__dialogBox != null)
-                {
-                    switch (buttonCode)
-                    {
-                        case A: this.test__dialogBox.moveScrollLines(+1, 10); break;
-                        case B: this.test__dialogBox.moveScrollLines(-1, 10); break;
-                        case Y: this.test__showDialogBox = false; break;
-                    }
-                }
-                else if (this.test__selectionMenu != null && this.test__selectionMenu.isOpen())
-                {
-                    switch (buttonCode)
-                    {
-                        case UP: this.test__selectionMenu.selectPreviousItem(); break;
-                        case DOWN: this.test__selectionMenu.selectNextItem(); break;
-                        case A: this.test__selectionMenu.executeSelectedItem(); break;
-                        case B: this.test__selectionMenu.close(); break;
-                        case X: this.test__selectionMenu.close(); break;
-                    }
-                }
-                else
-                {
-                    switch (buttonCode)
-                    {
-                        // normal gameplay
-                        case START: this.isPaused = true; break;
-                        case X: this.test__selectionMenu.open(); break;
-                        case Y: this.test__showDialogBox = true; break;
-                        case A: break;
-                        case B: break;
-                        
-                        // debug switches
-                        case DEBUG_1: this.show_bounding_box = !this.show_bounding_box; break;
-                        
-                        // debug actions
-                        case DEBUG_0: 
-                            this.action_respawn.run();
-                            break;
-                        default: break;
-                    }
-                }
-                break;
-        }
+        super.qButtonPressed(buttonCode);
     }
-    
-    @Override
-    protected void qButtonHeld(ButtonEvent.Code buttonCode) { }
     
     @Override
     protected void qButtonReleased(ButtonEvent.Code buttonCode) 
@@ -274,211 +204,8 @@ public class ExampleQuadradoGame extends QApplication
             case UP:    keypad.deactivateValue(NORTH); break;
             case DOWN:  keypad.deactivateValue(SOUTH); break;
         }
-    }
-    
-    @Override
-    protected void qButtonNotHeld(ButtonEvent.Code buttonCode) { }
-    
-    @Override
-    protected void qPointerPressed(float x, float y) { }
-    
-    @Override
-    protected void qPointerMoved(float x, float y) { }
-    
-    @Override
-    protected void qPointerReleased(float x, float y) { }
-    
-    @Override
-    protected void qGameUpdate() 
-    {
-        switch (gameState)
-        {
-            case GAME_NOT_LOADED: 
-                break;
-                
-            case MAPROOM_LOADING: 
-                break;
-                
-            case MAPROOM_LOADED: 
-                maproom = nextMapRoom;
-                protagonist.setPositionByQTile(this.maproom, this.spawnCol, this.spawnRow);
-                gameState = GameState.MAPROOM_EXPLORATION;
-                break;
-                
-            case MAPROOM_EXPLORATION: 
-                // if (framesElapsedTotal % 250 == 0) { QCollidable.startDebug(); }
-                // else { QCollidable.stopDebug(); }
-                
-                if (this.isPaused)
-                {
-                    // no updates here
-                }
-                else if (this.test__showDialogBox && this.test__dialogBox != null)
-                {
-                    // no updates here
-                }
-                else if (this.test__selectionMenu != null && this.test__selectionMenu.isOpen())
-                {
-                    // no updates here
-                }
-                else
-                {
-                    // set velocity based on keypad compass direction
-                    protagonist.setDirection(keypad.getDirection());
-                    
-                    // collision
-                    protagonist.moveOneFrameIn(maproom);
-                    currentMapLink = maproom.getCollidingMapLinkOrNull(protagonist);
-                    if (currentMapLink == null)
-                    {
-                        protagonist.resolveCollisionInQMapRoom(maproom, true, true);
-                    }
-                    else
-                    {
-                        //System.err.println(currentMapLink);
-                        this.loadQMapRoomFromCurrentLink();
-                    }
-                }
-                break;
-        }
-    }
-    
-    @Override
-    protected void qGameRender(DrawingContext ctx)
-    {
-        ctx.withSettingsRestored(() -> {
-            switch (gameState)
-            {
-                case GAME_NOT_LOADED:
-                {
-                    // cycle bar
-                    ctx.setColor(Color.BLACK);
-                    IntPoint2D cb = new IntPoint2D(7, 20);
-                    ctx.drawRect(cb.x, cb.y, 102, 8); // outline
-                    ctx.fillRect(cb.x + 1 + (int)(framesElapsedTotal % 100), cb.y, 2, 8); // cycle
-                    
-                    ctx.setColor(Color.CC.MAROON);
-                    ctx.setFontFace(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 12));
-                    int test_wrappingWidth = 200;
-                    if (test__wrappedText == null)
-                    {
-                        test__wrappedText = ctx.getWrappedText(test__textForWrapping, test_wrappingWidth);
-                    }
-                    ctx.drawWrappedText(test__wrappedText, cb.x, cb.y + 10);
-                    
-                    ctx.setColor(Color.CC.BLACK);
-                    ctx.drawRect(cb.x, cb.y + 10, test_wrappingWidth, PANEL_HEIGHT - 2 * (cb.y + 10));
-                    
-                    break;
-                }
-                case MAPROOM_LOADING:
-                {
-                    // cycle bar
-                    ctx.setColor(Color.RED);
-                    IntPoint2D cb = new IntPoint2D(7, 12);
-                    ctx.drawRect(cb.x, cb.y, 102, 8); // outline
-                    ctx.fillRect(cb.x + 1 + (int)(framesElapsedTotal % 100), cb.y, 2, 8); // cycle
-                    break;
-                }
-                case MAPROOM_LOADED:
-                    break;
-                    
-                case MAPROOM_EXPLORATION:
-                {
-                    // background
-                    // this is taken care of in QApplication class (using Color.WHITE)
-                    
-                    // content graphics
-                    IntPoint2D p = protagonist.getIntCenterPosition();
-                    int clipX = this.getPanelHalfWidth() - p.x;
-                    int clipY = this.getPanelHalfHeight() - p.y;
-                    this.drawContent(contentImageContext, p.x, p.y);
-                    ctx.drawImage(contentImage, clipX, clipY);
-                    
-                    // dialog boxes
-                    if (this.test__showDialogBox)
-                    {
-                        if (this.test__dialogBox == null)
-                        {
-                            this.test__dialogBox = new QDialogBox();
-                            FontFace font;
-                            try {
-                                font = Fonts.MINAVYA_FIXED.load();
-                                font = font.deriveBySize(14);
-                            }
-                            catch (IOException ioex) {
-                                ioex.printStackTrace();
-                                font = UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10);
-                            }
-                            FontLayout fl = ctx.getFontLayout(font);
-                            int w = PANEL_WIDTH - 20;
-                            int h = 2 * fl.height();
-                            this.test__dialogBox.setup(fl, this.test__textForDialog, test__boxStyle01, w, h);
-                            this.test__dialogBox.x = (PANEL_WIDTH - w) / 2 - this.test__boxStyle01.borderWidths.left;
-                            this.test__dialogBox.y = PANEL_HEIGHT - h - this.test__dialogBox.x - this.test__boxStyle01.borderWidths.top - this.test__boxStyle01.borderWidths.bottom;
-                        }
-                        this.test__dialogBox.advanceScrollOneClick();
-                        this.test__dialogBox.drawToContextAtOwnPosition(ctx);
-                    }
-                    
-                    // selection menus
-                    if (this.test__selectionMenu.isOpen())
-                    {
-                        if (this.test__selectionMenu.getFontLayout() == null)
-                        {
-                            FontFace sansSerifPlain10 = UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10);
-                            FontLayout fl = ctx.getFontLayout(sansSerifPlain10);
-                            int h = 2 * fl.height();
-                            this.test__selectionMenu.setup(fl, test__boxStyle02, h);
-                            this.test__selectionMenu.x = 20;
-                            this.test__selectionMenu.y = PANEL_HEIGHT - h - this.test__selectionMenu.x;
-                        }
-                        this.test__selectionMenu.advanceScrollOneClick();
-                        this.test__selectionMenu.drawToContextAtOwnPosition(ctx);
-                    }
-                    
-                    // cycle bar
-                    ctx.setColor(Color.BLUE);
-                    IntPoint2D cb = new IntPoint2D(7, 4);
-                    ctx.drawRect(cb.x, cb.y, 102, 8); // outline
-                    ctx.fillRect(cb.x + 1 + (int)(framesElapsedTotal % 100), cb.y, 2, 8); // cycle
-                    
-                    break;
-                }
-            }
-        });
-    }
-    
-    private void drawContent(DrawingContext ctx, int playerX, int playerY)
-    {
-        ctx.withSettingsRestored(() -> {
-            // background and maproom
-            ctx.setColor(maproom.backgroundColor);
-            ctx.fillRect(0, 0, maproom.widthPixels, maproom.heightPixels);
-            maproom.drawToContext(ctx, 0, 0);
-            
-            // player sprite
-            protagonist.advanceAnimationOneClick();
-            protagonist.drawToContextAtOwnPosition(ctx);
-            
-            // collision box
-            if (show_bounding_box) { ctx.setColor(Color.BLUE); ctx.fillPolygon(protagonist); }
-            
-            
-            // pause message
-            if (this.isPaused)
-            {
-                ctx.setColor(Color.CC.RED);
-                ctx.setFontFace(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.BOLD, 14));
-                if (this.pauseText == null) {
-                    this.pauseText = "";
-                }
-                FontLayout fl = ctx.getFontLayout();
-                this.pauseWidthHalf = fl.widthOf(this.pauseText) / 2;
-                this.pauseHeightHalf = fl.height() / 2;
-                ctx.drawString(this.pauseText, playerX - this.pauseWidthHalf, playerY + this.pauseHeightHalf);
-            }
-        });
+        
+        super.qButtonReleased(buttonCode);
     }
     
     @Override
@@ -487,4 +214,256 @@ public class ExampleQuadradoGame extends QApplication
         System.err.println("GAME FINISHED");
     }
     
+    
+    //
+    // Game States
+    //
+    
+    private final QGameState GAME_NOT_LOADED = new QGameState() {
+        @Override
+        public void buttonPressed(ButtonEvent.Code buttonCode) {
+            switch (buttonCode)
+            {
+                // normal gameplay
+                case START:
+                    self.currentMapLink = new MapLink<>(0, 0, ExampleMap_01.CONFIG, 13, 2);
+                    self.loadQMapRoomFromCurrentLink();
+                    break;
+            }
+        }
+        
+        @Override
+        public void render(DrawingContext ctx) {
+            // cycle bar
+            ctx.setColor(Color.BLACK);
+            IntPoint2D cb = new IntPoint2D(7, 20);
+            ctx.drawRect(cb.x, cb.y, 102, 8); // outline
+            ctx.fillRect(cb.x + 1 + (int)(framesElapsedTotal % 100), cb.y, 2, 8); // cycle
+            
+            ctx.setColor(Color.CC.MAROON);
+            ctx.setFontFace(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 12));
+            int test_wrappingWidth = 200;
+            if (test__wrappedText == null)
+            {
+                test__wrappedText = ctx.getWrappedText(test__textForWrapping, test_wrappingWidth);
+            }
+            ctx.drawWrappedText(test__wrappedText, cb.x, cb.y + 10);
+            
+            ctx.setColor(Color.CC.BLACK);
+            ctx.drawRect(cb.x, cb.y + 10, test_wrappingWidth, PANEL_HEIGHT - 2 * (cb.y + 10));
+        }
+    };
+    
+    
+    private final QGameState MAPROOM_LOADING = new QGameState() {
+        @Override
+        public void render(DrawingContext ctx) {
+            // cycle bar
+            ctx.setColor(Color.RED);
+            IntPoint2D cb = new IntPoint2D(7, 12);
+            ctx.drawRect(cb.x, cb.y, 102, 8); // outline
+            ctx.fillRect(cb.x + 1 + (int)(framesElapsedTotal % 100), cb.y, 2, 8); // cycle
+        }
+    };
+    
+    
+    private final QGameState MAPROOM_LOADED = new QGameState() {
+        @Override
+        public void update() {
+            self.maproom = self.nextMapRoom;
+            self.protagonist.setPositionByQTile(self.maproom, self.spawnCol, self.spawnRow);
+            self.setNextGameState(MAPROOM_EXPLORATION);
+        }
+        
+        @Override
+        public void render(DrawingContext ctx) {
+            // nothing here right now
+        }
+    };
+    
+    
+    private final QGameState MAPROOM_EXPLORATION = new QGameState() {
+        @Override
+        public void buttonPressed(ButtonEvent.Code buttonCode) {
+            if (self.isPaused)
+            {
+                switch (buttonCode)
+                {
+                    case START: self.isPaused = false; break;
+                }
+            }
+            else if (self.test__showDialogBox && self.test__dialogBox != null)
+            {
+                switch (buttonCode)
+                {
+                    case A: self.test__dialogBox.moveScrollLines(+1, 10); break;
+                    case B: self.test__dialogBox.moveScrollLines(-1, 10); break;
+                    case Y: self.test__showDialogBox = false; break;
+                }
+            }
+            else if (self.test__selectionMenu != null && self.test__selectionMenu.isOpen())
+            {
+                switch (buttonCode)
+                {
+                    case UP: self.test__selectionMenu.selectPreviousItem(); break;
+                    case DOWN: self.test__selectionMenu.selectNextItem(); break;
+                    case A: self.test__selectionMenu.executeSelectedItem(); break;
+                    case B: self.test__selectionMenu.close(); break;
+                    case X: self.test__selectionMenu.close(); break;
+                }
+            }
+            else
+            {
+                switch (buttonCode)
+                {
+                    // normal gameplay
+                    case START: self.isPaused = true; break;
+                    case X: self.test__selectionMenu.open(); break;
+                    case Y: self.test__showDialogBox = true; break;
+                    case A: break;
+                    case B: break;
+                    
+                    // debug switches
+                    case DEBUG_1: self.show_bounding_box = !self.show_bounding_box; break;
+                    
+                    // debug actions
+                    case DEBUG_0:
+                        self.action_respawn.run();
+                        break;
+                    default: break;
+                }
+            }
+        }
+        
+        @Override
+        public void update() {
+            // if (framesElapsedTotal % 250 == 0) { QCollidable.startDebug(); }
+            // else { QCollidable.stopDebug(); }
+            
+            if (self.isPaused)
+            {
+                // no updates here
+            }
+            else if (self.test__showDialogBox && self.test__dialogBox != null)
+            {
+                // no updates here
+            }
+            else if (self.test__selectionMenu != null && self.test__selectionMenu.isOpen())
+            {
+                // no updates here
+            }
+            else
+            {
+                // set velocity based on keypad compass direction
+                protagonist.setDirection(keypad.getDirection());
+                
+                // collision
+                protagonist.moveOneFrameIn(maproom);
+                currentMapLink = maproom.getCollidingMapLinkOrNull(protagonist);
+                if (currentMapLink == null)
+                {
+                    protagonist.resolveCollisionInQMapRoom(maproom, true, true);
+                }
+                else
+                {
+                    //System.err.println(currentMapLink);
+                    self.loadQMapRoomFromCurrentLink();
+                }
+            }
+        }
+        
+        @Override
+        public void render(DrawingContext ctx) {
+            // background
+            // this is taken care of in QApplication class (using Color.WHITE)
+            
+            // content graphics
+            IntPoint2D p = protagonist.getIntCenterPosition();
+            int clipX = self.getPanelHalfWidth() - p.x;
+            int clipY = self.getPanelHalfHeight() - p.y;
+            this.drawContent(contentImageContext, p.x, p.y);
+            ctx.drawImage(contentImage, clipX, clipY);
+            
+            // dialog boxes
+            if (self.test__showDialogBox)
+            {
+                if (self.test__dialogBox == null)
+                {
+                    self.test__dialogBox = new QDialogBox();
+                    FontFace font;
+                    try {
+                        font = Fonts.MINAVYA_FIXED.load();
+                        font = font.deriveBySize(14);
+                    }
+                    catch (IOException ioex) {
+                        ioex.printStackTrace();
+                        font = UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10);
+                    }
+                    FontLayout fl = ctx.getFontLayout(font);
+                    int w = PANEL_WIDTH - 20;
+                    int h = 2 * fl.height();
+                    self.test__dialogBox.setup(fl, self.test__textForDialog, test__boxStyle01, w, h);
+                    self.test__dialogBox.x = (PANEL_WIDTH - w) / 2 - self.test__boxStyle01.borderWidths.left;
+                    self.test__dialogBox.y = PANEL_HEIGHT - h - self.test__dialogBox.x - self.test__boxStyle01.borderWidths.top - self.test__boxStyle01.borderWidths.bottom;
+                }
+                self.test__dialogBox.advanceScrollOneClick();
+                self.test__dialogBox.drawToContextAtOwnPosition(ctx);
+            }
+            
+            // selection menus
+            if (self.test__selectionMenu.isOpen())
+            {
+                if (self.test__selectionMenu.getFontLayout() == null)
+                {
+                    FontFace sansSerifPlain10 = UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.PLAIN, 10);
+                    FontLayout fl = ctx.getFontLayout(sansSerifPlain10);
+                    int h = 2 * fl.height();
+                    self.test__selectionMenu.setup(fl, test__boxStyle02, h);
+                    self.test__selectionMenu.x = 20;
+                    self.test__selectionMenu.y = PANEL_HEIGHT - h - self.test__selectionMenu.x;
+                }
+                self.test__selectionMenu.advanceScrollOneClick();
+                self.test__selectionMenu.drawToContextAtOwnPosition(ctx);
+            }
+            
+            // cycle bar
+            ctx.setColor(Color.BLUE);
+            IntPoint2D cb = new IntPoint2D(7, 4);
+            ctx.drawRect(cb.x, cb.y, 102, 8); // outline
+            ctx.fillRect(cb.x + 1 + (int)(framesElapsedTotal % 100), cb.y, 2, 8); // cycle
+        }
+        
+        
+        private void drawContent(DrawingContext ctx, int playerX, int playerY)
+        {
+            ctx.withSettingsRestored(() -> {
+                // background and maproom
+                ctx.setColor(maproom.backgroundColor);
+                ctx.fillRect(0, 0, maproom.widthPixels, maproom.heightPixels);
+                maproom.drawToContext(ctx, 0, 0);
+                
+                // player sprite
+                protagonist.advanceAnimationOneClick();
+                protagonist.drawToContextAtOwnPosition(ctx);
+                
+                // collision box
+                if (show_bounding_box) { ctx.setColor(Color.BLUE); ctx.fillPolygon(protagonist); }
+                
+                
+                // pause message
+                if (self.isPaused)
+                {
+                    ctx.setColor(Color.CC.RED);
+                    ctx.setFontFace(UserInterfaceProvider.get().createFontFace(FontFamily.SANS_SERIF, FontStyle.BOLD, 14));
+                    if (self.pauseText == null) {
+                        self.pauseText = "";
+                    }
+                    FontLayout fl = ctx.getFontLayout();
+                    self.pauseWidthHalf = fl.widthOf(self.pauseText) / 2;
+                    self.pauseHeightHalf = fl.height() / 2;
+                    ctx.drawString(self.pauseText, playerX - self.pauseWidthHalf, playerY + self.pauseHeightHalf);
+                }
+            });
+        }
+    };
 }

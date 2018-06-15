@@ -15,9 +15,11 @@ import chairosoft.quadrado.ui.input.button.ButtonListener;
 import chairosoft.quadrado.ui.input.pointer.PointerEvent;
 import chairosoft.quadrado.ui.input.pointer.PointerListener;
 import chairosoft.quadrado.ui.graphics.*;
+import chairosoft.quadrado.util.function.ExceptionThrowingSupplier;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The base of a Quadrado application - each Quadrado game should 
@@ -104,6 +106,16 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     public boolean getUsePointerListener() { return this.usePointerListener; }
     public void setUsePointerListener(boolean _usePointerListener) { this.usePointerListener = _usePointerListener; }
     
+    // game state
+    protected QGameState gameState;
+    public interface QGameStateSupplier extends ExceptionThrowingSupplier<QGameState, RuntimeException> {}
+    private final AtomicReference<QGameStateSupplier> nextGameStateSupplier = new AtomicReference<>();
+    public void setNextGameState(QGameState nextGameState) {
+        this.setNextGameState(() -> nextGameState);
+    }
+    public void setNextGameState(QGameStateSupplier nextGameStateSupplier) {
+        this.nextGameStateSupplier.set(nextGameStateSupplier);
+    }
     
     // more vars in subclass ...
     
@@ -135,7 +147,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     
     
     /* initialize and start the thread */
-    public boolean gameStart()
+    public boolean gameStart(QGameState initialState)
     {
         boolean isFirstCall = this.dbui.start();
         if (isFirstCall)
@@ -148,6 +160,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
             this.animator = new Thread(this);
             this.animator.start();
             this.timeThreadStart = System.nanoTime();
+            this.gameState = initialState;
         }
         return isFirstCall;
     }
@@ -272,10 +285,18 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     
     
     /* do button handling */
-    protected abstract void qButtonPressed(ButtonEvent.Code buttonCode);
-    protected abstract void qButtonHeld(ButtonEvent.Code buttonCode);
-    protected abstract void qButtonReleased(ButtonEvent.Code buttonCode);
-    protected abstract void qButtonNotHeld(ButtonEvent.Code buttonCode);
+    protected void qButtonPressed(ButtonEvent.Code buttonCode) {
+        this.gameState.buttonPressed(buttonCode);
+    }
+    protected void qButtonHeld(ButtonEvent.Code buttonCode) {
+        this.gameState.buttonHeld(buttonCode);
+    }
+    protected void qButtonReleased(ButtonEvent.Code buttonCode) {
+        this.gameState.buttonReleased(buttonCode);
+    }
+    protected void qButtonNotHeld(ButtonEvent.Code buttonCode) {
+        this.gameState.buttonNotHeld(buttonCode);
+    }
     
     @Override 
     public final void buttonPressed(ButtonEvent e)
@@ -300,9 +321,15 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     }
     
     /* do pointer handling */
-    protected abstract void qPointerPressed(float x, float y);
-    protected abstract void qPointerMoved(float x, float y);
-    protected abstract void qPointerReleased(float x, float y);
+    protected void qPointerPressed(float x, float y) {
+        this.gameState.pointerPressed(x, y);
+    }
+    protected void qPointerMoved(float x, float y) {
+        this.gameState.pointerMoved(x, y);
+    }
+    protected void qPointerReleased(float x, float y) {
+        this.gameState.pointerReleased(x, y);
+    }
     
     @Override public final void pointerPressed(PointerEvent e) { this.pointerEventQueue.offer(e); }
     @Override public final void pointerMoved(PointerEvent e) { this.pointerEventQueue.offer(e); }
@@ -310,12 +337,24 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     
     
     /* do game update */
-    protected abstract void qGameUpdateInit();
-    protected abstract void qGameUpdate();
+    protected void qGameUpdateInit() {
+        this.gameState.updateInit();
+    }
+    protected void qGameUpdate() {
+        this.gameState.update();
+    }
     
     /* update game status */
     private void gameUpdate()
     {
+        QGameStateSupplier gameStateSupplier = this.nextGameStateSupplier.getAndSet(null);
+        if (gameStateSupplier != null) {
+            QGameState nextGameState = gameStateSupplier.get();
+            if (nextGameState != null) {
+                this.gameState = nextGameState;
+            }
+        }
+        
         this.qGameUpdateInit();
         
         //if (this.framesElapsedTotal % 25 == 0) { System.err.println(buttonState); }
@@ -331,7 +370,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
             }
         }
         
-        int pointerEventCount = pointerEventQueue.size(); // only process mouse events in the queue as of this call
+        int pointerEventCount = pointerEventQueue.size(); // only process pointer events in the queue as of this call
         for (int i = 0; i < pointerEventCount; ++i)
         {
             PointerEvent e = pointerEventQueue.poll();
@@ -352,7 +391,9 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
     
     
     /* do game render */
-    protected abstract void qGameRender(DrawingContext ctx);
+    protected void qGameRender(DrawingContext ctx) {
+        this.gameState.render(ctx);
+    }
     
     /* render game to the buffer */
     private void gameRender() 
@@ -364,7 +405,7 @@ public abstract class QApplication implements Runnable, ButtonListener, PointerL
             renderContext.fillRect(0, 0, this.getPanelWidth(), this.getPanelHeight());
             
             // draw game elements ...
-            this.qGameRender(renderContext);
+            renderContext.withSettingsRestored(this::qGameRender);
         }
     }
     
