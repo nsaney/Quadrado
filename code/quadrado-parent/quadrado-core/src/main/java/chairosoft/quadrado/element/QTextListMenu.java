@@ -10,7 +10,7 @@
 
 package chairosoft.quadrado.element;
 
-import chairosoft.quadrado.resource.box_style.QBoxStyle;
+import chairosoft.quadrado.asset.box_style.QBoxStyle;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
 import chairosoft.quadrado.ui.graphics.Color;
 import chairosoft.quadrado.ui.graphics.DrawingContext;

@@ -13,8 +13,8 @@ package chairosoft.quadrado.element;
 import static chairosoft.quadrado.ui.input.direction.CompassDirection.*;
 
 import chairosoft.quadrado.ui.input.direction.CompassDirection;
-import chairosoft.quadrado.resource.maproom.QMapRoom;
-import chairosoft.quadrado.resource.sprite.*;
+import chairosoft.quadrado.asset.maproom.QMapRoom;
+import chairosoft.quadrado.asset.sprite.*;
 import chairosoft.quadrado.ui.geom.FloatPoint2D;
 
 import java.util.List;

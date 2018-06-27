@@ -1,8 +1,8 @@
 package chairosoft.quadrado.ui.graphics;
 
-import chairosoft.quadrado.resource.loading.ResourceLoader;
-import chairosoft.quadrado.resource.loading.decoder.ExactNameResourceDecoder;
-import chairosoft.quadrado.resource.loading.resolver.TrueTypeFontResolver;
+import chairosoft.quadrado.asset._resources.ResourceLoader;
+import chairosoft.quadrado.asset._resources.decoder.ExactNameResourceDecoder;
+import chairosoft.quadrado.asset._resources.resolver.TrueTypeFontResolver;
 
 
 public class TrueTypeFontFaceLoader

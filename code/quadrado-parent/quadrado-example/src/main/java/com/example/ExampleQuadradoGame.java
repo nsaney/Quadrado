@@ -6,31 +6,31 @@
 
 package com.example;
 
-import static chairosoft.quadrado.ui.input.direction.CompassDirection.*;
-
-import chairosoft.quadrado.resource.box_style.QBoxStyle;
+import chairosoft.quadrado.asset.box_style.QBoxStyle;
+import chairosoft.quadrado.asset.maproom.MapLink;
+import chairosoft.quadrado.asset.maproom.QMapRoom;
+import chairosoft.quadrado.asset.maproom.QMapRoomLoader;
 import chairosoft.quadrado.element.QDialogBox;
+import chairosoft.quadrado.element.QMapRoomExplorerSprite;
 import chairosoft.quadrado.element.QSelectableMenu;
 import chairosoft.quadrado.element.QTextListMenu;
-import chairosoft.quadrado.resource.maproom.MapLink;
-import chairosoft.quadrado.resource.maproom.QMapRoom;
-import chairosoft.quadrado.element.QMapRoomExplorerSprite;
-import chairosoft.quadrado.resource.maproom.QMapRoomLoader;
+import chairosoft.quadrado.ui.geom.IntPoint2D;
+import chairosoft.quadrado.ui.graphics.*;
 import chairosoft.quadrado.ui.input.button.ButtonEvent;
 import chairosoft.quadrado.ui.input.direction.CompassDirection;
 import chairosoft.quadrado.ui.input.direction.CompassKeypad;
 import chairosoft.quadrado.ui.system.QApplication;
 import chairosoft.quadrado.ui.system.QGameState;
 import chairosoft.quadrado.ui.system.UserInterfaceProvider;
-import chairosoft.quadrado.ui.geom.*;
-import chairosoft.quadrado.ui.graphics.*;
-import com.example.__resources.box_style.BoxStyle_01;
-import com.example.__resources.box_style.BoxStyle_02;
-import com.example.__resources.font.Fonts;
-import com.example.__resources.maproom.ExampleMap_01;
-import com.example.__resources.sprite.ExampleSprite_01;
+import com.example.__assets.box_style.BoxStyle_01;
+import com.example.__assets.box_style.BoxStyle_02;
+import com.example.__assets.font.Fonts;
+import com.example.__assets.maproom.ExampleMap_01;
+import com.example.__assets.sprite.ExampleSprite_01;
 
 import java.io.IOException;
+
+import static chairosoft.quadrado.ui.input.direction.CompassDirection.*;
 
 public class ExampleQuadradoGame extends QApplication
 {
