@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/quadrado-android/quadrado-android.iml" filepath="$PROJECT_DIR$/quadrado-android/quadrado-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quadrado-asset-builder/quadrado-asset-builder.iml" filepath="$PROJECT_DIR$/quadrado-asset-builder/quadrado-asset-builder.iml" />
       <module fileurl="file://$PROJECT_DIR$/quadrado-core/quadrado-core.iml" filepath="$PROJECT_DIR$/quadrado-core/quadrado-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/quadrado-desktop/quadrado-desktop.iml" filepath="$PROJECT_DIR$/quadrado-desktop/quadrado-desktop.iml" />
       <module fileurl="file://$PROJECT_DIR$/quadrado-example/quadrado-example.iml" filepath="$PROJECT_DIR$/quadrado-example/quadrado-example.iml" />

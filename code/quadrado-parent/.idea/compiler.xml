@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="quadrado-android" />
+        <module name="quadrado-asset-builder" />
         <module name="quadrado-core" />
         <module name="quadrado-desktop" />
         <module name="quadrado-example" />
@@ -14,6 +15,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="quadrado-android" target="1.8" />
+      <module name="quadrado-asset-builder" target="1.8" />
       <module name="quadrado-core" target="1.8" />
       <module name="quadrado-desktop" target="1.8" />
       <module name="quadrado-desktop-java" target="1.8" />

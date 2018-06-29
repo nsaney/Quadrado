@@ -12,23 +12,13 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>quadrado-core</artifactId>
+  <artifactId>quadrado-asset-builder</artifactId>
 
   <dependencies>
     <dependency>
-      <groupId>javazoom</groupId>
-      <artifactId>jlayer</artifactId>
-      <version>1.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>xom</groupId>
-      <artifactId>xom</artifactId>
-      <version>1.2.5</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.5</version>
+      <groupId>chairosoft.quadrado</groupId>
+      <artifactId>quadrado-core</artifactId>
+      <version>2.0-alpha</version>
     </dependency>
   </dependencies>
 
