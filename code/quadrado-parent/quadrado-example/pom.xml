@@ -47,14 +47,6 @@
                   <mainClass>com.example.ExampleQuadradoGame</mainClass>
                 </transformer>
               </transformers>
-              <filters>
-                <filter>
-                  <artifact>xom:xom</artifact>
-                  <excludes>
-                    <exclude>org/w3c/dom/**</exclude>
-                  </excludes>
-                </filter>
-              </filters>
             </configuration>
           </execution>
         </executions>
