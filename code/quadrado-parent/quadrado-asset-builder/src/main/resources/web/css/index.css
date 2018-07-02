@@ -1,0 +1,9 @@
+body {
+    background-color: gray;
+}
+
+#div_app_loading {
+    position: absolute;
+    top: 2em;
+    left: 2em;
+}

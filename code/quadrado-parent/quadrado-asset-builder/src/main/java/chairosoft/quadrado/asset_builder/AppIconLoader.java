@@ -3,7 +3,6 @@ package chairosoft.quadrado.asset_builder;
 import chairosoft.quadrado.asset._resources.ResourceLoader;
 import chairosoft.quadrado.asset._resources.decoder.ExactNameResourceDecoder;
 import chairosoft.quadrado.asset._resources.resolver.ResourceValueResolver;
-import chairosoft.quadrado.util.function.ExceptionThrowingSupplier;
 import javafx.scene.image.Image;
 
 import java.io.InputStream;

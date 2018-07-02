@@ -1,13 +1,17 @@
 <!DOCTYPE>
 <html>
 <head>
-    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/knockout-3.4.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
 </head>
 <body>
-    <h1>Test Heading</h1>
-    <p>Test Paragraph</p>
-    <p><button onclick="body.style.backgroundColor = 'green'">Test Button</button></p>
-    <p>Another Paragraph</p>
-    <script src="index.js"></script>
+    <div id="div_app_loading" data-bind="ifnot: $root">Application is loading...</div>
+    <div id="div_content" style="display: none" data-bind="visible: $root">
+        Application is loaded! =D
+    </div>
 </body>
 </html>
