@@ -20,10 +20,10 @@ public class QuadradoAssetBuilder extends Application {
     protected static final String[] APP_ICON_NAMES = {"16x16", "32x32", "64x64", "128x128" };
     public static final AppIconLoader APP_ICON_LOADER = new AppIconLoader();
     public static final String PATH_WEB_DIRECTORY = "web";
-    public static final String PATH_QUADRADO_ASSET_BUILDER_HTML = ResourceLoader.getAbsoluteResourcePath(
+    public static final String PATH_INDEX_HTML = ResourceLoader.getAbsoluteResourcePath(
         true,
         PATH_WEB_DIRECTORY,
-        "quadrado-asset-builder.html"
+        "index.html"
     );
     
     
@@ -48,8 +48,8 @@ public class QuadradoAssetBuilder extends Application {
         // web region
         BrowserRegion region = new BrowserRegion();
         WebEngine webEngine = region.browser.getEngine();
-        String url = QuadradoAssetBuilder.class.getResource(PATH_QUADRADO_ASSET_BUILDER_HTML).toExternalForm();
-        webEngine.load(url);
+        String indexUrl = QuadradoAssetBuilder.class.getResource(PATH_INDEX_HTML).toExternalForm();
+        webEngine.load(indexUrl);
         
         // scene
         Scene scene = new Scene(region);

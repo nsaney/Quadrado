@@ -1,0 +1,8 @@
+body {
+    background-color: gray;
+}
+
+body::after {
+    display: block;
+    content: 'index.css says hi';
+}
