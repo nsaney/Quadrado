@@ -30,18 +30,12 @@ public abstract class ResourceLoader<K, V> implements ResourceKeyDecoder<K>, Res
     
     ////// Instance Methods - Concrete //////
     protected String getAbsoluteResourcePath(String resourceName) {
-        String absolutePath = this.directory + FILE_SEPARATOR + resourceName + EXTENSION_SEPARATOR + this.extension;
-        if (this.isInternal) { absolutePath = getInternalPath(absolutePath); }
-        return absolutePath;
+        String fullResourceName = extendFilename(resourceName, this.extension);
+        return getAbsoluteResourcePath(this.isInternal, this.directory, fullResourceName);
     }
     
     protected InputStream getResourceAsStream(String absoluteResourcePath) throws IOException {
-        if (this.isInternal) {
-            return ResourceLoader.class.getResourceAsStream(absoluteResourcePath);
-        }
-        else {
-            return new FileInputStream(absoluteResourcePath);
-        }
+        return getResourceAsStream(this.isInternal, absoluteResourcePath);
     }
     
     @Override
@@ -54,8 +48,31 @@ public abstract class ResourceLoader<K, V> implements ResourceKeyDecoder<K>, Res
     
     
     ////// Static Methods //////
-    protected static String getInternalPath(String path) {
+    public static String getInternalPath(String path) {
         return (path.charAt(0) == FILE_SEPARATOR_CHAR) ? path : (FILE_SEPARATOR + path);
+    }
+    
+    public static String extendFilename(String resourceName, String... extensions) {
+        return resourceName + EXTENSION_SEPARATOR + String.join(EXTENSION_SEPARATOR, extensions);
+    }
+    
+    public static String joinPathElements(String root, String... pathElements) {
+        return root + FILE_SEPARATOR + String.join(FILE_SEPARATOR, pathElements);
+    }
+    
+    public static String getAbsoluteResourcePath(boolean isInternal, String directory, String fullResourceName) {
+        String absolutePath = joinPathElements(directory, fullResourceName);
+        if (isInternal) { absolutePath = getInternalPath(absolutePath); }
+        return absolutePath;
+    }
+    
+    public static InputStream getResourceAsStream(boolean isInternal, String absoluteResourcePath) throws IOException {
+        if (isInternal) {
+            return ResourceLoader.class.getResourceAsStream(absoluteResourcePath);
+        }
+        else {
+            return new FileInputStream(absoluteResourcePath);
+        }
     }
     
 }

@@ -47,11 +47,15 @@ public interface DrawingImageResolver<K> extends ResourceValueResolver<K, Drawin
     }
     
     default DrawingImage loadOrEmpty(K key, int transparencyRgb) {
+        return this.loadOrEmpty(key, transparencyRgb, 0, 0);
+    }
+    
+    default DrawingImage loadOrEmpty(K key, int transparencyRgb, int width, int height) {
         DrawingImage sourceImageRaw = this.loadOrNull(key);
         if (sourceImageRaw != null) {
             return sourceImageRaw.getCloneWithTransparency(transparencyRgb);
         }
-        return UserInterfaceProvider.get().createDrawingImage(0, 0, DrawingImage.Config.ARGB_8888);
+        return UserInterfaceProvider.get().createDrawingImage(width, height, DrawingImage.Config.ARGB_8888);
     }
     
 }
