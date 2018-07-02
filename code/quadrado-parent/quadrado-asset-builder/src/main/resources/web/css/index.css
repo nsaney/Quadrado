@@ -7,3 +7,7 @@ body {
     top: 2em;
     left: 2em;
 }
+
+#div_content {
+    padding: 8px;
+}

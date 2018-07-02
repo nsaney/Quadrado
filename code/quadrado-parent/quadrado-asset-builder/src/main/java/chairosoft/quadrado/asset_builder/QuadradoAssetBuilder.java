@@ -2,6 +2,7 @@ package chairosoft.quadrado.asset_builder;
 
 import chairosoft.quadrado.asset._resources.ResourceLoader;
 import javafx.application.Application;
+import javafx.concurrent.Worker;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
@@ -9,6 +10,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
+import org.apache.log4j.Logger;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -16,8 +19,9 @@ import java.util.stream.Stream;
 public class QuadradoAssetBuilder extends Application {
     
     ////// Constants //////
+    private static final Logger logger = Logger.getLogger(QuadradoAssetBuilder.class);
     public static final String APP_TITLE = "Quadrado Asset Builder";
-    protected static final String[] APP_ICON_NAMES = {"16x16", "32x32", "64x64", "128x128" };
+    private static final String[] APP_ICON_NAMES = {"16x16", "32x32", "64x64", "128x128" };
     public static final AppIconLoader APP_ICON_LOADER = new AppIconLoader();
     public static final String PATH_WEB_DIRECTORY = "web";
     public static final String PATH_INDEX_HTML = ResourceLoader.getAbsoluteResourcePath(
@@ -48,12 +52,20 @@ public class QuadradoAssetBuilder extends Application {
         // web region
         BrowserRegion region = new BrowserRegion();
         WebEngine webEngine = region.browser.getEngine();
+        
+        // enable upcalls
+        webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != Worker.State.SUCCEEDED) { return; }
+            JSObject window = (JSObject)webEngine.executeScript("window");
+            window.setMember("backend", Backend.INSTANCE);
+        }));
+        
+        // index page
         String indexUrl = QuadradoAssetBuilder.class.getResource(PATH_INDEX_HTML).toExternalForm();
         webEngine.load(indexUrl);
         
         // scene
         Scene scene = new Scene(region);
-        //scene.getStylesheets().add("TODO.css");
         primaryStage.setScene(scene);
         
         // show
@@ -63,7 +75,6 @@ public class QuadradoAssetBuilder extends Application {
     
     ////// Static Inner Classes //////
     public static class BrowserRegion extends Region {
-        
         //// Instance Fields ////
         public final WebView browser = new WebView();
         
@@ -80,4 +91,26 @@ public class QuadradoAssetBuilder extends Application {
             this.layoutInArea(this.browser, 0, 0, w, h, 0, HPos.CENTER, VPos.CENTER);
         }
     }
+    
+    public static class Backend {
+        //// Constants ////
+        public static final Backend INSTANCE = new Backend();
+        
+        //// Constructor ////
+        private Backend() { }
+        
+        //// Instance Methods ////
+        public Logger getLogger() {
+            return logger;
+        }
+        
+        public String getName() {
+            return "My name is Agent Smith.";
+        }
+        
+        public long getNanoTime() {
+            return System.nanoTime();
+        }
+    }
+    
 }

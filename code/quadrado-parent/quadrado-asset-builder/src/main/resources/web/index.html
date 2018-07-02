@@ -1,6 +1,16 @@
 <!DOCTYPE>
 <html>
 <head>
+    <script>
+        window.onerror = function window_onerror(msg, source, line, col, err) {
+            var errMsg = '';
+            errMsg += 'Error in ' + source;
+            errMsg += ': line ' + line;
+            errMsg += ', col ' + col;
+            errMsg += '. Message: ' + msg;
+            window.backend.getLogger().error(errMsg, err);
+        };
+    </script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/index.css"/>
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -11,7 +21,8 @@
 <body>
     <div id="div_app_loading" data-bind="ifnot: $root">Application is loading...</div>
     <div id="div_content" style="display: none" data-bind="visible: $root">
-        Application is loaded! =D
+        <p>Name: <span data-bind="text: name"></span></p>
+        <p>NanoTime: <span data-bind="text: nanoTime"></span></p>
     </div>
 </body>
 </html>
