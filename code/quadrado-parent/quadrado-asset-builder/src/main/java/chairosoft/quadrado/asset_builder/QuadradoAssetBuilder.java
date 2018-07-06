@@ -80,6 +80,7 @@ public class QuadradoAssetBuilder extends Application {
         
         //// Constructor ////
         public BrowserRegion() {
+            this.browser.setContextMenuEnabled(false);
             this.getChildren().add(this.browser);
         }
         
@@ -104,13 +105,6 @@ public class QuadradoAssetBuilder extends Application {
             return logger;
         }
         
-        public String getName() {
-            return "My name is Agent Smith.";
-        }
-        
-        public long getNanoTime() {
-            return System.nanoTime();
-        }
     }
     
 }

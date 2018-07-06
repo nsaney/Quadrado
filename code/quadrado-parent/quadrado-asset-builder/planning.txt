@@ -1,0 +1,58 @@
+Quadrado Asset Builder
+planning
+
+=====================
+
+[      ][                  ]
+[ side ][                  ]
+[  nav ][                  ]
+[      ][                  ]
+[      ][                  ]
+[      ][                  ]
+[      ][                  ]
+[      ][                  ]
+
+
+=====================
+Font     :: n..1 with simple config
+BoxStyle :: 1..1 with complex config
+MapRoom  :: 1..1 with complex config
+Sprite   :: 1..n with complex config
+TileSet  :: 1..n with complex config
+
+=====================
+each asset type has a baseline required for new, 
+then an editor/viewer,
+and the ability to delete (with cascade where sensible)
+
+Font
+- new: choose TTF
+- edit+view: modify name
+
+BoxStyle
+- new: choose/create box.PNG
+- edit: modify config and resource
+- view: see sample boxes
+
+MapRoom
+- new: choose TileSet; create map.TXT
+- edit+view: modify config and resource
+
+Sprite
+- new: choose/create sheet.PNG
+- edit: modify config and resource
+- view: see animation states with and without bounding box
+
+TileSet
+- new: choose/create sheet.PNG
+- edit: modify config and resource
+- view: see bounding boxes
+
+
+
+
+
+
+
+
+
