@@ -72,5 +72,7 @@ Temporary Items
 **/*.iws
 
 # IntelliJ
+**/code/**/.idea/
+**/code/**/*.iml
 **/code/**/out/
 **/code/**/target/
