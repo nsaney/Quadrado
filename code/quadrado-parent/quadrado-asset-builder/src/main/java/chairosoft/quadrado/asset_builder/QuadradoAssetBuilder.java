@@ -1,7 +1,10 @@
 package chairosoft.quadrado.asset_builder;
 
 import chairosoft.quadrado.asset._resources.ResourceLoader;
+import com.sun.javafx.application.LauncherImpl;
+import com.sun.javafx.application.PlatformImpl;
 import javafx.application.Application;
+import javafx.application.Preloader;
 import javafx.concurrent.Worker;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -33,7 +36,11 @@ public class QuadradoAssetBuilder extends Application {
     
     ////// Main Method //////
     public static void main(String[] args) {
-        launch(args);
+        LauncherImpl.launchApplication(
+            QuadradoAssetBuilder.class,
+            QuadradoAssetBuilderPreloader.class,
+            args
+        );
     }
     
     
@@ -74,6 +81,16 @@ public class QuadradoAssetBuilder extends Application {
     
     
     ////// Static Inner Classes //////
+    public static class QuadradoAssetBuilderPreloader extends Preloader {
+        @Override
+        public void start(Stage stage) throws Exception {
+            // see: https://github.com/warmuuh/milkman/commit/ab05ea94a608b5e5476bfd234befaf9db6df5b39
+            PlatformImpl.runAndWait(
+                () -> com.sun.glass.ui.Application.GetApplication().setName(APP_TITLE)
+            );
+        }
+    }
+    
     public static class BrowserRegion extends Region {
         //// Instance Fields ////
         public final WebView browser = new WebView();
