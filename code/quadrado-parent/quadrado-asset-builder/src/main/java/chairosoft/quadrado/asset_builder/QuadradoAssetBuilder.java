@@ -4,11 +4,14 @@ import chairosoft.quadrado.asset._resources.ResourceLoader;
 import com.sun.javafx.application.LauncherImpl;
 import com.sun.javafx.application.PlatformImpl;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.concurrent.Worker;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -73,10 +76,12 @@ public class QuadradoAssetBuilder extends Application {
         
         // scene
         Scene scene = new Scene(region);
+        scene.setOnKeyPressed(new QuadradoAssetBuilderKeyPressedEventHandler());
         primaryStage.setScene(scene);
         
         // show
         primaryStage.show();
+        primaryStage.setMaximized(true);
     }
     
     
@@ -88,6 +93,17 @@ public class QuadradoAssetBuilder extends Application {
             PlatformImpl.runAndWait(
                 () -> com.sun.glass.ui.Application.GetApplication().setName(APP_TITLE)
             );
+        }
+    }
+    
+    public static class QuadradoAssetBuilderKeyPressedEventHandler implements EventHandler<KeyEvent> {
+        @Override
+        public void handle(KeyEvent event) {
+            if (event.isShortcutDown()) {
+                switch (event.getCode()) {
+                    case Q: Platform.exit(); break;
+                }
+            }
         }
     }
     
