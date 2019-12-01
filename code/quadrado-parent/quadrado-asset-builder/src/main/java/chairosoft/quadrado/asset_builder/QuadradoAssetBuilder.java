@@ -133,10 +133,8 @@ public class QuadradoAssetBuilder extends Application {
         //// Constructor ////
         private Backend() { }
         
-        //// Instance Methods ////
-        public Logger getLogger() {
-            return logger;
-        }
+        //// Instance Fields ////
+        public final Logger logger = QuadradoAssetBuilder.logger;
         
     }
     

@@ -1,5 +1,5 @@
 $(function () {
     var self = {};
     ko.applyBindings(self);
-    window.backend.getLogger().info('Knockout Bindings applied!');
+    window.backend.logger.info('Knockout Bindings applied!');
 });
