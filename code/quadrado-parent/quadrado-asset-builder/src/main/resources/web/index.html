@@ -26,8 +26,20 @@
     <script src="js/index.js"></script>
 </head>
 <body>
-    <div id="div_app_loading" data-bind="ifnot: $root">Application is loading...</div>
+    <div id="div_app_loading" data-bind="visible: !$root">Application is loading...</div>
     <div id="div_content" class="container-fluid" style="display: none" data-bind="visible: $root">
+        <ul class="nav nav-tabs" id="topLevelNavs" role="tablist" data-bind="foreach: tabbedWindows">
+            <li class="nav-item">
+                <a class="nav-link" role="tab" data-toggle="tab" data-bind="attr: tabAttrs">
+                    <span data-bind="text: name"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="topLevelTabs" data-bind="foreach: tabbedWindows">
+            <div class="tab-pane fade" role="tabpanel" data-bind="attr: panelAttrs">
+                <pre data-bind="html: JSON.stringify($data, null, 2)"></pre>
+            </div>
+        </div>
     </div>
 </body>
 </html>

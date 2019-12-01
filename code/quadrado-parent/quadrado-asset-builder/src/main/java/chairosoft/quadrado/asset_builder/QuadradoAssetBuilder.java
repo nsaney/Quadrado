@@ -13,6 +13,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
+import javafx.scene.text.FontSmoothingType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -61,6 +62,7 @@ public class QuadradoAssetBuilder extends Application {
         
         // web region
         BrowserRegion region = new BrowserRegion();
+        region.browser.setFontSmoothingType(FontSmoothingType.GRAY);
         WebEngine webEngine = region.browser.getEngine();
         
         // enable upcalls

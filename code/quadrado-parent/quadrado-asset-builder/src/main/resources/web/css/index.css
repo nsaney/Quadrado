@@ -1,11 +1,9 @@
 body {
-    background-color: gray;
+    background-color: white;
 }
 
-#div_app_loading {
-    position: absolute;
-    top: 2em;
-    left: 2em;
+#div_app_loading, #div_content {
+    padding: 1em;
 }
 
 
