@@ -15,7 +15,7 @@
   <artifactId>quadrado-android</artifactId>
 
   <properties>
-    <android-api-version>21</android-api-version>
+    <android-api-version>26</android-api-version>
   </properties>
 
   <dependencies>
