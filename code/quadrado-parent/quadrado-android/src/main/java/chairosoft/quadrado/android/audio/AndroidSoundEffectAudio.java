@@ -17,7 +17,6 @@ import android.speech.srec.WaveHeader;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import chairosoft.quadrado.util.io.DirectByteArrayOutputStream;
 
 import java.io.*;
 
@@ -42,13 +41,12 @@ public class AndroidSoundEffectAudio extends SoundEffectAudio {
             }
             
             byte[] readBuffer = new byte[bufferSize];
-            DirectByteArrayOutputStream dbaos = new DirectByteArrayOutputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             int currentRead = 0;
             while ((currentRead = in.read(readBuffer)) > 0) {
-                dbaos.write(readBuffer, 0, currentRead);
+                baos.write(readBuffer, 0, currentRead);
             }
-            
-            byte[] data = dbaos.getBuffer();
+            byte[] data = baos.toByteArray();
             
             int channelConfig = waveHeader.getNumChannels() == 2
                                 ? AudioFormat.CHANNEL_OUT_STEREO
