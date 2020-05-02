@@ -12,15 +12,42 @@
 
   <modules>
     <module>quadrado-core</module>
+    <module>quadrado-asset-builder</module>
     <module>quadrado-desktop</module>
     <module>quadrado-android</module>
+    <module>quadrado-game-parent</module>
     <module>quadrado-example</module>
-    <module>quadrado-asset-builder</module>
   </modules>
 
   <properties>
+    <quadrado.version>2.0-alpha</quadrado.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>chairosoft.quadrado</groupId>
+        <artifactId>quadrado-core</artifactId>
+        <version>${quadrado.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>chairosoft.quadrado</groupId>
+        <artifactId>quadrado-asset-builder</artifactId>
+        <version>${quadrado.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>chairosoft.quadrado</groupId>
+        <artifactId>quadrado-desktop</artifactId>
+        <version>${quadrado.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>chairosoft.quadrado</groupId>
+        <artifactId>quadrado-android</artifactId>
+        <version>${quadrado.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -58,18 +85,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <repositories>
-    <repository>
-      <id>pyx4j-web-snapshot</id>
-      <url>http://repository.pyx4j.com/maven2-snapshot</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
 
 </project>

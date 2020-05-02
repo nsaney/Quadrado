@@ -7,52 +7,15 @@
 
   <parent>
     <groupId>chairosoft.quadrado</groupId>
-    <artifactId>quadrado-parent</artifactId>
+    <artifactId>quadrado-game-parent</artifactId>
     <version>2.0-alpha</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../quadrado-game-parent</relativePath>
   </parent>
 
   <artifactId>quadrado-example</artifactId>
 
-  <dependencies>
-    <dependency>
-      <groupId>chairosoft.quadrado</groupId>
-      <artifactId>quadrado-core</artifactId>
-      <version>2.0-alpha</version>
-    </dependency>
-    <dependency>
-      <groupId>chairosoft.quadrado</groupId>
-      <artifactId>quadrado-desktop</artifactId>
-      <version>2.0-alpha</version>
-    </dependency>
-  </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>exec</shadedClassifierName>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.example.ExampleQuadradoGame</mainClass>
-                </transformer>
-              </transformers>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <properties>
+    <quadrado.main.class>com.example.ExampleQuadradoGame</quadrado.main.class>
+  </properties>
 
 </project>
