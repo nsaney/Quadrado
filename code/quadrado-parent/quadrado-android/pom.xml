@@ -14,7 +14,7 @@
   <artifactId>quadrado-android</artifactId>
 
   <properties>
-    <android-api-version>26</android-api-version>
+    <android-min-sdk-version>21</android-min-sdk-version>
   </properties>
 
   <dependencies>
@@ -26,11 +26,10 @@
     <dependency>
       <groupId>com.android</groupId>
       <artifactId>android-sdk</artifactId>
-      <version>api-${android-api-version}</version>
+      <version>api-${android-min-sdk-version}</version>
       <scope>system</scope>
-      <systemPath>${env.ANDROID_HOME}/platforms/android-${android-api-version}/android.jar</systemPath>
+      <systemPath>${env.ANDROID_HOME}/platforms/android-${android-min-sdk-version}/android.jar</systemPath>
     </dependency>
-
   </dependencies>
 
 </project>
